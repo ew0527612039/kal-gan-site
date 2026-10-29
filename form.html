@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head><script>window.KG_API="https://script.google.com/macros/s/AKfycbx1S1OEbhTtgp_j4PyiEPCTwTtD25FZUO8pmNYHj9z1ZbzAt_0_uW-UImWbz9hH1_UVCg/exec";</script><meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<base target="_top">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&family=Assistant:wght@400;600;700&display=swap">
+<style>
+:root{
+  --bg:#f2f5f4;--surface:#fff;--raise:#f6f9f8;--line:#dfe7e4;--fg:#14231f;--muted:#5a6d68;
+  --accent:#00804a;--accent-ink:#fff;--accent-soft:#e3f4ea;--ok:#1b7a3a;--ok-soft:#e2f4e7;--warn:#8a5a10;--warn-soft:#fdf0d6;--bad:#b3261e;--bad-soft:#fbe4e2;--info:#1f5aa0;--info-soft:#e4edf9;
+  --f-display:"Rubik","Assistant",system-ui,sans-serif;--f-body:"Assistant",system-ui,"Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1714;--surface:#14211d;--raise:#182823;--line:#25392f;--fg:#e3eeea;--muted:#94aaa3;--accent:#3ccf86;--accent-ink:#04170e;--accent-soft:#143a28;--ok:#6fd38c;--ok-soft:#173525;--warn:#e7b462;--warn-soft:#382c16;--bad:#ff8a80;--bad-soft:#3c1c1a;--info:#8ab8f0;--info-soft:#1a2b42;color-scheme:dark}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font:1.02rem/1.6 var(--f-body);padding:14px 14px 120px}
+main{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+h1{font:700 1.5rem/1.25 var(--f-display);margin:0}
+h2{font:600 1.1rem var(--f-display);margin:0}
+.sub{color:var(--muted);margin:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 2px rgba(16,40,32,.05)}
+.brand{font:700 1rem var(--f-display);color:var(--accent);display:flex;align-items:center;gap:10px}.brand img{width:44px;height:44px;object-fit:contain;border-radius:10px}
+.tools{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.tools button{font:600 .9rem var(--f-body);background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:6px 14px;color:var(--fg);cursor:pointer;min-height:38px}
+.tools button.help{border-color:var(--accent);color:var(--accent)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.sum{display:flex;gap:10px;flex-wrap:wrap}
+.sum span{background:var(--raise);border-radius:12px;padding:8px 12px;font-size:.92rem}.sum b{font:700 1.25rem var(--f-display);display:block}
+.sum .warn{background:var(--warn-soft);color:var(--warn)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;counter-reset:s}
+.steps div{background:var(--raise);border-radius:12px;padding:10px;font-size:.88rem;line-height:1.35;counter-increment:s}
+.steps div::before{content:counter(s);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font:700 .9rem var(--f-display);margin-bottom:6px}
+.allok{background:var(--ok-soft);color:var(--ok);border-radius:12px;padding:10px 12px;font-weight:600}
+.filter{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.filter button{flex:1;border:0;background:transparent;font:600 .92rem var(--f-body);color:var(--muted);padding:10px;cursor:pointer}
+.filter button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent)}
+.days{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.day{border-bottom:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:10px}
+.day:last-child{border-bottom:0}
+.day.sat{background:var(--raise);color:var(--muted);padding-block:6px}
+.day.prob{border-inline-start:4px solid var(--warn)}
+.day.edit{background:var(--accent-soft);border-inline-start:4px solid var(--accent)}
+.top{display:flex;align-items:center;gap:12px}
+.dt{min-width:58px;text-align:center;background:var(--raise);border-radius:12px;padding:4px 6px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.dt b{display:block;font:700 1.25rem var(--f-display)}.dt small{display:block;font-weight:400;color:var(--muted);font-size:.78rem}
+.day.edit .dt{background:var(--surface)}
+.what{flex:1;min-width:0;font-size:.98rem;font-variant-numeric:tabular-nums}
+.what .h{color:var(--muted);font-size:.86rem}
+.what .t{display:inline-block;direction:ltr;unicode-bidi:isolate;font-weight:700}
+.pill{display:inline-block;font-size:.78rem;font-weight:700;padding:1px 9px;border-radius:99px;margin-inline-start:4px}
+.pill.wait{background:var(--warn-soft);color:var(--warn)}.pill.ok{background:var(--ok-soft);color:var(--ok)}.pill.bad{background:var(--bad-soft);color:var(--bad)}.pill.info{background:var(--info-soft);color:var(--info)}
+.btn{font:600 .98rem var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:12px;padding:10px 16px;cursor:pointer;min-height:44px}
+.btn.fix{border-color:var(--accent);color:var(--accent);white-space:nowrap}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-size:1.05rem;padding-inline:22px}
+.btn:disabled{opacity:.55}
+.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.editor{display:flex;flex-direction:column;gap:10px;background:var(--surface);border-radius:14px;padding:12px;border:1px solid var(--line)}
+.editor .q{font-weight:700}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice button{border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:10px;font:600 .95rem var(--f-body);color:var(--fg);cursor:pointer;text-align:center;min-height:56px}
+.choice button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.choice button span{display:block;font-size:1.4rem;line-height:1}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+label{display:flex;flex-direction:column;gap:4px;font-size:.9rem;color:var(--muted);flex:1;min-width:130px;font-weight:600}
+input,select,textarea{font:inherit;font-size:17px;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+textarea{resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1px dashed var(--line);background:var(--raise);border-radius:99px;padding:4px 12px;font:600 .82rem var(--f-body);color:var(--fg);cursor:pointer}
+.miss textarea{border-color:var(--bad);background:var(--bad-soft)}
+.bar{position:fixed;inset:auto 0 0 0;background:var(--surface);border-top:1px solid var(--line);padding:12px 14px calc(12px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;align-items:center;justify-content:center;box-shadow:0 -6px 18px rgba(16,40,32,.08);z-index:5}
+.bar .n{color:var(--muted)}
+.notice{border-radius:12px;padding:10px 12px;background:var(--warn-soft);margin:0}
+.notice.bad{background:var(--bad-soft)}.notice.ok{background:var(--ok-soft)}.notice.info{background:var(--info-soft)}
+ul,ol{margin:0;padding-inline-start:22px}
+li{margin-bottom:6px}
+.tour{position:fixed;inset:auto 10px calc(86px + env(safe-area-inset-bottom,0px)) 10px;max-width:620px;margin:0 auto;background:#14231f;color:#fff;border-radius:16px;padding:14px 16px;z-index:20;box-shadow:0 18px 40px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:8px}
+.tour b{font:700 1.05rem var(--f-display)}
+.tour .tb{display:flex;gap:8px;align-items:center}
+.tour .tb button{border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;border-radius:10px;padding:6px 12px;font:600 .9rem var(--f-body);cursor:pointer}
+.tour .prog{height:4px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;flex:1}.tour .prog i{display:block;height:100%;background:#7ac943;width:0;transition:width .3s}
+.hand{position:fixed;width:34px;height:34px;border-radius:50%;background:rgba(122,201,67,.35);border:3px solid #7ac943;z-index:25;pointer-events:none;transition:left .7s ease,top .7s ease,transform .2s;transform:translate(50%,-50%)}
+.hand.tap{transform:translate(50%,-50%) scale(.7)}
+.glow{box-shadow:0 0 0 4px #7ac943!important;border-radius:12px}
+.demo-badge{background:#14231f;color:#fff;border-radius:99px;padding:3px 12px;font-size:.82rem;font-weight:700;align-self:flex-start}
+.hstep{display:flex;gap:12px;align-items:flex-start}
+.hstep i{font-style:normal;flex:none;width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:700 1rem var(--f-display)}
+.mock{border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--raise);font-size:.88rem;margin-top:6px}
+@media (max-width:420px){.steps{grid-template-columns:1fr}.choice{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main id="app" data-t=""><div class="card"><p>טוען את הנוכחות שלך…</p></div></main>
+<script>
+(function(){if(window.google&&window.google.script&&window.google.script.run)return;var U=window.KG_API;if(!U)return;
+  function runner(){var ok=null,fail=null,P=null,p={withSuccessHandler:function(f){ok=f;return P},withFailureHandler:function(f){fail=f;return P}};
+    P=new Proxy(p,{get:function(t,k){if(k in t)return t[k];return function(){var a=[].slice.call(arguments);
+      fetch(U,{method:"POST",redirect:"follow",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({rpc:k,args:a})})
+      .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text()}).then(function(x){ok&&ok(x)},function(e){fail&&fail(e)})}}});return P}
+  window.google={script:{get run(){return runner()}}}})();
+(function(){
+"use strict";
+var QS=new URLSearchParams(location.search);var T=document.getElementById("app").dataset.t||QS.get("f")||(QS.get("help")?"help":""),app=document.getElementById("app");
+var D=null,ED={},view="list",busy=false,big=false,only=false,DEMO=false,REAL=null;
+try{big=localStorage.getItem("kg_big")==="1"}catch(e){}
+function setBig(){document.documentElement.style.fontSize=big?"118%":"100%";try{localStorage.setItem("kg_big",big?"1":"0")}catch(e){}}
+setBig();
+function hex2rgb(h){return[1,3,5].map(function(i){return parseInt(h.slice(i,i+2),16)})}
+function lum(rgb){return rgb.map(function(v){v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)}).reduce(function(a,v,i){return a+v*[.2126,.7152,.0722][i]},0)}
+function brandColor(c){if(!/^#[0-9a-f]{6}$/i.test(c||""))return;var rgb=hex2rgb(c);for(var i=0;i<30&&(1.05/(lum(rgb)+.05))<4.7;i++)rgb=rgb.map(function(v){return Math.round(v*.9)});
+  var hex="#"+rgb.map(function(v){return v.toString(16).padStart(2,"0")}).join("");if(!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.style.setProperty("--accent",hex);document.documentElement.style.setProperty("--accent-soft","color-mix(in srgb, "+hex+" 12%, white)")}}
+function brandHead(){var b=(D&&D.brand)||{};return '<div class="brand">'+(b.logo?'<img src="'+esc(b.logo)+'" alt="">':"")+'<span>'+esc(b.name||b.app||"קל גן")+'</span></div>'}
+var WD=["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"],MN=["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
+var NOTE_EX=["שכחתי להחתים","ההחתמה לא נקלטה","יצאתי מוקדם באישור","נשארתי לישיבת צוות","הייתי בהשתלמות"];
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function call(fn){var a=[].slice.call(arguments,1);return new Promise(function(res,rej){var r=google.script.run.withSuccessHandler(function(x){var o;try{o=JSON.parse(x)}catch(e){return rej(new Error("תשובה לא תקינה"))}o.err?rej(new Error(o.err)):res(o.ok)}).withFailureHandler(function(){rej(new Error("אין חיבור כרגע. בדקי את החיבור לאינטרנט ונסי שוב."))});r[fn].apply(r,a)})}
+function hours(en){var e=(en||[]).slice().sort(function(a,b){return a.time<b.time?-1:1}),h=0,open=null,miss=0;e.forEach(function(x){if(x.type==="כניסה"){if(open)miss++;open=x.time}else if(open){var a=open.split(":"),b=x.time.split(":");h+=Math.max(0,(+b[0]*60+ +b[1]-a[0]*60-a[1])/60);open=null}else miss++});if(open)miss++;return{h:h,miss:miss}}
+function fmtH(h){var m=Math.round(h*60);return Math.floor(m/60)+":"+String(m%60).padStart(2,"0")}
+function firstIn(en){var a=(en||[]).filter(function(e){return e.type==="כניסה"}).map(function(e){return e.time}).sort();return a[0]||""}
+function lastOut(en){var a=(en||[]).filter(function(e){return e.type==="יציאה"}).map(function(e){return e.time}).sort();return a[a.length-1]||""}
+function dateOf(d){return D.month+"-"+String(d).padStart(2,"0")}
+function demoData(){var now=new Date(),y=now.getFullYear(),m=now.getMonth()+1,mm=String(m).padStart(2,"0"),last=new Date(y,m,0).getDate(),days={};
+  for(var d=1;d<=Math.min(last,20);d++){var w=new Date(y,m-1,d).getDay();if(w===5||w===6)continue;var dd=String(d).padStart(2,"0");days[dd]=[{type:"כניסה",time:"07:3"+(d%4),src:"טלפון"},{type:"יציאה",time:"13:1"+(d%5),src:"טלפון"}]}
+  var k=Object.keys(days);if(k[3])days[k[3]]=[days[k[3]][0]];
+  return{name:"שרה (הדגמה)",month:y+"-"+mm,days:days,absent:{},reqs:[],reasons:["מחלה","חופשה","מחלת ילד","מילואים","אבל","אחר"],exp:Date.now()+10*864e5,closed:false,brand:(D&&D.brand)||{}}}
+function load(){app.innerHTML='<div class="card"><p>טוען את הנוכחות שלך…</p></div>';
+  if(T==="help"){D=demoData();showHelp();return}
+  call("formLoad",T).then(function(d){D=d;ED={};brandColor((d.brand||{}).color);(d.reqs||[]).forEach(function(r){if(r.status==="ממתין"&&r.src==="טופס עובדת")ED[r.date]=r.kind==="absence"?{kind:"absence",reason:r.reason,note:r.note}:{kind:"hours",in:r.in,out:r.out,note:r.note}});view="list";render()})
+  .catch(function(e){app.innerHTML='<div class="card"><div class="brand">קל גן</div><h1>לא ניתן לפתוח את הטופס</h1><p>'+esc(e.message)+'</p></div>';bar("")})}
+function reqFor(date){var L=(D.reqs||[]).filter(function(r){return r.date===date});return L[L.length-1]}
+function bar(html){var b=document.getElementById("bar");if(!b){b=document.createElement("div");b.id="bar";b.className="bar";document.body.appendChild(b)}b.innerHTML=html;b.hidden=!html}
+function render(){
+  if(view==="done")return;
+  var y=+D.month.slice(0,4),m=+D.month.slice(5),last=new Date(y,m,0).getDate(),tot=0,worked=0,probs=0,rows="";
+  for(var d=1;d<=last;d++){
+    var dd=String(d).padStart(2,"0"),date=dateOf(d),en=(D.days[dd]||[]).slice().sort(function(a,b){return a.time<b.time?-1:1}),ab=D.absent[dd],w=new Date(y,m-1,d).getDay(),r=hours(en),ed=ED[date],rq=reqFor(date);
+    tot+=r.h;if(en.length)worked++;if(r.miss)probs++;
+    var what=en.length?'<span class="t">'+esc(firstIn(en)||"?")+"</span> עד <span class=\"t\">"+esc(lastOut(en)||"?")+"</span>"+(r.h?' <span class="h">· <span class="t">'+fmtH(r.h)+'</span> שעות</span>':"")+(r.miss?'<br><span class="pill wait">⚠ חסרה החתמה – כדאי לתקן</span>':""):ab?'<span class="pill info">היעדרות: '+esc(ab.reason)+"</span>":'<span class="h">לא נרשמה נוכחות</span>';
+    var st=rq&&!(ed&&rq.status==="ממתין")?' <span class="pill '+(rq.status==="מאושר"?"ok":rq.status==="נדחה"?"bad":"wait")+'">'+(rq.status==="מאושר"?"✓ התיקון אושר":rq.status==="נדחה"?"התיקון נדחה":"⏳ ממתין לאישור המשרד")+"</span>"+(rq.status==="נדחה"&&rq.rej?'<div class="h">סיבה: '+esc(rq.rej)+"</div>":""):"";
+    if(w===6&&!en.length&&!ed){if(!only)rows+='<div class="day sat"><div class="top"><div class="dt"><b>'+d+'</b><small>שבת</small></div></div></div>';continue}
+    if(only&&!ed&&!r.miss&&!(rq&&rq.status!=="מאושר"))continue;
+    rows+='<div class="day'+(ed?" edit":r.miss?" prob":"")+(ed&&ed.miss?" miss":"")+'" data-date="'+date+'"><div class="top"><div class="dt"><b>'+d+'</b><small>יום '+WD[w]+'</small></div><div class="what">'+what+st+'</div>'+(D.closed?"":'<button class="btn'+(ed?"":" fix")+'" type="button" data-tog="'+date+'" aria-expanded="'+!!ed+'" aria-label="'+(ed?"ביטול התיקון ל":"תיקון ")+d+"/"+m+'">'+(ed?"ביטול":"יש טעות? תיקון")+"</button>")+"</div>"+(ed?editor(date,ed):"")+"</div>";
+  }
+  if(!rows)rows='<div class="day"><p class="sub" style="text-align:center">אין ימים להצגה בסינון הזה.</p></div>';
+  var n=Object.keys(ED).length,exp=new Date(D.exp);
+  app.innerHTML=(DEMO?'<span class="demo-badge">הדגמה – שום דבר לא נשלח</span>':"")+'<div class="tools"><button type="button" class="help" id="tourBtn">▶ איך מעדכנים? (הדגמה של דקה)</button><button type="button" id="bigTxt" aria-pressed="'+big+'">'+(big?"טקסט רגיל":"הגדלת טקסט")+'</button></div>'+
+    '<div class="card">'+brandHead()+'<h1>שלום '+esc(D.name)+'</h1><p style="margin:0">זו הנוכחות שלך לחודש <b>'+MN[m-1]+" "+y+'</b>, כפי שהיא רשומה במשרד.</p>'+
+    '<div class="sum"><span><b>'+worked+'</b>ימי עבודה</span><span><b>'+fmtH(tot)+'</b>שעות</span>'+(probs?'<span class="warn"><b>'+probs+'</b>ימים עם החתמה חסרה</span>':"")+'</div>'+
+    (D.closed?"":'<div class="steps"><div><b>בודקים</b> את הימים ברשימה</div><div>ביום עם טעות לוחצים <b>"יש טעות? תיקון"</b> וכותבים מה קרה</div><div>בסוף לוחצים <b>"שליחה למשרד"</b></div></div><p class="allok">✓ אם הכל נכון – אין צורך לעשות כלום.</p>')+
+    '<p class="sub" style="font-size:.85rem">הקישור אישי ותקף עד '+exp.toLocaleDateString("he-IL")+". המידע משמש לניהול הנוכחות והשכר בלבד, נשמר באופן מאובטח ומועבר רק למשרד.</p></div>"+
+    ((D.reqs||[]).some(function(r){return r.status==="ממתין"&&r.src==="טופס עובדת"})?'<p class="notice">יש לך בקשות שעוד לא טופלו. הן מסומנות למטה. שליחה חוזרת מחליפה אותן.</p>':"")+
+    (D.closed?'<p class="notice">החודש כבר נסגר לעדכונים במשרד. לשינויים יש לפנות למשרד.</p>':"")+
+    '<div class="filter" role="group" aria-label="אילו ימים להציג"><button type="button" data-only="0" aria-pressed="'+!only+'">כל הימים</button><button type="button" data-only="1" aria-pressed="'+only+'">רק ימים לבדיקה'+(probs?" ("+probs+")":"")+'</button></div>'+
+    '<div class="days">'+rows+"</div>";
+  if(D.closed){bar("");return}
+  bar(n?'<span class="n"><b>'+n+'</b> '+(n===1?"יום לתיקון":"ימים לתיקון")+'</span><button class="btn primary" type="button" id="send">המשך לשליחה למשרד</button>':'<span class="n">לא סומנו תיקונים. אם הכל נכון – אפשר לסגור את הדף.</span>');
+}
+function editor(date,ed){
+  return '<div class="editor"><div class="q">מה לא נכון ביום הזה?</div><div class="choice" role="group" aria-label="סוג התיקון"><button type="button" data-kind="hours" data-d="'+date+'" aria-pressed="'+(ed.kind==="hours")+'"><span>🕒</span>השעות לא נכונות</button><button type="button" data-kind="absence" data-d="'+date+'" aria-pressed="'+(ed.kind==="absence")+'"><span>🏠</span>לא עבדתי ביום הזה</button></div>'+
+   (ed.kind==="hours"?'<div class="row"><label>מתי הגעת?<input type="time" data-f="in" data-d="'+date+'" value="'+esc(ed.in||"")+'"></label><label>מתי יצאת?<input type="time" data-f="out" data-d="'+date+'" value="'+esc(ed.out||"")+'"></label></div>'
+    :'<label>למה לא עבדת?<select data-f="reason" data-d="'+date+'"><option value="">בחירה…</option>'+D.reasons.map(function(r){return'<option'+(r===ed.reason?" selected":"")+">"+esc(r)+"</option>"}).join("")+"</select></label>")+
+   '<label>מה קרה? (חובה – כמה מילים למשרד)<textarea rows="2" maxlength="500" data-f="note" data-d="'+date+'" placeholder="למשל: שכחתי להחתים ביציאה">'+esc(ed.note||"")+"</textarea></label>"+
+   (ed.kind==="hours"?'<div class="chips" aria-label="הערות מוכנות">'+NOTE_EX.map(function(x){return'<button type="button" data-ex="'+esc(x)+'" data-d="'+date+'">'+esc(x)+"</button>"}).join("")+"</div>":"")+
+   (ed.err?'<p class="notice bad">'+esc(ed.err)+"</p>":"")+"</div>"}
+function validate(){var ok=true;Object.keys(ED).forEach(function(k){var e=ED[k];e.err="";e.miss=false;
+  if(e.kind==="absence"&&!e.reason)e.err="צריך לבחור למה לא עבדת";
+  else if(e.kind==="hours"&&!e.in&&!e.out)e.err="צריך למלא מתי הגעת או מתי יצאת";
+  else if(e.kind==="hours"&&e.in&&e.out&&e.out<=e.in)e.err="שעת היציאה צריכה להיות אחרי שעת ההגעה";
+  else if(!String(e.note||"").trim()){e.err="צריך לכתוב הערה קצרה – מה קרה";e.miss=true}
+  if(e.err)ok=false});return ok}
+function confirmView(){
+  var items=Object.keys(ED).sort().map(function(k){var e=ED[k];return"<li><b>"+(+k.slice(8))+"/"+(+k.slice(5,7))+"</b>: "+(e.kind==="absence"?"לא עבדתי ("+esc(e.reason)+")":"שעות: "+[e.in&&"הגעה "+e.in,e.out&&"יציאה "+e.out].filter(Boolean).join(", "))+'<br><span class="sub">הערה: '+esc(e.note)+"</span></li>"}).join("");
+  app.innerHTML='<div class="card"><h1>בדיקה אחרונה לפני השליחה</h1><p>אלה התיקונים שיישלחו למשרד:</p><ul>'+items+'</ul><p class="sub">המשרד יבדוק ויאשר. תקבלי מייל כשתתקבל החלטה.</p><p class="notice bad" id="serr" hidden></p></div>';
+  bar('<button class="btn" type="button" id="back">חזרה לתיקונים</button><button class="btn primary" type="button" id="go">כן, לשלוח למשרד</button>')}
+function doneView(n){view="done";
+  app.innerHTML='<div class="card">'+brandHead()+'<h1>✓ נשלח בהצלחה</h1><p class="notice ok">'+n+' תיקונים התקבלו במשרד. תקבלי מייל כשיאושרו או יידחו.</p><p class="sub">אפשר לחזור לטופס ולשנות, כל עוד המשרד לא טיפל בבקשות.</p></div>';
+  bar('<button class="btn" type="button" id="reload">חזרה לטופס</button>')}
+function submit(){if(busy)return;busy=true;var b=document.getElementById("go");b.disabled=true;b.textContent="שולח…";
+  var days=Object.keys(ED).sort().map(function(k){var e=ED[k];return e.kind==="absence"?{date:k,kind:"absence",reason:e.reason,note:e.note.trim()}:{date:k,kind:"hours",in:e.in||"",out:e.out||"",note:e.note.trim()}});
+  if(DEMO){setTimeout(function(){busy=false;doneView(days.length)},600);return}
+  call("formSubmit",T,JSON.stringify({days:days})).then(function(n){busy=false;doneView(n)})
+  .catch(function(e){busy=false;b.disabled=false;b.textContent="כן, לשלוח למשרד";var x=document.getElementById("serr");x.textContent=e.message;x.hidden=false})}
+
+function showHelp(){view="help";bar("");
+  app.innerHTML='<div class="card">'+brandHead()+'<h1>איך מעדכנים את הנוכחות?</h1><p>בסוף כל חודש מגיע אלייך מייל עם כל השעות שלך. אם הכל נכון – לא צריך לעשות כלום. אם יש טעות – מתקנים בטופס תוך דקה.</p>'+
+   '<button class="btn primary" type="button" id="tourBtn">▶ צפייה בהדגמה (דקה)</button></div>'+
+   '<div class="card"><h2>שלב אחר שלב</h2>'+
+   '<div class="hstep"><i>1</i><div><b>פותחים את המייל</b> "דיווח הנוכחות שלך" ולוחצים על הכפתור <b>"לעדכון הנוכחות"</b>.</div></div>'+
+   '<div class="hstep"><i>2</i><div><b>בודקים את הימים.</b> ימים עם החתמה חסרה מסומנים בצהוב.<div class="mock">12 · יום שלישי · 07:32 עד ? <span class="pill wait">⚠ חסרה החתמה</span></div></div></div>'+
+   '<div class="hstep"><i>3</i><div>ליד יום עם טעות לוחצים <b>"יש טעות? תיקון"</b>.</div></div>'+
+   '<div class="hstep"><i>4</i><div>בוחרים <b>"השעות לא נכונות"</b> ומתקנים את שעת ההגעה או היציאה, או בוחרים <b>"לא עבדתי ביום הזה"</b> ואת הסיבה.</div></div>'+
+   '<div class="hstep"><i>5</i><div>כותבים <b>הערה קצרה</b> – מה קרה (אפשר ללחוץ על הערה מוכנה, למשל "שכחתי להחתים").</div></div>'+
+   '<div class="hstep"><i>6</i><div>לוחצים <b>"המשך לשליחה למשרד"</b>, בודקים ומאשרים. המשרד מאשר ושולח לך מייל.</div></div></div>'+
+   '<div class="card"><h2>שאלות נפוצות</h2><ul><li><b>הכל נכון, מה עושים?</b> כלום. אין צורך לשלוח.</li><li><b>טעיתי בשליחה?</b> אפשר לפתוח שוב את הקישור, לתקן ולשלוח שוב – זה מחליף את הקודם, כל עוד המשרד לא טיפל.</li><li><b>הקישור לא עובד?</b> הוא תקף כ-12 ימים אחרי סוף החודש. אפשר לבקש מהמשרד קישור חדש.</li><li><b>אפשר מהטלפון?</b> כן, הטופס מותאם לטלפון.</li></ul></div>'}
+var TOUR=null;
+function startTour(){if(!DEMO){REAL={D:D,ED:ED,only:only};DEMO=true}D=demoData();ED={};only=false;view="list";render();
+  var k=Object.keys(D.days),miss=k[3]?D.month+"-"+k[3]:D.month+"-"+k[0],ab=D.month+"-"+k[5];
+  var steps=[
+   {t:"זה הטופס שנפתח מהמייל",d:"בראש הדף רואים כמה ימים ושעות עבדת החודש.",el:function(){return document.querySelector(".sum")}},
+   {t:"אם הכל נכון – לא צריך לעשות כלום",d:"אפשר פשוט לסגור את הדף.",el:function(){return document.querySelector(".allok")}},
+   {t:"יום עם החתמה חסרה מסומן בצהוב",d:"כאן חסרה שעת יציאה.",el:function(){return document.querySelector('[data-date="'+miss+'"]')}},
+   {t:"לוחצים \"יש טעות? תיקון\"",d:"נפתח חלון קטן לתיקון היום.",el:function(){return document.querySelector('[data-tog="'+miss+'"]')},act:function(e){e.click()}},
+   {t:"ממלאים את השעה הנכונה",d:"כאן: יצאתי ב-13:15.",el:function(){return document.querySelector('[data-d="'+miss+'"][data-f="out"]')},act:function(e){e.value="13:15";e.dispatchEvent(new Event("input",{bubbles:true}))}},
+   {t:"כותבים הערה קצרה למשרד",d:"אפשר ללחוץ על הערה מוכנה.",el:function(){return document.querySelector('[data-d="'+miss+'"][data-ex]')},act:function(e){e.click()}},
+   {t:"יום שלא עבדת? בוחרים \"לא עבדתי\"",d:"לוחצים תיקון ליד היום ובוחרים את הסיבה.",el:function(){return document.querySelector('[data-tog="'+ab+'"]')},act:function(e){e.click();setTimeout(function(){var b=document.querySelector('[data-kind="absence"][data-d="'+ab+'"]');b&&b.click();setTimeout(function(){var s=document.querySelector('[data-d="'+ab+'"][data-f="reason"]');if(s){s.value="מחלה";s.dispatchEvent(new Event("change",{bubbles:true}))}var n=document.querySelector('[data-d="'+ab+'"][data-f="note"]');if(n){n.value="הייתי חולה, אישור יגיע";n.dispatchEvent(new Event("input",{bubbles:true}))}},350)},350)}},
+   {t:"בסוף לוחצים \"המשך לשליחה למשרד\"",d:"למטה רואים כמה ימים מתוקנים.",el:function(){return document.getElementById("send")},act:function(e){e.click()}},
+   {t:"בודקים ומאשרים",d:"המשרד יקבל את התיקונים ויאשר. תקבלי מייל עם ההחלטה.",el:function(){return document.getElementById("go")},act:function(e){e.click()}},
+   {t:"זהו! סיימנו",d:"ככה פשוט. עכשיו אפשר לחזור לטופס האמיתי.",el:function(){return document.querySelector(".notice.ok")}}];
+  var hand=document.createElement("div");hand.className="hand";hand.style.left="50%";hand.style.top="40%";document.body.appendChild(hand);
+  var box=document.createElement("div");box.className="tour";box.setAttribute("role","status");box.setAttribute("aria-live","polite");document.body.appendChild(box);
+  var i=0,timer=null,paused=false;
+  function end(){clearTimeout(timer);hand.remove();box.remove();document.querySelectorAll(".glow").forEach(function(x){x.classList.remove("glow")});TOUR=null;DEMO=false;
+    if(T==="help"){D=demoData();ED={};showHelp();return}if(REAL){D=REAL.D;ED=REAL.ED;only=REAL.only;REAL=null}view="list";render()}
+  function step(){document.querySelectorAll(".glow").forEach(function(x){x.classList.remove("glow")});if(i>=steps.length){box.querySelector("[data-tq]").textContent="סגירת ההדגמה";return}
+    var s=steps[i],el=s.el();box.innerHTML='<b>'+(i+1)+". "+esc(s.t)+'</b><span>'+esc(s.d)+'</span><div class="tb"><div class="prog"><i style="width:'+Math.round((i+1)/steps.length*100)+'%"></i></div><button type="button" data-tp>'+(paused?"▶ המשך":"❚❚ השהיה")+'</button><button type="button" data-tq>'+(i===steps.length-1?"חזרה לטופס":"דילוג")+"</button></div>";
+    if(el){var r0=el.getBoundingClientRect();window.scrollBy({top:r0.top-window.innerHeight*0.25,behavior:"smooth"});setTimeout(function(){var r=el.getBoundingClientRect();hand.style.left=(window.innerWidth-r.right+r.width/2-17)+"px";hand.style.top=(r.top+r.height/2)+"px";hand.style.right="auto";hand.style.left=(r.left+r.width/2-17)+"px";el.classList.add("glow");
+      if(s.act)setTimeout(function(){hand.classList.add("tap");setTimeout(function(){hand.classList.remove("tap");try{s.act(el)}catch(e){}},220)},900)},450)}
+    i++;if(!paused)timer=setTimeout(step,s.act?4200:3400)}
+  box.addEventListener("click",function(ev){if(ev.target.closest("[data-tq]"))return end();if(ev.target.closest("[data-tp]")){paused=!paused;ev.target.textContent=paused?"▶ המשך":"❚❚ השהיה";if(paused)clearTimeout(timer);else step()}});
+  TOUR={end:end};step()}
+document.addEventListener("click",function(ev){var t=ev.target,el;
+  if(TOUR&&ev.isTrusted&&!t.closest(".tour"))return;
+  if(t.closest("#tourBtn")){startTour();return}
+  if((el=t.closest("[data-only]"))){only=el.dataset.only==="1";render();return}
+  if((el=t.closest("[data-tog]"))){var d=el.dataset.tog;if(ED[d])delete ED[d];else{var en=D.days[d.slice(8)]||[];ED[d]=D.absent[d.slice(8)]?{kind:"absence",reason:D.absent[d.slice(8)].reason,note:""}:{kind:"hours",in:firstIn(en),out:lastOut(en),note:""}}render();if(ED[d]&&!TOUR){var n=document.querySelector('[data-d="'+d+'"][data-f="'+(ED[d].kind==="hours"&&!ED[d].out?"out":"note")+'"]');n&&n.focus()}return}
+  if((el=t.closest("[data-kind]"))){ED[el.dataset.d].kind=el.dataset.kind;render();return}
+  if((el=t.closest("[data-ex]"))){var e=ED[el.dataset.d];if(!e)return;e.note=el.dataset.ex;e.err="";e.miss=false;render();return}
+  if(t.id==="send"){if(!validate()){render();var f=document.querySelector(".miss textarea,.editor .notice.bad");f&&f.scrollIntoView({block:"center"});return}confirmView();return}
+  if(t.id==="back"){view="list";render();return}
+  if(t.id==="bigTxt"){big=!big;setBig();render();return}
+  if(t.id==="go"){submit();return}
+  if(t.id==="reload"){if(DEMO)return;load();return}
+});
+document.addEventListener("input",function(ev){var t=ev.target;if(!t.dataset.d||!ED[t.dataset.d])return;ED[t.dataset.d][t.dataset.f]=t.value;if(ED[t.dataset.d].err&&t.dataset.f==="note"&&t.value.trim()){ED[t.dataset.d].err="";var p=t.closest(".day");p.classList.remove("miss");var x=p.querySelector(".notice.bad");x&&x.remove()}});
+document.addEventListener("change",function(ev){var t=ev.target;if(t.dataset.d&&ED[t.dataset.d]&&t.tagName==="SELECT")ED[t.dataset.d][t.dataset.f]=t.value});
+document.addEventListener("keydown",function(ev){if(ev.key==="Escape"&&TOUR)TOUR.end()});
+load();
+})();
+</script>
+</body>
+</html>
