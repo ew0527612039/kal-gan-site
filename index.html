@@ -669,6 +669,27 @@ body.login .content{display:grid;place-items:center;min-height:100vh;padding:24p
 @media (max-width:1400px){.kpis2{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.kpis2{grid-template-columns:1fr}}
 .kpi2 .kt b{font-size:1.6rem}
+
+.hnotes .hnlist{display:flex;flex-direction:column;gap:8px}.hnotes .note{min-height:0;padding:10px 12px;cursor:pointer}.hnotes .note p{margin:4px 0 0;font-size:13px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+.mx{display:flex;flex-direction:column;gap:14px}
+.mx-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.mx-title{min-width:0;flex:1}.mx-title h2{margin:0 0 6px;font-size:1.3rem;line-height:1.35;overflow-wrap:anywhere}
+.mx-title p{display:flex;gap:10px;align-items:center;margin:0}.mx-title .av{width:38px;height:38px;flex:none}
+.iconbtn{flex:none;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--fg)}.iconbtn:hover{background:var(--raise)}.iconbtn .ico{width:18px;height:18px}
+.mx-bar{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;background:var(--raise);border-radius:14px;padding:10px 14px}
+.mx-f{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.mx-l{font-size:.8rem;color:var(--muted);font-weight:600}
+.mx-f select{min-width:120px}
+.mx-acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid var(--line2);padding-bottom:12px}
+.mx-acts .btn .ico,.mx-f .btn .ico{width:16px;height:16px;margin-inline-end:6px}
+.mx-body{display:flex;flex-direction:column;gap:8px}
+.mx-thead{display:flex;gap:8px;align-items:center}.mx-thead h3{margin:0;flex:1}.mx-thead[hidden]{display:none}
+.mx .tmsg .bd{font-size:1rem;line-height:1.7;max-height:none;padding:14px 16px}
+.mx .tmsg.open{border-color:color-mix(in srgb,var(--accent,#15803d) 35%,var(--line))}
+.mx .tfull{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);color:var(--muted)}
+.mx-notes{display:flex;flex-direction:column;gap:10px;background:var(--raise);border-radius:14px;padding:12px 14px}.mx-notes h3{margin:0;display:flex;gap:6px;align-items:center}.mx-notes .ico{width:18px;height:18px}
+.mx-notes .hist{max-height:24vh;overflow:auto;padding:0;list-style:none}
+@media (max-width:700px){.mx-bar{flex-direction:column;align-items:stretch}.mx-acts .btn{flex:1 1 40%}}
 </style>
 
 <button class="skip" data-act="skip">דילוג לתוכן הראשי</button>
@@ -1534,11 +1555,14 @@ function attExport(){const A=S["att_"+attMonth]||new Map();
   vals("staff").filter(s=>isOn(s.is_active)).forEach(s=>{const sm=monthSummary(A.get(s._id));if(sm.days||sm.abs)aoa.push([settings.mastrio||"",s.mastrio_no||"",s.full_name,s.id_number,attMonth,sm.days,Math.round(sm.h*100)/100,sm.abs,sm.miss])});
   download("שעות-"+attMonth,aoa,"שעות")}
 
-let reqF={status:"pending",type:"",sel:new Set()};
+let reqF={status:"pending",type:"",who:"",sel:new Set()};
 const isPend=r=>/ממתין/.test(r.status||"");
 const canAct=r=>isPend(r)&&(r.status!=="ממתין לאישור מנהלת"||isMgr())&&!isClosedM(String(r.date).slice(0,7));
 PAGES.requests=()=>{
-  const all=[...vals("corrections").map(r=>({...r,_k:"corrections",_type:"עדכון שעות"})),...vals("absences").map(r=>({...r,_k:"absences",_type:"היעדרות"}))].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  const everyR=[...vals("corrections").map(r=>({...r,_k:"corrections",_type:"עדכון שעות"})),...vals("absences").map(r=>({...r,_k:"absences",_type:"היעדרות"}))].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  const whoK=r=>r.staff_id||("n:"+(r.staff_name||"")),people=new Map();everyR.forEach(r=>{const k=whoK(r);if(!people.has(k))people.set(k,S.staff?.get(r.staff_id)?.full_name||r.staff_name||"ללא שם")});
+  if(reqF.who&&!people.has(reqF.who))reqF.who="";
+  const all=reqF.who?everyR.filter(r=>whoK(r)===reqF.who):everyR;
   const c={pending:all.filter(isPend).length,manager:all.filter(r=>r.status==="ממתין לאישור מנהלת").length,approved:all.filter(r=>r.status==="מאושר").length,rejected:all.filter(r=>r.status==="נדחה").length,all:all.length};
   const list=all.filter(r=>reqF.status==="all"||(reqF.status==="pending"?isPend(r):reqF.status==="manager"?r.status==="ממתין לאישור מנהלת":reqF.status==="approved"?r.status==="מאושר":r.status==="נדחה")).filter(r=>!reqF.type||r._k===reqF.type);
   [...reqF.sel].forEach(k=>{const[t,id]=k.split("|");const r=S[t]?.get(id);if(!r||!canAct(r))reqF.sel.delete(k)});
@@ -1553,6 +1577,7 @@ PAGES.requests=()=>{
   <p class="sub">את/ה פועל/ת כ<b>${esc(myRole()||"משתמש/ת")}</b>. ${isMgr()?"האישור שלך סופי ומעדכן את הנוכחות.":"אפשר לאשר, לדחות או להעביר לאישור מנהלת. העובדת מקבלת מייל על כל החלטה סופית."}</p>
   <div class="bar"><div class="seg">${[["pending","ממתין"],["manager","אצל המנהלת"],["approved","מאושר"],["rejected","נדחה"],["all","הכל"]].map(([k,l])=>`<button data-rf="status|${k}" aria-pressed="${reqF.status===k}">${l}<span class="n">${c[k]}</span></button>`).join("")}</div>
    <select data-rf2="type" aria-label="סוג"><option value="">כל הסוגים</option><option value="corrections"${reqF.type==="corrections"?" selected":""}>עדכון שעות</option><option value="absences"${reqF.type==="absences"?" selected":""}>היעדרות</option></select>
+   <select data-rf3="who" aria-label="איש צוות"><option value="">כל אנשי הצוות</option>${[...people].sort((a,b)=>a[1].localeCompare(b[1],"he")).map(([k,n])=>`<option value="${esc(k)}"${reqF.who===k?" selected":""}>${esc(n)}</option>`).join("")}</select>
    <span class="spacer"></span>${reqF.sel.size?`<span class="sub">${reqF.sel.size} נבחרו</span><button class="btn ok" data-bulk="approve">אישור</button>${selAny&&!isMgr()?`<button class="btn" data-bulk="escalate">העברה למנהלת</button>`:""}<button class="btn bad" data-bulk="reject">דחייה</button>`:""}</div>
   ${list.length?`<div class="tbox"><table><thead><tr><th><input type="checkbox" data-pickall aria-label="בחירת הכל"></th><th>סוג</th><th>איש צוות</th><th>תאריך</th><th>מה התבקש</th><th>הערת העובדת</th><th>סטטוס</th><th></th></tr></thead><tbody>${list.map(r=>`<tr><td>${canAct(r)?`<input type="checkbox" data-pick="${r._k}|${r._id}"${reqF.sel.has(r._k+"|"+r._id)?" checked":""} aria-label="בחירה">`:""}</td><td>${r._type}${r.source?`<br><small class="sub">${esc(r.source)}</small>`:""}</td><td><b>${esc(r.staff_name)}</b></td><td class="mono">${esc(fmtDate(r.date))}</td><td>${det(r)}</td><td class="wrap">${note(r)}${r.rejection_reason?`<br><small class="sub">סיבת דחייה: ${esc(r.rejection_reason)}</small>`:""}</td><td>${statusPill(r.status)}${isPend(r)&&isClosedM(String(r.date).slice(0,7))?' <span class="pill bad">חודש סגור</span>':""}${r.reviewed_by_name?`<br><small class="sub">${esc(r.reviewed_by_name)}</small>`:""}</td><td>${acts(r)}</td></tr>`).join("")}</tbody></table></div>`:`<div class="tbox"><div class="empty"><b>אין בקשות להצגה</b></div></div>`}`;
 };
@@ -1610,35 +1635,38 @@ async function setMailStatus(id,v){const m=S.emails?.get(id);if(!m||m.status===v
   catch(e){toast(e.message||"העדכון נכשל");await syncNow()}
   finally{pendingSt.delete(id);schedule();refreshMailModal(true)}}
 function mailHead(m){const oid=myOid(),mine=m.assigned_to===oid,st=pendingSt.get(m._id)||m.status;
-  return `<div class="row" style="justify-content:space-between;align-items:flex-start"><div style="min-width:0;flex:1"><h2>${esc(m.subject)}</h2><p class="sub">${esc(m.from_name)} · <span class="mono">${esc(m.from_email)}</span> · ${esc(fmtTs(m.received_date))}${m.supplier_id&&S.suppliers?.get(m.supplier_id)?` · ספק: <b>${esc(S.suppliers.get(m.supplier_id).name)}</b>`:""}</p></div><button class="btn" data-close>סגירה</button></div>
-   <div class="mstate">
-    <div class="who">${m.assigned_to?`<span class="pill ${mine?"info":"warn"}">${mine?"בטיפול שלך":"בטיפול של "+esc(offName(m.assigned_to)||"מישהו אחר")}</span>`:`<span class="pill">עדיין לא שויך</span>`}
-     ${!m.assigned_to?`<button class="btn sm primary" data-claim="${m._id}">לקחת לטיפול</button>`:(mine||isAdmin)?`<button class="btn sm" data-release="${m._id}">שחרור</button>`:""}
-     <label class="sr" for="mAssign">העברה אל</label><select id="mAssign" data-mf="assigned_to"><option value="">העברה אל…</option>${vals("office").filter(o=>o.is_active!==false).map(o=>`<option value="${o._id}"${o._id===m.assigned_to?" selected":""}>${esc(o.full_name)}</option>`).join("")}</select></div>
-    <div class="row"><div class="seg" role="group" aria-label="סטטוס">${MAIL_STATUS.map(s=>`<button data-mstatus="${s}" aria-pressed="${st===s}"${pendingSt.has(m._id)?" disabled":""}>${s}</button>`).join("")}</div>${pendingSt.has(m._id)?'<span class="spin" role="status" aria-label="מעדכן סטטוס"></span>':""}</div>
-    <label class="sr" for="mCat">קטגוריה</label><select id="mCat" data-mf="category">${MAIL_CATS.map(c=>`<option${c===m.category?" selected":""}>${c}</option>`).join("")}</select>
+  return `<div class="mx-head"><div class="mx-title"><h2>${esc(m.subject||"(ללא נושא)")}</h2><p class="sub">${avatar(m.from_name||m.from_email,hueOf(m.from_email||""))}<span><b>${esc(m.from_name||"")}</b> <span class="mono">${esc(m.from_email)}</span><br>${esc(fmtTs(m.received_date))}${m.supplier_id&&S.suppliers?.get(m.supplier_id)?` · ספק: <b>${esc(S.suppliers.get(m.supplier_id).name)}</b>`:""}</span></p></div><button class="iconbtn" data-close aria-label="סגירה" title="סגירה">${ico("x")}</button></div>
+   <div class="mx-bar">
+    <div class="mx-f"><span class="mx-l">סטטוס</span><div class="seg" role="group" aria-label="סטטוס">${MAIL_STATUS.map(s=>`<button data-mstatus="${s}" aria-pressed="${st===s}"${pendingSt.has(m._id)?" disabled":""}>${s}</button>`).join("")}</div>${pendingSt.has(m._id)?'<span class="spin" role="status" aria-label="מעדכן סטטוס"></span>':""}</div>
+    <div class="mx-f"><span class="mx-l">מטפלת</span>${!m.assigned_to?`<button class="btn sm primary" data-claim="${m._id}">${ico("user")}אני מטפלת</button>`:`<span class="pill ${mine?"info":"warn"}">${mine?"את":esc(offName(m.assigned_to)||"מישהי אחרת")}</span>${(mine||isAdmin)?`<button class="btn sm ghost" data-release="${m._id}">שחרור</button>`:""}`}
+     <label class="sr" for="mAssign">העברה למישהי אחרת</label><select id="mAssign" data-mf="assigned_to"><option value="">${m.assigned_to?"העברה ל…":"שיוך ל…"}</option>${vals("office").filter(o=>o.is_active!==false).map(o=>`<option value="${o._id}"${o._id===m.assigned_to?" selected":""}>${esc(o.full_name)}</option>`).join("")}</select></div>
+    <div class="mx-f"><span class="mx-l">תיקייה</span><label class="sr" for="mCat">קטגוריה</label><select id="mCat" data-mf="category">${MAIL_CATS.map(c=>`<option${c===m.category?" selected":""}>${c}</option>`).join("")}</select></div>
    </div>
-   <div class="row"><label class="sr" for="mNote">הערה</label><input id="mNote" style="flex:1" value="${esc(m.row_note||"")}" placeholder="הערה קצרה למייל (מופיעה בעמודת ההערה בטבלה)"><button class="btn sm" data-act="mNoteSave">שמירת הערה</button></div>
    ${m.rules?.filter(Boolean).length?`<p class="sub">כללים שהופעלו: ${esc(m.rules.filter(Boolean).join(", "))}</p>`:""}${m.routing_error?`<p class="notice bad">שגיאה בביצוע כלל: ${esc(m.routing_error)}</p>`:""}`}
 function mailHist(m){const H=m.history||[];if(!H.length)return `<p class="sub">אין עדיין הערות או פעולות.</p>`;
   return H.map(h=>h.kind==="comment"?`<div class="hcm"><small>${esc(h.by)} · ${esc(fmtTs(h.ts))}</small><div>${esc(h.text)}</div></div>`:`<div class="hs">${esc(fmtTs(h.ts))} · ${esc(h.by)} · ${esc(h.text)}</div>`).join("")}
 let THREAD=null;
 async function openMail(id){
   const m=S.emails?.get(id);if(!m)return;THREAD=null;
-  modal(`<div id="mhead">${mailHead(m)}</div>
-   <section class="card flat col" style="padding:12px"><div class="row" style="justify-content:space-between"><h3>השרשור</h3><div class="row"><button class="btn sm ghost" data-thr="open">פתיחת הכל</button><button class="btn sm ghost" data-thr="close">סגירת הכל</button></div></div>
-    <div class="thread" id="mthread"><div class="tmsg"><button type="button" aria-expanded="false"><span class="who">${esc(m.from_name)}</span><span class="sn">${esc(m.snippet||"")}</span><span class="dt">${esc(fmtTs(m.received_date))}</span></button></div><p class="sub"><span class="spin"></span> טוען את כל השרשור…</p></div></section>
-   <div class="row" id="mactions">${canWrite?`<button class="btn" data-mact="reply">מענה</button><button class="btn" data-mact="fwd">העברה / ניתוב</button><button class="btn" data-mact="task">יצירת משימה</button><button class="btn" data-mact="inv">חשבונית / קבלה</button>`:""}<a class="btn ghost" id="mlink" target="_blank" rel="noopener" hidden>פתיחה ב-Gmail</a></div>
+  modal(`<div class="mx" ><div id="mhead">${mailHead(m)}</div>
+   <div class="mx-acts" id="mactions">${canWrite?`<button class="btn primary" data-mact="reply">${ico("send")}מענה</button><button class="btn" data-mact="fwd">${ico("route")}העברה</button><button class="btn" data-mact="task">${ico("check")}משימה</button><button class="btn" data-mact="inv">${ico("coin")}חשבונית</button>`:""}<span class="spacer"></span><a class="btn ghost sm" id="mlink" target="_blank" rel="noopener" hidden>${ico("link")}פתיחה ב-Gmail</a></div>
    <div id="mpanel"></div>
-   <section class="card flat col" style="padding:12px"><h3>הערות הצוות ופעולות</h3><div class="hist" id="mhist">${mailHist(m)}</div>
-    <form id="mcomment" class="row"><label class="sr" for="mctext">הערה לצוות</label><input id="mctext" style="flex:1" placeholder="הערה פנימית לצוות (לא נשלחת לשולח)" autocomplete="off"><button class="btn">הוספה</button></form></section>`,"wide");
+   <section class="mx-body"><div class="mx-thead" id="mthead" hidden><h3>השרשור</h3><button class="btn sm ghost" data-thr="open">פתיחת הכל</button><button class="btn sm ghost" data-thr="close">סגירת הכל</button></div>
+    <div class="thread" id="mthread"><div class="tmsg open"><div class="bd">${esc(m.snippet||"")}<p class="sub"><span class="spin"></span> טוען את תוכן המייל…</p></div></div></div></section>
+   <section class="mx-notes"><h3>${ico("note")} הערות הצוות</h3>
+    <div class="row"><label class="sr" for="mNote">הערה קצרה לטבלה</label><input id="mNote" style="flex:1" value="${esc(m.row_note||"")}" placeholder="הערה קצרה שתופיע ברשימת המיילים"><button class="btn sm" data-act="mNoteSave">שמירה</button></div>
+    <div class="hist" id="mhist">${mailHist(m)}</div>
+    <form id="mcomment" class="row"><label class="sr" for="mctext">הערה לצוות</label><input id="mctext" style="flex:1" placeholder="כתיבת הערה פנימית לצוות (לא נשלחת לשולח)" autocomplete="off"><button class="btn">הוספה</button></form></section></div>`,"wide");
   const box=$("#modal .modal");box.dataset.mail=id;box.dataset.v=m.updated_date||"";
-  try{const b=await call("mailThread",{id});if($("#modal .modal")?.dataset.mail!==id)return;THREAD=b;paintThread();const l=$("#mlink");l.href=b.link;l.hidden=false}
-  catch(e){if($("#mthread"))$("#mthread").innerHTML=`<p class="notice bad">לא ניתן לטעון את תוכן המייל: ${esc(e.message)}</p>`}
+  try{const b=await call("mailThread",{id});if($("#modal .modal")?.dataset.mail!==id)return;THREAD=b;paintThread();const l=$("#mlink");if(b.link){l.href=b.link;l.hidden=false}}
+  catch(e){if($("#mthread"))$("#mthread").innerHTML=`<div class="tmsg open"><div class="bd">${esc(m.snippet||"")}</div></div><p class="notice bad">לא ניתן לטעון את התוכן המלא של המייל: ${esc(e.message)}</p>`}
 }
-function paintThread(){const el=$("#mthread");if(!el||!THREAD)return;const id=$("#modal .modal").dataset.mail;
-  el.innerHTML=THREAD.messages.map((x,i)=>`<div class="tmsg" data-ti="${i}"><button type="button" data-ttog="${i}" aria-expanded="false"><span class="who">${esc(names[((x.from.match(/<([^>]+)>/)||[0,x.from])[1]||"").trim().toLowerCase()]||x.from_name||x.from)}</span><span class="sn">${esc(x.snippet||"")}</span>${x.atts.length?`<span title="קבצים מצורפים">📎${x.atts.length}</span>`:""}<span class="dt">${esc(fmtTs(x.date))}</span>${x.id===id?'<span class="pill info">המייל הזה</span>':""}</button>
-    <div class="bd"><div class="to">מאת: ${esc(x.from)}<br>אל: ${esc(x.to||"")}${x.cc?`<br>עותק: ${esc(x.cc)}`:""}</div>${esc(x.body||"(ללא תוכן טקסט)")}${x.atts.length?`<div class="chips" style="margin-top:10px">${x.atts.map(a=>`<button class="chip" data-attopen="${x.id}|${a.i}" type="button">📎 ${esc(a.name)} · ${Math.max(1,Math.round(a.size/1024))}KB</button>`).join("")}</div>`:""}</div></div>`).join("")||`<p class="sub">אין הודעות.</p>`}
+function paintThread(){const el=$("#mthread");if(!el||!THREAD)return;const id=$("#modal .modal").dataset.mail,M=THREAD.messages||[],m=S.emails?.get(id);
+  const cur=Math.max(0,M.findIndex(x=>x.id===id));const openI=new Set([cur,M.length-1]);
+  const th=$("#mthead");if(th)th.hidden=M.length<2;
+  const bodyOf=x=>{const full=x.full&&x.full!==x.body;return `${esc(x.body||"(ללא תוכן טקסט)")}${full?`<div><button class="btn sm ghost" type="button" data-tfull="${x.id}">הצגת ההודעה המלאה (כולל ציטוטים)</button></div><div class="tfull" hidden>${esc(x.full)}</div>`:""}`};
+  el.innerHTML=M.map((x,i)=>`<div class="tmsg${openI.has(i)?" open":""}" data-ti="${i}"><button type="button" data-ttog="${i}" aria-expanded="${openI.has(i)}"><span class="who">${esc(names[((x.from.match(/<([^>]+)>/)||[0,x.from])[1]||"").trim().toLowerCase()]||x.from_name||x.from)}</span><span class="sn">${esc(x.snippet||"")}</span>${x.atts.length?`<span title="קבצים מצורפים">${ico("clip")}${x.atts.length}</span>`:""}<span class="dt">${esc(fmtTs(x.date))}</span></button>
+    <div class="bd"><div class="to">מאת: ${esc(x.from)}<br>אל: ${esc(x.to||"")}${x.cc?`<br>עותק: ${esc(x.cc)}`:""}</div>${bodyOf(x)}${x.atts.length?`<div class="chips" style="margin-top:10px">${x.atts.map(a=>`<button class="chip" data-attopen="${x.id}|${a.i}" type="button">${ico("clip")} ${esc(a.name)} · ${Math.max(1,Math.round(a.size/1024))}KB</button>`).join("")}</div>`:""}</div></div>`).join("")||`<div class="tmsg open"><div class="bd">${esc(m?.snippet||"")}</div></div><p class="sub">לא נמצא תוכן מלא למייל הזה בתיבה. אפשר לפתוח אותו ב-Gmail.</p>`}
 const attCache=new Map();
 async function openAttachment(mid,i,btn){const k=mid+"|"+i;
   try{let a=attCache.get(k);if(!a){a=await busy(btn,()=>call("mailAttachment",{id:mid,i:+i}));attCache.set(k,a)}
@@ -2123,6 +2151,7 @@ document.addEventListener("click",async e=>{
   if(el=c("[data-claim]")){e.stopPropagation();return mailClaim(el.dataset.claim,false,el)}
   if(el=c("[data-release]")){return mailClaim(el.dataset.release,true,el)}
   if(el=c("[data-mstatus]")){const id=$("#modal .modal")?.dataset.mail;if(id&&S.emails?.get(id)?.status!==el.dataset.mstatus)return setMailStatus(id,el.dataset.mstatus);return}
+  if(el=c("[data-tfull]")){const f=el.parentElement.nextElementSibling;f.hidden=!f.hidden;el.textContent=f.hidden?"הצגת ההודעה המלאה (כולל ציטוטים)":"הסתרת הציטוטים";return}
   if(el=c("[data-ttog]")){const b=el.closest(".tmsg");b.classList.toggle("open");el.setAttribute("aria-expanded",b.classList.contains("open"));return}
   if(el=c("[data-thr]")){const o=el.dataset.thr==="open";$$("#mthread .tmsg").forEach(b=>{b.classList.toggle("open",o);b.querySelector("[data-ttog]")?.setAttribute("aria-expanded",o)});return}
   if(el=c("[data-attopen]")){const[mid,i]=el.dataset.attopen.split("|");return openAttachment(mid,i,el)}
@@ -2167,6 +2196,7 @@ document.addEventListener("change",async e=>{const t=e.target;
   if(t.id==="attGarden"){attGarden=t.value;render()}
   if(t.dataset.deabs){const dd=t.dataset.deabs;const e=detEd.get(dd)||{};e.abs=t.value;detEd.set(dd,e);const b=$('[data-act="detSave"]');if(b){b.disabled=false;b.textContent=`שמירת ${detEd.size} שינויים`}}
   if(t.dataset.rf2){reqF.type=t.value;render()}
+  if(t.dataset.rf3){reqF.who=t.value;reqF.sel.clear();render()}
   if(t.dataset.af){if(t.dataset.af==="days"){auditDays=+t.value;auditRows=null}else auditF[t.dataset.af]=t.value;render()}
   if(t.dataset.mstat)return setMailStatus(t.dataset.mstat,t.value);
   if(t.dataset.bulkmst!==undefined&&t.value){const v=t.value,ids=[...UI.emails.sel];t.disabled=true;for(const id of ids)await setMailStatus(id,v);UI.emails.sel.clear();render();return}
@@ -2877,7 +2907,7 @@ PAGES.home=()=>{
   const unT=vals("staff").filter(x=>isOn(x.is_active)&&isEdu(x)&&!x.garden_id).length,stN=count("staff",x=>isOn(x.is_active));
   const newMail=vals("emails").filter(e=>e.status==="חדש"),pend=pendCount(),nn=myNotifs().filter(n=>!n.is_read).length;
   const mails=vals("emails").sort((a,b)=>String(b.received_date||"").localeCompare(String(a.received_date||""))).slice(0,4);
-  const bd=birthdaysSoon(7).slice(0,6),pinned=vals("notes").filter(n=>n.pinned).slice(0,3);
+  const allN=vals("notes").sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.updated_date||"").localeCompare(a.updated_date||"")),pinned=allN.filter(n=>n.pinned),hn=(pinned.length?pinned:allN).slice(0,5);
   const pct=mine.length+doneWeek?Math.round(doneWeek/(mine.length+doneWeek)*100):100;
   const kpi=(href,cls,ic,n,l,sub)=>`<a class="kpi2 ${cls}" href="#${href}"><span class="ki">${ico(ic)}</span><span class="kt"><b>${typeof n==="number"?n.toLocaleString("he-IL"):n}</b><span>${l}</span>${sub?`<small>${sub}</small>`:""}</span></a>`;
   const tl=t=>`<div class="li"><span class="tdot ${t.due_date&&t.due_date<today()?"late":t.priority==="דחופה"||t.priority==="גבוהה"?"hi":""}"></span><div class="t"><b>${esc(t.title)}</b><small>${t.due_date?(t.due_date<today()?"באיחור · ":"")+"עד "+fmtDate(t.due_date):"ללא תאריך יעד"}${t.remind_at?" · ⏰ "+esc(fmtTs(t.remind_at)):""}</small></div>${taskSel(t)}</div>`;
@@ -2893,9 +2923,9 @@ PAGES.home=()=>{
     <section class="card col"><div class="row" style="justify-content:space-between"><h2>מיילים אחרונים</h2><a class="btn sm ghost" href="#mail">לתיבה</a></div>
      <div class="list">${mails.map(m=>`<button class="li mli" data-open="emails|${m._id}">${avatar(m.from_name||m.from_email,hueOf(m.from_email||""))}<div class="t"><b>${esc(m.subject||"(ללא נושא)")}</b><small>${esc(m.from_name||m.from_email||"")} · ${esc(relTime(m.received_date))}</small></div>${m.status==="חדש"?'<span class="pill info">חדש</span>':""}</button>`).join("")||'<div class="empty"><b>אין מיילים</b></div>'}</div></section>
    </div>
-   ${pinned.length?`<section class="col" style="gap:10px"><h2>פתקים נעוצים</h2><div class="board">${pinned.map(n=>`<article class="note" style="--nc:${esc(noteColor(n))}" data-x="noteOpen" data-id="${n._id}" tabindex="0" role="button"><b>${ico("pin","pinc")}${esc(n.title)}</b>${n.content?`<p>${esc(String(n.content).slice(0,140))}</p>`:""}${noteTablePrev(n.table)}</article>`).join("")}</div></section>`:""}
   </div><aside class="hside">${homeChat()}
-   <section class="card col bdays"><h2>${ico("spark")} ימי הולדת השבוע</h2>${bd.length?`<div class="list">${bd.map(({c,dd,age})=>`<button class="li" data-x="crmOpen" data-id="${c._id}">${avatar(fullName(c),hueOf(gName(c.garden_id)||"x"))}<div class="t"><b>${esc(fullName(c))}</b><small>${esc(gName(c.garden_id)||"")} · בן/בת ${age}</small></div><span class="pill${dd===0?" ok":""}">${dd===0?"היום! 🎉":dd===1?"מחר":`בעוד ${dd} ימים`}</span></button>`).join("")}</div>`:'<p class="sub">אין ימי הולדת בשבוע הקרוב.</p>'}</section></aside></div>`};
+   <section class="card col hnotes"><div class="row" style="justify-content:space-between"><h2>${ico("note")} ${pinned.length?"פתקים מוצמדים":"פתקים אחרונים"}</h2><div class="row">${canWrite?`<button class="btn sm ghost" data-x="noteNew" data-go-notes>${ico("plus")}פתק</button>`:""}<a class="btn sm ghost" href="#notes">הכל</a></div></div>
+    ${hn.length?`<div class="hnlist">${hn.map(n=>`<article class="note" style="--nc:${esc(noteColor(n))}" data-x="noteOpen" data-id="${n._id}" tabindex="0" role="button" aria-label="${esc(n.title)}"><b>${n.pinned?ico("pin","pinc"):""}${esc(n.title)}</b>${n.content?`<p>${esc(String(n.content).slice(0,120))}</p>`:""}</article>`).join("")}</div>`:'<p class="sub">אין עדיין פתקים. אפשר להצמיד פתק חשוב והוא יופיע כאן.</p>'}</section></aside></div>`};
 
 const AREA_L={kids:"ילדים, גנים ומוסדות",staff:"אנשי צוות",att:"נוכחות ושכר",mail:"מיילים",acc:"הנהלת חשבונות"};
 const MOD_AREA={kids:["kids"],data:["kids","staff"],att:["att"],mail:["mail"],acc:["acc"]};
