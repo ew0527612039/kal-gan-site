@@ -1878,7 +1878,10 @@ function settingsBody(t){
   if(t==="brand")body=brandSection();
   if(t==="office")body=`<p class="sub">רק מי שמופיע כאן כפעיל יכול להיכנס למערכת, עם קוד חד-פעמי שנשלח למייל שלו. כשמוסיפים איש/אשת משרד, נשלח אליו אוטומטית מייל הצטרפות עם קישור והסבר איך נכנסים. התפקיד קובע מי מאשר בקשות: מזכירה יכולה להעביר לאישור מנהלת, ומנהלת מאשרת סופית ורואה את יומן הפעולות וההגדרות.</p>`+listHTML("office",{importable:false,readonly:!isAdmin,rowActions:r=>isAdmin&&r.email&&isOn(r.is_active)?`<button class="btn sm" data-welcome="${r._id}" data-noopen>${r.welcome_sent?"שליחה חוזרת של מייל הצטרפות":"שליחת מייל הצטרפות"}</button>`:"",actionsLabel:"מייל הצטרפות"});
   if(t==="monthly"){if(!isAdmin)body=adminOnly;else if(!adm&&!admErr){loadAdm();body=`<div class="card empty"><b>טוען…</b></div>`}else if(admErr)body=`<p class="notice bad">${esc(admErr)}</p><button class="btn" data-act="admReload">ניסיון חוזר</button>`;else{const q=adm.queue;
-    body=`<section class="card" style="display:flex;flex-direction:column;gap:10px"><h2>שליחה אוטומטית</h2>
+    body=`<section class="card" style="display:flex;flex-direction:column;gap:10px;${adm.mail_paused?"border:2px solid #c0392b":""}"><h2>עצירת מיילים</h2>
+      ${adm.mail_paused?`<p class="notice bad"><b>שליחת המיילים מהמערכת עצורה כרגע.</b> ${esc(adm.mail_paused_why||"")}<br>רק קודי כניסה ממשיכים להישלח.</p><div class="row"><button class="btn" data-act="mailResume">חידוש שליחת המיילים</button>`:`<p>אפשר לעצור מיד את כל המיילים שהמערכת שולחת (חוץ מקודי כניסה). המערכת גם עוצרת לבד אם נשלחים יותר מ-15 מיילים לאותו אדם בשעה, או יותר מ-400 ביום.</p><div class="row"><button class="btn danger" data-act="mailStop">עצירת כל המיילים עכשיו</button>`}
+      <button class="btn ghost" data-act="mailCancel">ביטול כל המיילים שממתינים בתור</button><button class="btn ghost" data-act="mailReport">למי נשלחו מיילים השבוע?</button></div><div id="mailRep"></div></section>
+     <section class="card" style="display:flex;flex-direction:column;gap:10px"><h2>שליחה אוטומטית</h2>
       <p>בכל חודש, ב-30 לחודש (או יום קודם אם הוא יוצא בשבת, ובפברואר ביום האחרון), כל עובדת פעילה עם כתובת מייל מקבלת את הנוכחות שלה וקישור אישי לעדכון. השליחה הקרובה: <b>${nextSend()}</b>${adm.monthly_sent?` · החודש כבר נשלח (${esc(fmtTs(adm.monthly_sent))})`:""}.</p>
       ${adm.staff_no_email?`<p class="notice warn">${adm.staff_no_email} אנשי צוות פעילים בלי כתובת מייל לא יקבלו את המייל. אפשר להשלים כתובות במסך גנים ואנשי צוות.</p>`:""}
       <div class="tiles"><div class="tile"><b>${q.pending}</b><span>ממתינים לשליחה</span></div><div class="tile"><b>${q.sent}</b><span>נשלחו (30 יום)</span></div><div class="tile${q.failed.length?" alert":""}"><b>${q.failed.length}</b><span>נכשלו</span></div></div>
@@ -2071,6 +2074,9 @@ document.addEventListener("click",async e=>{
     if(a==="sendMonthlyNo"){$("#smConfirm").hidden=true;return}
     if(a==="sendMonthly"||a==="sendMonthlyYes"){const who=$("#smWho").value;el.disabled=true;$("#smMsg").textContent="שולח…";$("#smConfirm").hidden=true;
       try{const r=await call("sendMonthly",{month:$("#smMonth").value,staff_ids:who?[who]:[]});$("#smMsg").textContent=`${r.queued} מיילים בתור לשליחה${r.no_email?` · ${r.no_email} בלי כתובת מייל`:""}. השליחה נמשכת ברקע.`;adm=null;setTimeout(loadAdm,1500)}catch(err){$("#smMsg").textContent=err.message}el.disabled=false;return}
+    if(a==="mailStop"||a==="mailResume"){el.disabled=true;try{await call("mailPause",{on:a==="mailStop"});toast(a==="mailStop"?"שליחת המיילים נעצרה":"שליחת המיילים חודשה");adm=null;loadAdm()}catch(err){toast(err.message);el.disabled=false}return}
+    if(a==="mailCancel"){if(!confirm("לבטל את כל המיילים שממתינים לשליחה?"))return;el.disabled=true;try{const r=await call("mailCancelPending");toast(`בוטלו ${r.cancelled} מיילים`);adm=null;loadAdm()}catch(err){toast(err.message);el.disabled=false}return}
+    if(a==="mailReport"){el.disabled=true;const box=$("#mailRep");box.innerHTML=`<p class="sub">בודק…</p>`;try{const r=await call("mailReport");const tb=(rows,cols)=>rows.length?`<div class="list">${rows.map(x=>`<div class="li"><div class="t"><b class="mono">${esc(x.to)}</b><small>${esc(x.subject)}${x.kind?` · ${esc(x.kind)}`:""}</small></div><b style="font-size:18px${x.n>15?";color:#c0392b":""}">${x.n}</b></div>`).join("")}</div>`:`<p class="sub">אין</p>`;box.innerHTML=`<h3>מתור המערכת (7 ימים)</h3>${tb(r.queue)}<h3>מתיבת "נשלח" ב-Gmail (7 ימים)</h3>${tb(r.sent_box)}`}catch(err){box.innerHTML=`<p class="notice bad">${esc(err.message)}</p>`}el.disabled=false;return}
     if(a==="retryFailed"){el.disabled=true;try{await call("retryFailed");toast("השליחה החוזרת התחילה");adm=null;loadAdm()}catch(err){toast(err.message);el.disabled=false}return}
     if(a==="copyIni"){const i=$("#yemotIni");try{await navigator.clipboard.writeText(i.value);toast("ההגדרות הועתקו")}catch(err){i.select();toast("ההגדרות מסומנות. העתיקו עם Ctrl+C")}return}
     if(a==="punchMatchSave")return busy(el,async()=>{try{await saveSettings({punch_match:$("#punchMatch").value});adm&&(adm.punch_match=$("#punchMatch").value);toast("נשמר")}catch(x){toast(x.message)}});
@@ -2946,6 +2952,8 @@ document.addEventListener("change",e=>{const t=e.target;if(t.dataset.secck){cons
 (()=>{const os=showLogin;showLogin=function(m){os(m);const c=$(".logincard");if(c&&!c.querySelector(".privnote")){const p=document.createElement("p");p.className="privnote sub";p.innerHTML=`${ico("lock")} המערכת מכילה מידע אישי על ילדים ועובדות, ומאובטחת לפי תקנות הגנת הפרטיות. כל כניסה ופעולה נרשמות ביומן.`;c.appendChild(p)}}})();
 
 (async()=>{
+  let lk=window.KG_LOGIN||"";try{const u=new URL(location.href);if(!lk)lk=u.searchParams.get("login")||"";if(u.searchParams.get("login")){u.searchParams.delete("login");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
+  if(lk){try{const r=await pub("linkLogin",lk);setToken(r.token);return start(r.me)}catch(e){return showLogin(e.message)}}
   if(!TOKEN)return showLogin();
   try{start(await call("me"))}catch(e){if(e.code!=="auth")showLogin("לא ניתן להתחבר לשרת: "+e.message)}
 })();
