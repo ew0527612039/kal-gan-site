@@ -712,8 +712,9 @@ body.login .content{display:grid;place-items:center;min-height:100vh;padding:24p
 (function(){if(window.google&&window.google.script&&window.google.script.run)return;var U=window.KG_API;if(!U)return;
   function runner(){var ok=null,fail=null,P=null,p={withSuccessHandler:function(f){ok=f;return P},withFailureHandler:function(f){fail=f;return P}};
     P=new Proxy(p,{get:function(t,k){if(k in t)return t[k];return function(){var a=[].slice.call(arguments);
-      fetch(U,{method:"POST",redirect:"follow",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({rpc:k,args:a})})
-      .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text()}).then(function(x){ok&&ok(x)},function(e){fail&&fail(e)})}}});return P}
+      var ac=window.AbortController?new AbortController():null,tm=setTimeout(function(){ac&&ac.abort()},k==="api"&&a[1]==="load"?150000:60000);
+      fetch(U,{method:"POST",redirect:"follow",signal:ac?ac.signal:undefined,headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({rpc:k,args:a})})
+      .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text()}).then(function(x){clearTimeout(tm);if(/^\s*</.test(x)){fail&&fail(new Error("blocked"));return}ok&&ok(x)},function(e){clearTimeout(tm);fail&&fail(new Error(e&&e.name==="AbortError"?"timeout":"network"))})}}});return P}
   window.google={script:{get run(){return runner()}}}})();
 
 (()=>{
@@ -746,12 +747,13 @@ let TOKEN=(()=>{try{return localStorage.getItem("kg_tok")||null}catch(e){return 
 function setToken(t){TOKEN=t;try{t?localStorage.setItem("kg_tok",t):localStorage.removeItem("kg_tok")}catch(e){}}
 let inflight=0;const QUIET=new Set(["sync","logAction"]);
 function loadOn(d){inflight=Math.max(0,inflight+d);const g=document.getElementById("gload");if(g)g.hidden=!inflight}
+function netErr(e){const m=String(e&&e.message||e);return /^(timeout|network|blocked)$/.test(m)?"השרת לא עונה ("+m+"). ייתכן שהסינון באינטרנט חוסם את script.google.com – נסו שוב או היכנסו דרך הקישור הרגיל של המערכת.":m}
 function call(method,args){const q=QUIET.has(method);if(!q)loadOn(1);return new Promise((res,rej)=>{
   google.script.run.withSuccessHandler(r=>{let o;try{o=JSON.parse(r)}catch(e){return rej({code:"server",message:"תשובה לא תקינה מהשרת"})}
     if(o.err==="auth"){authLost();return rej({code:"auth",message:"נדרשת כניסה מחדש"})}
     o.err?rej({code:"server",message:o.err}):res(o.ok)})
-  .withFailureHandler(e=>rej({code:"unavailable",message:String(e&&e.message||e)})).api(TOKEN,method,JSON.stringify(args??null))}).finally(()=>{if(!q)loadOn(-1)})}
-function pub(fn,...a){loadOn(1);return new Promise((res,rej)=>google.script.run.withSuccessHandler(r=>{let o;try{o=JSON.parse(r)}catch(e){return rej({message:"תשובה לא תקינה"})}o.err?rej({message:o.err}):res(o.ok)}).withFailureHandler(e=>rej({message:String(e&&e.message||e)}))[fn](...a)).finally(()=>loadOn(-1))}
+  .withFailureHandler(e=>rej({code:"unavailable",message:netErr(e)})).api(TOKEN,method,JSON.stringify(args??null))}).finally(()=>{if(!q)loadOn(-1)})}
+function pub(fn,...a){loadOn(1);return new Promise((res,rej)=>google.script.run.withSuccessHandler(r=>{let o;try{o=JSON.parse(r)}catch(e){return rej({message:"תשובה לא תקינה"})}o.err?rej({message:o.err}):res(o.ok)}).withFailureHandler(e=>rej({message:netErr(e)}))[fn](...a)).finally(()=>loadOn(-1))}
 async function busy(btn,fn){if(btn){btn.classList.add("busy");btn.disabled=true;btn.setAttribute("aria-busy","true")}
   try{return await fn()}finally{if(btn&&document.contains(btn)){btn.classList.remove("busy");btn.disabled=false;btn.removeAttribute("aria-busy")}}}
 
@@ -2240,11 +2242,14 @@ document.addEventListener("dblclick",e=>{const h=e.target.closest?.("[data-rz]")
 let lastAct=Date.now();["click","keydown"].forEach(ev=>document.addEventListener(ev,()=>{lastAct=Date.now()},true));
 setInterval(()=>{if(TOKEN&&db&&Date.now()-lastAct>120*60e3){call("logout").catch(()=>{});authLost("נותקת אחרי שעתיים בלי פעילות. יש להיכנס מחדש.")}},60e3);
 function authLost(msg){setToken(null);db=null;Object.keys(subs).forEach(k=>{try{subs[k]()}catch(e){}delete subs[k]});Object.keys(TB).forEach(k=>delete TB[k]);Object.keys(S).forEach(k=>delete S[k]);ready.clear();closeModal();showLogin(msg||"פג תוקף הכניסה. יש להיכנס מחדש.")}
+function connMsg(m){const g=window.KG_API?` אפשר להיכנס בינתיים דרך הקישור הרגיל של המערכת.`:"";
+  if(/timeout|network|blocked|Failed to fetch|HTTP|השרת לא עונה/.test(m||""))return "השרת לא עונה כרגע. ייתכן שהסינון באינטרנט (נטפרי/נתיב) חוסם את script.google.com או script.googleusercontent.com – צריך לבקש מהם לפתוח את שתי הכתובות."+g;
+  return "לא ניתן להתחבר לשרת: "+m+g}
 function showLogin(msg){document.body.classList.add("login");$("#rail").innerHTML="";
   $("#view").innerHTML=`<div class="logincard card"><div class="brand brandmark">${brandMark()}</div><h1>כניסה למערכת</h1>${msg?`<p class="notice warn">${esc(msg)}</p>`:""}
    <form id="loginEmail" novalidate style="display:flex;flex-direction:column;gap:10px"><label class="f">כתובת המייל שלך<input id="lgEmail" type="email" autocomplete="email" required></label><button class="btn primary" type="submit">שליחת קוד כניסה</button></form>
    <div id="gWrap" hidden><div class="orsep"><span>או</span></div><div id="gBtn" class="gbtn"></div></div>
-   <p class="notice bad" id="lgErr" hidden></p><p class="sub">הכניסה מותרת רק לצוות המשרד. קוד חד-פעמי יישלח למייל שלך.</p></div>`;
+   <p class="notice bad" id="lgErr" hidden></p><p class="sub">הכניסה מותרת רק לצוות המשרד. קוד חד-פעמי יישלח למייל שלך.</p>${msg&&window.KG_API?`<a class="btn" href="${esc(window.KG_API)}">כניסה דרך הקישור הרגיל של המערכת</a>`:""}</div>`;
   $("#lgEmail").focus();googleButton()}
 let gisP=null;
 async function googleButton(){if(/googleusercontent\.com$|^script\.google\.com$/.test(location.hostname)&&!window.KG_API)return;
@@ -2985,7 +2990,8 @@ document.addEventListener("change",e=>{const t=e.target;if(t.dataset.secck){cons
   let lk=window.KG_LOGIN||"";try{const u=new URL(location.href);if(!lk)lk=u.searchParams.get("login")||"";if(u.searchParams.get("login")){u.searchParams.delete("login");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
   if(lk){try{const r=await pub("linkLogin",lk);setToken(r.token);return start(r.me)}catch(e){return showLogin(e.message)}}
   if(!TOKEN)return showLogin();
-  try{start(await call("me"))}catch(e){if(e.code!=="auth")showLogin("לא ניתן להתחבר לשרת: "+e.message)}
+  const slow=setTimeout(()=>{const v=$("#view .empty");if(v)v.innerHTML=`<b>מתחבר לשרת…</b>זה לוקח יותר זמן מהרגיל. אם זה נמשך, ייתכן שהסינון באינטרנט חוסם את החיבור.`},8000);
+  try{const m=await call("me");clearTimeout(slow);start(m)}catch(e){clearTimeout(slow);if(e.code!=="auth")showLogin(connMsg(e.message))}
 })();
 })();
 </script>
