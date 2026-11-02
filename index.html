@@ -690,6 +690,13 @@ body.login .content{display:grid;place-items:center;min-height:100vh;padding:24p
 .mx-notes{display:flex;flex-direction:column;gap:10px;background:var(--raise);border-radius:14px;padding:12px 14px}.mx-notes h3{margin:0;display:flex;gap:6px;align-items:center}.mx-notes .ico{width:18px;height:18px}
 .mx-notes .hist{max-height:24vh;overflow:auto;padding:0;list-style:none}
 @media (max-width:700px){.mx-bar{flex-direction:column;align-items:stretch}.mx-acts .btn{flex:1 1 40%}}
+.ka,.sa{display:flex;flex-direction:column;gap:14px}
+.kasum{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.kalist{display:flex;flex-direction:column;gap:6px;max-height:40vh;overflow:auto}
+.karow{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid var(--line2);border-radius:10px;padding:8px 10px}.karow .t{display:flex;flex-direction:column}.karow small{color:var(--muted)}.karow select{max-width:50%}
+.salist{display:flex;flex-direction:column;gap:4px;max-height:52vh;overflow:auto;border:1px solid var(--line2);border-radius:12px;padding:6px}
+.sarow{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:10px;cursor:pointer}.sarow:hover{background:var(--raise)}.sarow.on{background:color-mix(in srgb,var(--accent,#15803d) 10%,transparent)}
+.sarow .t{flex:1;display:flex;flex-direction:column;min-width:0}.sarow small{color:var(--muted)}.sarow .av{width:32px;height:32px}.sarow input{width:18px;height:18px}
 </style>
 
 <button class="skip" data-act="skip">דילוג לתוכן הראשי</button>
@@ -1581,8 +1588,8 @@ PAGES.requests=()=>{
   <div class="bar"><div class="seg">${[["pending","ממתין"],["manager","אצל המנהלת"],["approved","מאושר"],["rejected","נדחה"],["all","הכל"]].map(([k,l])=>`<button data-rf="status|${k}" aria-pressed="${reqF.status===k}">${l}<span class="n">${c[k]}</span></button>`).join("")}</div>
    <select data-rf2="type" aria-label="סוג"><option value="">כל הסוגים</option><option value="corrections"${reqF.type==="corrections"?" selected":""}>עדכון שעות</option><option value="absences"${reqF.type==="absences"?" selected":""}>היעדרות</option></select>
    <select data-rf3="who" aria-label="איש צוות"><option value="">כל אנשי הצוות</option>${[...people].sort((a,b)=>a[1].localeCompare(b[1],"he")).map(([k,n])=>`<option value="${esc(k)}"${reqF.who===k?" selected":""}>${esc(n)}</option>`).join("")}</select>
-   <span class="spacer"></span>${reqF.sel.size?`<span class="sub">${reqF.sel.size} נבחרו</span><button class="btn ok" data-bulk="approve">אישור</button>${selAny&&!isMgr()?`<button class="btn" data-bulk="escalate">העברה למנהלת</button>`:""}<button class="btn bad" data-bulk="reject">דחייה</button>`:""}</div>
-  ${list.length?`<div class="tbox"><table><thead><tr><th><input type="checkbox" data-pickall aria-label="בחירת הכל"></th><th>סוג</th><th>איש צוות</th><th>תאריך</th><th>מה התבקש</th><th>הערת העובדת</th><th>סטטוס</th><th></th></tr></thead><tbody>${list.map(r=>`<tr><td>${canAct(r)?`<input type="checkbox" data-pick="${r._k}|${r._id}"${reqF.sel.has(r._k+"|"+r._id)?" checked":""} aria-label="בחירה">`:""}</td><td>${r._type}${r.source?`<br><small class="sub">${esc(r.source)}</small>`:""}</td><td><b>${esc(r.staff_name)}</b></td><td class="mono">${esc(fmtDate(r.date))}</td><td>${det(r)}</td><td class="wrap">${note(r)}${r.rejection_reason?`<br><small class="sub">סיבת דחייה: ${esc(r.rejection_reason)}</small>`:""}</td><td>${statusPill(r.status)}${isPend(r)&&isClosedM(String(r.date).slice(0,7))?' <span class="pill bad">חודש סגור</span>':""}${r.reviewed_by_name?`<br><small class="sub">${esc(r.reviewed_by_name)}</small>`:""}</td><td>${acts(r)}</td></tr>`).join("")}</tbody></table></div>`:`<div class="tbox"><div class="empty"><b>אין בקשות להצגה</b></div></div>`}`;
+   <span class="spacer"></span>${reqF.sel.size?`<span class="sub">${reqF.sel.size} נבחרו</span><button class="btn ok" data-bulk="approve">אישור</button>${selAny&&!isMgr()?`<button class="btn" data-bulk="escalate">העברה למנהלת</button>`:""}<button class="btn bad" data-bulk="reject">דחייה</button><button class="btn ghost" data-reqclr>${ico("x")}ביטול הבחירה</button>`:""}</div>
+  ${list.length?`<div class="tbox"><table><thead><tr><th>${(()=>{const pk=list.filter(canAct);const all=pk.length&&pk.every(r=>reqF.sel.has(r._k+"|"+r._id));return pk.length?`<input type="checkbox" data-pickall aria-label="${all?"ביטול הבחירה":"בחירת הכל"}"${all?" checked":""}>`:""})()}</th><th>סוג</th><th>איש צוות</th><th>תאריך</th><th>מה התבקש</th><th>הערת העובדת</th><th>סטטוס</th><th></th></tr></thead><tbody>${list.map(r=>`<tr><td>${canAct(r)?`<input type="checkbox" data-pick="${r._k}|${r._id}"${reqF.sel.has(r._k+"|"+r._id)?" checked":""} aria-label="בחירה">`:""}</td><td>${r._type}${r.source?`<br><small class="sub">${esc(r.source)}</small>`:""}</td><td><b>${esc(r.staff_name)}</b></td><td class="mono">${esc(fmtDate(r.date))}</td><td>${det(r)}</td><td class="wrap">${note(r)}${r.rejection_reason?`<br><small class="sub">סיבת דחייה: ${esc(r.rejection_reason)}</small>`:""}</td><td>${statusPill(r.status)}${isPend(r)&&isClosedM(String(r.date).slice(0,7))?' <span class="pill bad">חודש סגור</span>':""}${r.reviewed_by_name?`<br><small class="sub">${esc(r.reviewed_by_name)}</small>`:""}</td><td>${acts(r)}</td></tr>`).join("")}</tbody></table></div>`:`<div class="tbox"><div class="empty"><b>אין בקשות להצגה</b></div></div>`}`;
 };
 async function decideCall(items,action,reason){
   try{const r=await call("decide",{items,action,reason});reqF.sel.clear();closeModal();
@@ -2170,6 +2177,7 @@ document.addEventListener("click",async e=>{
   if(el=c("[data-fs]")){A11Y.fs=+el.dataset.fs;applyA11y();$$("[data-fs]").forEach(b=>b.setAttribute("aria-pressed",b===el));return}
   if(el=c("[data-rmabs]")){const[sid,dd]=el.dataset.rmabs.split("|");el.disabled=true;return attOp({staff_id:sid,date:`${attMonth}-${dd}`,op:"clear_absent"})}
   if(el=c("[data-rf]")){reqF.status=el.dataset.rf.split("|")[1];reqF.sel.clear();return render()}
+  if(el=c('[data-reqclr]')){reqF.sel.clear();return render()}
   if(el=c("[data-pickall]")){$$("[data-pick]").forEach(b=>{el.checked?reqF.sel.add(b.dataset.pick):reqF.sel.delete(b.dataset.pick)});return render()}
   if(el=c("[data-pick]")){const k=el.dataset.pick;el.checked?reqF.sel.add(k):reqF.sel.delete(k);return render()}
   if(el=c("[data-rq]")){const[a,k,id]=el.dataset.rq.split("|");if(a==="reject")return rejectDialog([[k,id]]);el.disabled=true;return decideCall([[k,id]],a)}
@@ -2529,7 +2537,7 @@ PAGES.gardens=()=>{
   const modeSeg=`<div class="seg" role="group" aria-label="תצוגה"><button data-x="instMode" data-m="cards" aria-pressed="${inst.mode==="cards"}">${ico("grid")}כרטיסים</button><button data-x="instMode" data-m="table" aria-pressed="${inst.mode==="table"}">${ico("rows")}טבלה</button></div>`;
   if(inst.mode==="table")return `<div class="ph"><div><h1>מוסדות וגנים</h1><p class="sub">כל הגנים בטבלה אחת</p></div><div class="bar">${modeSeg}</div></div>`+listHTML("inst_g",{def:defOf("gardens"),formKey:"gardens"});
   if(inst.grp==null){const groups=new Map();all.filter(match).forEach(g=>{const k=grpOf(g);(groups.get(k)||groups.set(k,[]).get(k)).push(g)});
-    return `<div class="ph"><div><h1>מוסדות וגנים</h1><p class="sub">בוחרים ${esc(instLabel())} ← גן ← רשימת הילדים והצוות של הגן</p></div><div class="bar">${modeSeg}${canWrite?`<button class="btn primary" data-act="new" data-key="gardens">+ גן חדש</button>`:""}</div></div>
+    return `<div class="ph"><div><h1>מוסדות וגנים</h1><p class="sub">בוחרים ${esc(instLabel())} ← גן ← רשימת הילדים והצוות של הגן</p></div><div class="bar">${modeSeg}${canWrite?`<button class="btn" data-x="staffAssign">${ico("users")}שיוך צוות</button><button class="btn" data-x="kidsAssign">${ico("child")}שיוך ילדים</button>`:""}${canWrite?`<button class="btn primary" data-act="new" data-key="gardens">+ גן חדש</button>`:""}</div></div>
      <div class="bar"><input class="search" type="search" id="instQ" data-x2="instQ" value="${esc(inst.gq)}" placeholder="חיפוש גן, סמל, גננת…" aria-label="חיפוש גן">${bySel}</div>
      ${q?`<div class="gcards">${all.filter(match).map(gCard).join("")||'<div class="empty"><b>לא נמצאו גנים</b></div>'}</div>`:
      `<div class="icards">${[...groups].sort((a,b)=>a[0].localeCompare(b[0],"he")).map(([k,gs])=>`<button class="icard" style="--k:${hueOf(k)}" data-x="instGrp" data-g="${esc(k)}"><span class="ic">${esc(k.slice(0,1))}</span><b>${esc(k)}</b>${statChips(gs)}<span class="go" aria-hidden="true">${ico("chevron")}</span></button>`).join("")||`<div class="empty"><b>עדיין אין גנים</b>${canWrite?"אפשר להוסיף גן או לטעון קובץ במסך הטבלה.":""}</div>`}</div>`}`}
@@ -2548,7 +2556,7 @@ function gardenPage(g){const kids=kidsOf(g),st=staffOf(g);const ka=kids.filter(c
    :inst.gtab==="report"?gardenReport(g)
    :listHTML("g_kids",{def:defOf("children"),formKey:"children",pre:c=>kidIds.has(c._id),preset:{garden_id:g._id,garden_name:g.name,symbol:g.symbol||"",teacher_name:g.manager_name||""},importable:false});
   return `${crumbs([["מוסדות","root"],[grpOf(g),"grp"],[g.name,""]])}
-   <div class="ghero" style="--k:${hueOf(grpOf(g))}"><div><h1>${esc(g.name)}</h1><p class="sub">${esc([g.symbol&&"סמל "+g.symbol,g.manager_name&&"גננת: "+g.manager_name,g.phone,g.address||g.city].filter(Boolean).join(" · "))}</p></div>${canWrite?`<button class="btn" data-open="gardens|${g._id}">${ico("edit")}עריכה</button>`:""}</div>
+   <div class="ghero" style="--k:${hueOf(grpOf(g))}"><div><h1>${esc(g.name)}</h1><p class="sub">${esc([g.symbol&&"סמל "+g.symbol,g.manager_name&&"גננת: "+g.manager_name,g.phone,g.address||g.city].filter(Boolean).join(" · "))}</p></div>${canWrite?`<div class="row"><button class="btn" data-x="staffAssign" data-gid="${g._id}">${ico("users")}שיוך צוות לגן</button><button class="btn" data-open="gardens|${g._id}">${ico("edit")}עריכה</button></div>`:""}</div>
    <div class="gtabs" role="tablist">${tabs.map(([k,l,n])=>`<button role="tab" data-x="gTab" data-t="${k}" aria-selected="${inst.gtab===k}">${l}${n!==""?`<span class="n">${n}</span>`:""}</button>`).join("")}</div>${body}`}
 
 let REP=Object.assign({kids:["_name","id_number","birth_date","parent1_phone","parent2_phone"],staff:["full_name","roles","phone"],active:true},store("rep")||{});
@@ -2681,6 +2689,7 @@ let CP=null;
 function cpItems(q){const n=norm(q),dq=digits(q),out=[];if(!n&&!dq)return out;const hit=v=>{const s=norm(v);return s&&s.includes(n)};
   const push=(g,ic,label,sub,fn)=>{if(out.length<40)out.push({g,ic,label,sub,fn})};
   MODS.forEach(m=>m.tabs().forEach(([k,l])=>{if(hit(l)||hit(m.l))push("מסכים",m.i,l,m.l,()=>nav(k))}));
+  if(canWrite)[["users","שיוך צוות לגן","גננות וסייעות ← גן",()=>staffAssign()],["child","שיוך ילדים לגנים","לפי סמל מוסד, שם גן או גננת",()=>{KA=null;kidsAssign()}]].forEach(([ic,l,sub,fn])=>{if(hit(l)||hit("שיוך"))push("פעולות",ic,l,sub,fn)});
   vals("children").forEach(c=>{if(hit(fullName(c))||(dq.length>=4&&digits(c.id_number).endsWith(dq)))push("ילדים","child",fullName(c),[c.garden_name||c.teacher_name,c.city].filter(Boolean).join(" · "),()=>openForm("children",c._id))});
   vals("staff").forEach(x=>{if(hit(x.full_name)||(dq.length>=4&&(digits(x.id_number).endsWith(dq)||digits(x.phone).includes(dq))))push("צוות","user",x.full_name,(x.roles||[]).join(", "),()=>openForm("staff",x._id))});
   vals("gardens").forEach(g=>{if(hit(g.name)||hit(g.symbol)||hit(g.manager_name))push("גנים","school",g.name,[g.symbol&&"סמל "+g.symbol,g.manager_name].filter(Boolean).join(" · "),()=>{inst.gid=g._id;inst.gtab="kids";nav("gardens")})});
@@ -2765,7 +2774,7 @@ PAGES.crm=()=>{
   const nAct=Object.entries(f).filter(([k,v])=>v&&!(k==="status"&&v==="active")).length;
   const cur=CRM.sel&&S.children?.get(CRM.sel);
   return `<div class="ph"><div><h1>ילדים</h1><p class="sub">${L.length.toLocaleString("he-IL")} ${f.status==="active"?"ילדים פעילים":"ילדים"}${nAct?" מסוננים":""} · ${count("children",c=>!c.garden_id||!S.gardens?.get(c.garden_id))} ללא שיוך לגן</p></div>
-    <div class="bar">${canWrite?`<button class="btn primary" data-act="new" data-key="children">${ico("plus")}ילד/ה חדש/ה</button>`:""}${menuHTML("פעולות",[canWrite?mi('data-act="import" data-key="children"',"קליטה והשוואה מ-Excel",{ic:"⬆"}):"",mi('data-x="crmExport"',"ייצוא הרשימה המסוננת",{ic:"⬇"}),mi('data-go="children"',"תצוגת טבלה מלאה",{ic:"▥"}),mi('data-go="health"',"בדיקת איכות נתונים",{ic:"⌕"})],{end:true})}</div></div>
+    <div class="bar">${canWrite?`<button class="btn primary" data-act="new" data-key="children">${ico("plus")}ילד/ה חדש/ה</button>`:""}${menuHTML("פעולות",[canWrite?mi('data-act="import" data-key="children"',"קליטה והשוואה מ-Excel",{ic:"⬆"}):"",mi('data-x="crmExport"',"ייצוא הרשימה המסוננת",{ic:"⬇"}),mi('data-go="children"',"תצוגת טבלה מלאה",{ic:"▥"}),mi('data-go="health"',"בדיקת איכות נתונים",{ic:"⌕"}),canWrite?mi('data-x="kidsAssign"',"שיוך ילדים לגנים (לפי סמל / שם גן / גננת)",{ic:"⇄"}):""],{end:true})}</div></div>
    <div class="crmbar"><input class="search" type="search" id="crmQ" value="${esc(CRM.q)}" placeholder="חיפוש לפי שם, הורה, ת.ז., טלפון, גן…" aria-label="חיפוש ילדים">
     ${sel("garden","גן",[["__none","ללא גן"],...gs.map(g=>[g._id,g.name])])}${insts.length?sel("inst","מוסד",insts.map(x=>[x,x])):""}${sel("city","עיר",cities.map(x=>[x,x]))}${sel("year","שנתון",years.map(y=>[y,y]))}
     ${sel("issue","בעיה בנתונים",Object.entries(ISSUES).map(([k,[l]])=>[k,l]))}
@@ -2849,7 +2858,7 @@ PAGES.teachers=()=>{const gs=vals("gardens").sort((a,b)=>String(a.name).localeCo
   const q=TCH.q.trim().toLowerCase();const L=base.filter(x=>(!TCH.a||(TCH.a==="un"?(!x.garden_id||!S.gardens?.get(x.garden_id)):x.garden_id&&S.gardens?.get(x.garden_id)))&&(!TCH.g||x.garden_id===TCH.g)&&(!q||[x.full_name,x.phone,gName(x.garden_id),(x.roles||[]).join(" ")].join(" ").toLowerCase().includes(q))).sort((a,b)=>String(a.full_name).localeCompare(b.full_name,"he"));
   const noT=gs.filter(g=>!vals("staff").some(x=>x.garden_id===g._id&&isTeacher(x)&&isOn(x.is_active)));
   const cur=TCH.sel&&S.staff?.get(TCH.sel);
-  return `<div class="ph"><div><h1>גננות וצוות חינוכי</h1><p class="sub">כל גננת וסייעת – לאיזה גן היא משויכת. אפשר לשייך ישירות מהרשימה.</p></div><div class="bar">${canWrite?`<button class="btn primary" data-act="new" data-key="staff" data-preset="${esc(JSON.stringify({roles:["גננת"],is_active:true}))}">${ico("plus")}גננת / איש צוות</button>`:""}</div></div>
+  return `<div class="ph"><div><h1>גננות וצוות חינוכי</h1><p class="sub">כל גננת וסייעת – לאיזה גן היא משויכת. אפשר לשייך ישירות מהרשימה.</p></div><div class="bar">${canWrite?`<button class="btn" data-x="staffAssign" data-gid="${TCH.g||""}">${ico("school")}שיוך צוות לגן</button><button class="btn primary" data-act="new" data-key="staff" data-preset="${esc(JSON.stringify({roles:["גננת"],is_active:true}))}">${ico("plus")}גננת / איש צוות</button>`:""}</div></div>
    <div class="kpis"><button class="kpi" data-x="tchA" data-a=""><b>${base.length}</b><span>${TCH.f==="teachers"?"גננות":"צוות חינוכי"} פעיל</span></button><button class="kpi${un.length?" warn":""}" data-x="tchA" data-a="un"><b>${un.length}</b><span>לא משויכות לגן</span></button><button class="kpi${noT.length?" warn":""}" data-x="tchNoT"><b>${noT.length}</b><span>גנים ללא גננת</span></button></div>
    ${noT.length&&TCH.showNoT?`<div class="notice warn"><span>גנים ללא גננת משויכת: ${noT.map(g=>`<button class="chip" data-x="instGarden" data-id="${g._id}">${esc(g.name)}</button>`).join(" ")}</span></div>`:""}
    <div class="crmbar"><input class="search" type="search" id="tchQ" value="${esc(TCH.q)}" placeholder="חיפוש לפי שם, טלפון, גן…" aria-label="חיפוש צוות">
@@ -2874,7 +2883,7 @@ document.addEventListener("change",async e=>{const t=e.target;if(t.dataset.tchg!
     try{const before={...x};await save(E.staff,x._id,{garden_id:gid});toast(gid?`${x.full_name} שויכה ל${gName(gid)}`:`${x.full_name} סומנה כלא משויכת`);propagate("staff",before,{...before,garden_id:gid})}catch(err){toast(err.message)}t.disabled=false}});
 
 PAGES.health=()=>{const K=vals("children").filter(c=>isOn(c.is_active)),gs=vals("gardens"),st=vals("staff").filter(x=>isOn(x.is_active));
-  const noG=K.filter(ISSUES.nogarden[1]);const auto=noG.filter(c=>autoGarden(c));
+  const noG=K.filter(ISSUES.nogarden[1]);const kix=kaIndex();const auto=noG.filter(c=>kaFind(c,"auto",kix));
   const ids=new Map();K.forEach(c=>{const n=normId(c.id_number);if(n)(ids.get(n)||ids.set(n,[]).get(n)).push(c)});const dup=[...ids.values()].filter(a=>a.length>1);
   const bad=K.filter(ISSUES.badid[1]),noPh=K.filter(ISSUES.nophone[1]),noB=K.filter(ISSUES.nobirth[1]);
   const unT=st.filter(x=>isEdu(x)&&(!x.garden_id||!S.gardens?.get(x.garden_id))),noT=gs.filter(g=>!st.some(x=>x.garden_id===g._id&&isTeacher(x)));
@@ -2884,7 +2893,7 @@ PAGES.health=()=>{const K=vals("children").filter(c=>isOn(c.is_active)),gs=vals(
   return `<div class="ph"><div><h1>איכות נתונים</h1><p class="sub">בדיקה אוטומטית של הנתונים על הילדים, הגנים והצוות – ומה אפשר לתקן בלחיצה.</p></div></div>
    <div class="hscore"><div class="ring" style="--p:${score}"><b>${score}%</b></div><div><h2>${score>=95?"הנתונים במצב מצוין":score>=80?"הנתונים במצב טוב":"יש מה לשפר"}</h2><p class="sub">${K.length.toLocaleString("he-IL")} ילדים פעילים · ${gs.length} גנים · ${st.length} אנשי צוות</p></div></div>
    <div class="hgrid">
-    ${card("school",noG.length,"ילדים ללא שיוך לגן",auto.length?`${auto.length} אפשר לשייך אוטומטית לפי סמל, שם גן או גננת`:"",`${auto.length&&canWrite?`<button class="btn sm primary" data-x="hAuto">שיוך אוטומטי (${auto.length})</button>`:""}<button class="btn sm" data-x="hShow" data-i="nogarden">הצגה</button>`,"bad")}
+    ${card("school",noG.length,"ילדים ללא שיוך לגן",auto.length?`${auto.length} אפשר לשייך אוטומטית לפי סמל, שם גן או גננת`:"",`${canWrite?`<button class="btn sm primary" data-x="kidsAssign">שיוך לגנים${auto.length?` (${auto.length} אוטומטית)`:""}</button>`:""}<button class="btn sm" data-x="hShow" data-i="nogarden">הצגה</button>`,"bad")}
     ${card("alert",bad.length,"ת.ז. לא תקינה (ספרת ביקורת)","",`<button class="btn sm" data-x="hShow" data-i="badid">הצגה</button>`,"warn")}
     ${card("copy",dup.length,"ת.ז. כפולה",dup.slice(0,3).map(a=>a.map(fullName).join(" / ")).join(" · "),"","bad")}
     ${card("phone",noPh.length,"חסר טלפון של הורה","",`<button class="btn sm" data-x="hShow" data-i="nophone">הצגה</button>`,"warn")}
@@ -2992,6 +3001,79 @@ document.addEventListener("click",e=>{const el=e.target.closest("[data-x]");if(!
 document.addEventListener("change",e=>{const t=e.target;if(t.dataset.secck){const k=t.dataset.secck;const ck={...(settings.sec_checklist||{})};if(t.checked)ck[k]=new Date().toISOString();else delete ck[k];saveSettings({sec_checklist:ck}).then(()=>{if(SEC)SEC.checklist=ck;render()}).catch(x=>toast(x.message))}});
 
 (()=>{const os=showLogin;showLogin=function(m){os(m);const c=$(".logincard");if(c&&!c.querySelector(".privnote")){const p=document.createElement("p");p.className="privnote sub";p.innerHTML=`${ico("lock")} המערכת מכילה מידע אישי על ילדים ועובדות, ומאובטחת לפי תקנות הגנת הפרטיות. כל כניסה ופעולה נרשמות ביומן.`;c.appendChild(p)}}})();
+
+const kaNorm=s=>String(s??"").replace(/["'״׳`\-\.\(\)]/g," ").replace(/^\s*(גן|גני)\s+/,"").replace(/\s+/g," ").trim().toLowerCase();
+let KA=null;
+function kaIndex(){const gs=vals("gardens"),sym=new Map(),name=new Map(),tch=new Map();
+  gs.forEach(g=>{const s=digits(g.symbol);if(s)sym.set(s,g);const n=kaNorm(g.name);if(n)name.set(n,g);const m=kaNorm(g.manager_name);if(m&&!tch.has(m))tch.set(m,g)});
+  vals("staff").filter(x=>isOn(x.is_active)&&x.garden_id&&S.gardens?.get(x.garden_id)&&isEdu(x)).forEach(x=>{const n=kaNorm(x.full_name);if(n&&!tch.has(n))tch.set(n,S.gardens.get(x.garden_id))});
+  return {sym,name,tch}}
+const KA_BY=[["auto","אוטומטי (סמל ← שם גן ← גננת)"],["sym","לפי סמל מוסד"],["name","לפי שם הגן"],["tch","לפי שם הגננת"]];
+function kaKey(c,by){const s=digits(c.symbol),n=kaNorm(c.garden_name),t=kaNorm(c.teacher_name);
+  if(by==="sym")return s?["s:"+s,"סמל "+c.symbol]:null;if(by==="name")return n?["n:"+n,"שם גן: "+c.garden_name]:null;if(by==="tch")return t?["t:"+t,"גננת: "+c.teacher_name]:null;
+  return n?["n:"+n,"שם גן: "+c.garden_name]:s?["s:"+s,"סמל "+c.symbol]:t?["t:"+t,"גננת: "+c.teacher_name]:null}
+function kaFind(c,by,ix){const s=digits(c.symbol),n=kaNorm(c.garden_name),t=kaNorm(c.teacher_name);
+  const k=kaKey(c,by);if(k&&KA?.map?.[k[0]])return S.gardens?.get(KA.map[k[0]])||null;
+  if(by==="sym")return ix.sym.get(s)||null;if(by==="name")return ix.name.get(n)||null;if(by==="tch")return ix.tch.get(t)||null;
+  return (s&&ix.sym.get(s))||(n&&ix.name.get(n))||(t&&ix.tch.get(t))||null}
+function kaPlan(){const ix=kaIndex(),L=vals("children").filter(c=>isOn(c.is_active)&&(KA.scope==="all"||!c.garden_id||!S.gardens?.get(c.garden_id)));
+  const add=[],move=[],same=[],none=new Map(),empty=[];
+  L.forEach(c=>{const g=kaFind(c,KA.by,ix);if(!g){const k=kaKey(c,KA.by);if(!k){empty.push(c);return}const e=none.get(k[0])||{k:k[0],l:k[1],n:0};e.n++;none.set(k[0],e);return}
+    if(c.garden_id===g._id)same.push(c);else if(c.garden_id&&S.gardens?.get(c.garden_id))move.push([c,g]);else add.push([c,g])});
+  return {L,add,move,same,none:[...none.values()].sort((a,b)=>b.n-a.n),empty}}
+function kidsAssign(){["children","gardens","staff"].forEach(c=>live(c));KA=KA||{by:"auto",scope:"none",map:{},sel:true};kaPaint()}
+function kaPaint(){if(!KA)return;const p=kaPlan(),gs=vals("gardens").sort((a,b)=>String(a.name).localeCompare(b.name,"he"));
+  const gOpts=sel=>gs.map(g=>`<option value="${g._id}"${g._id===sel?" selected":""}>${esc(g.name)}${g.symbol?" ("+esc(g.symbol)+")":""}</option>`).join("");
+  const n=p.add.length+(KA.withMove?p.move.length:0);
+  modal(`<div class="ka"><div class="mx-head"><div class="mx-title"><h2>${ico("school")} שיוך ילדים לגנים</h2><p class="sub">המערכת מתאימה כל ילד/ה לגן לפי הנתונים שכבר יש בכרטיס (סמל מוסד, שם הגן או שם הגננת). מה שלא הותאם – אפשר להתאים ידנית פעם אחת לכל הקבוצה.</p></div><button class="iconbtn" data-close aria-label="סגירה">${ico("x")}</button></div>
+   <div class="mx-bar"><div class="mx-f"><span class="mx-l">התאמה</span><select data-ka="by">${KA_BY.map(([v,l])=>`<option value="${v}"${KA.by===v?" selected":""}>${l}</option>`).join("")}</select></div>
+    <div class="mx-f"><span class="mx-l">אילו ילדים</span><div class="seg">${[["none","רק ילדים בלי גן"],["all","כל הילדים הפעילים"]].map(([v,l])=>`<button data-ka-scope="${v}" aria-pressed="${KA.scope===v}">${l}</button>`).join("")}</div></div></div>
+   <div class="kpis kasum"><div class="kpi"><b>${p.add.length}</b><span>ישויכו לגן</span></div>${KA.scope==="all"?`<div class="kpi${p.move.length?" warn":""}"><b>${p.move.length}</b><span>משויכים לגן אחר</span></div><div class="kpi"><b>${p.same.length}</b><span>כבר בגן הנכון</span></div>`:""}<div class="kpi${p.none.length?" warn":""}"><b>${p.none.reduce((a,x)=>a+x.n,0)}</b><span>לא נמצאה התאמה</span></div>${p.empty.length?`<div class="kpi"><b>${p.empty.length}</b><span>בלי שום נתון על הגן</span></div>`:""}</div>
+   ${KA.scope==="all"&&p.move.length?`<label class="row"><input type="checkbox" data-ka-move${KA.withMove?" checked":""}> להעביר גם את ${p.move.length} הילדים שמשויכים עכשיו לגן אחר (למשל: ${p.move.slice(0,2).map(([c,g])=>esc(fullName(c))+" ← "+esc(g.name)).join(", ")})</label>`:""}
+   ${p.none.length?`<section class="card flat col"><h3>להתאים ידנית (${p.none.length} קבוצות)</h3><p class="sub">כל שורה היא ערך שמופיע בכרטיסי הילדים ולא נמצא לו גן. בחירה כאן תחול על כל הילדים בקבוצה.</p><div class="kalist">${p.none.slice(0,60).map(x=>`<div class="karow"><span class="t"><b>${esc(x.l)}</b><small>${x.n} ילדים</small></span><select data-ka-map="${esc(x.k)}"><option value="">בחירת גן…</option>${gOpts(KA.map[x.k])}</select></div>`).join("")}</div>${p.none.length>60?`<p class="sub">ועוד ${p.none.length-60} קבוצות…</p>`:""}</section>`:""}
+   ${Object.keys(KA.map).length?`<p class="sub">${Object.keys(KA.map).length} התאמות ידניות נבחרו. <button class="btn sm ghost" data-ka-reset>ניקוי ההתאמות הידניות</button></p>`:""}
+   <div class="row" style="justify-content:flex-end"><button class="btn" data-close>ביטול</button><button class="btn primary" data-ka-go${n?"":" disabled"}>${ico("check")}שיוך ${n.toLocaleString("he-IL")} ילדים</button></div></div>`,"wide")}
+document.addEventListener("change",e=>{const t=e.target;if(!KA||!t.closest(".ka"))return;
+  if(t.dataset.ka==="by"){KA.by=t.value;KA.map={};return kaPaint()}if(t.dataset.kaMap!==undefined){t.value?KA.map[t.dataset.kaMap]=t.value:delete KA.map[t.dataset.kaMap];return kaPaint()}
+  if(t.dataset.kaMove!==undefined){KA.withMove=t.checked;return kaPaint()}});
+document.addEventListener("click",e=>{const el=e.target.closest("[data-ka-scope],[data-ka-go],[data-ka-reset],[data-x='kidsAssign'],[data-x='staffAssign']");if(!el)return;
+  if(el.dataset.x==="kidsAssign"){KA=null;return kidsAssign()}if(el.dataset.x==="staffAssign")return staffAssign(el.dataset.gid||"");
+  if(el.dataset.kaScope!==undefined){KA.scope=el.dataset.kaScope;return kaPaint()}if(el.dataset.kaReset!==undefined){KA.map={};return kaPaint()}
+  if(el.dataset.kaGo!==undefined){const p=kaPlan(),L=p.add.concat(KA.withMove?p.move:[]);if(!L.length)return;
+    busy(el,async()=>{let d=0;const fail=await pool(L.map(([c,g])=>()=>crmMove(c,g._id)),k=>{d=k;el.lastChild.textContent=` משייך… ${k}/${L.length}`},20);
+      audit("שיוך ילדים לגנים","ילדים","",`${L.length-fail} ילדים (${KA.by})`);toast(`${(L.length-fail).toLocaleString("he-IL")} ילדים שויכו לגנים${fail?` · ${fail} נכשלו`:""}`);kaPaint()})}});
+
+let SA=null;
+function staffAssign(gid){["staff","gardens"].forEach(c=>live(c));const gs=vals("gardens").sort((a,b)=>String(a.name).localeCompare(b.name,"he"));
+  SA={gid:gid||SA?.gid||"",q:"",f:"edu",ch:new Map(),onlyFree:false};saPaint()}
+function saPaint(keepFocus){if(!SA)return;const st0=$("#modal .salist")?.scrollTop||0;const gs=vals("gardens").sort((a,b)=>String(a.name).localeCompare(b.name,"he")),g=S.gardens?.get(SA.gid);
+  const inG=x=>SA.ch.has(x._id)?SA.ch.get(x._id)===SA.gid:x.garden_id===SA.gid;const q=SA.q.trim().toLowerCase();
+  const all=vals("staff").filter(x=>isOn(x.is_active)&&!x.office_id&&(SA.f==="all"||isEdu(x)));
+  const L=all.filter(x=>(!q||[x.full_name,x.phone,digits(x.id_number),gName(x.garden_id),(x.roles||[]).join(" ")].join(" ").toLowerCase().includes(q))&&(!SA.onlyFree||!x.garden_id||!S.gardens?.get(x.garden_id)||inG(x)))
+    .sort((a,b)=>((b.garden_id===SA.gid)-(a.garden_id===SA.gid))||String(a.full_name).localeCompare(b.full_name,"he"));
+  const cnt=all.filter(inG).length,nch=[...SA.ch].filter(([id,v])=>(S.staff.get(id)?.garden_id||"")!==v).length;
+  modal(`<div class="sa"><div class="mx-head"><div class="mx-title"><h2>${ico("users")} שיוך צוות לגן</h2><p class="sub">בוחרים גן, ומסמנים את הגננות והסייעות שעובדות בו. השינוי מתעדכן מיד במסך הגנים ובכרטיס של כל אחת.</p></div><button class="iconbtn" data-close aria-label="סגירה">${ico("x")}</button></div>
+   <div class="mx-bar"><div class="mx-f" style="flex:1"><span class="mx-l">גן</span><select data-sa="gid" style="flex:1"><option value="">בחירת גן…</option>${gs.map(z=>`<option value="${z._id}"${z._id===SA.gid?" selected":""}>${esc(z.name)}${z.symbol?" · "+esc(z.symbol):""} (${vals("staff").filter(x=>x.garden_id===z._id&&isOn(x.is_active)).length})</option>`).join("")}</select></div></div>
+   ${g?`<div class="row"><input class="search" type="search" id="saQ" value="${esc(SA.q)}" placeholder="חיפוש לפי שם, טלפון, ת.ז. או גן נוכחי…" style="flex:1" aria-label="חיפוש צוות">
+     <div class="seg">${[["edu","צוות חינוכי"],["all","כל הצוות"]].map(([v,l])=>`<button data-sa-f="${v}" aria-pressed="${SA.f===v}">${l}</button>`).join("")}</div>
+     <label class="row sub"><input type="checkbox" data-sa-free${SA.onlyFree?" checked":""}> רק לא משויכות</label></div>
+    <p class="sub"><b>${cnt}</b> משויכות ל${esc(g.name)}${nch?` · <b>${nch}</b> שינויים שלא נשמרו`:""}</p>
+    <div class="salist">${L.map(x=>{const on=inG(x),cur=S.gardens?.get(x.garden_id),moving=on&&x.garden_id&&x.garden_id!==SA.gid&&cur,leaving=!on&&x.garden_id===SA.gid;
+      return `<label class="sarow${on?" on":""}"><input type="checkbox" data-sa-pick="${x._id}"${on?" checked":""}>${avatar(x.full_name,cur?hueOf(grpOf(cur)):"#9aa7ae")}<span class="t"><b>${esc(x.full_name)}</b><small>${esc((x.roles||[]).join(", ")||"ללא תפקיד")}</small></span>
+       ${moving?`<span class="pill warn">תועבר מ${esc(cur.name)}</span>`:leaving?`<span class="pill bad">תוסר מהגן</span>`:cur&&cur._id!==SA.gid?`<span class="pill">${esc(cur.name)}</span>`:!cur?`<span class="pill">לא משויכת</span>`:""}</label>`}).join("")||'<div class="empty"><b>לא נמצאו אנשי צוות</b></div>'}</div>`:'<div class="empty"><b>בחרו גן</b>ואז סמנו את אנשי הצוות שעובדים בו.</div>'}
+   <div class="row" style="justify-content:flex-end"><button class="btn" data-close>סגירה</button>${g?`<button class="btn primary" data-sa-save${nch?"":" disabled"}>${ico("check")}שמירה${nch?` (${nch})`:""}</button>`:""}</div></div>`,"wide");
+  const sl=$("#modal .salist");if(sl&&!keepFocus)sl.scrollTop=st0;
+  if(keepFocus){const i=$("#saQ");if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}}}
+document.addEventListener("input",e=>{if(e.target.id==="saQ"&&SA){SA.q=e.target.value;saPaint(true)}});
+document.addEventListener("change",e=>{const t=e.target;if(!SA||!t.closest(".sa"))return;
+  if(t.dataset.sa==="gid"){if([...SA.ch].some(([id,v])=>(S.staff.get(id)?.garden_id||"")!==v)&&!confirm("יש שינויים שלא נשמרו. לעבור לגן אחר בלי לשמור?")){t.value=SA.gid;return}SA.gid=t.value;SA.ch=new Map();return saPaint()}
+  if(t.dataset.saPick){const x=S.staff.get(t.dataset.saPick);SA.ch.set(x._id,t.checked?SA.gid:(x.garden_id===SA.gid?"":x.garden_id||""));return saPaint()}
+  if(t.dataset.saFree!==undefined){SA.onlyFree=t.checked;return saPaint()}});
+document.addEventListener("click",e=>{const el=e.target.closest("[data-sa-f],[data-sa-save]");if(!el||!SA)return;
+  if(el.dataset.saF){SA.f=el.dataset.saF;return saPaint()}
+  const L=[...SA.ch].filter(([id,v])=>(S.staff.get(id)?.garden_id||"")!==v);if(!L.length)return;
+  busy(el,async()=>{const fail=await pool(L.map(([id,v])=>()=>save(E.staff,id,{garden_id:v})),()=>{},10);audit("שיוך צוות לגן","אנשי צוות",gName(SA.gid),L.length+" שינויים");
+    toast(`נשמר: ${L.length-fail} שינויים${fail?` · ${fail} נכשלו`:""}`);SA.ch=new Map();saPaint()})});
 
 (async()=>{
   let lk=window.KG_LOGIN||"";try{const u=new URL(location.href);if(!lk)lk=u.searchParams.get("login")||"";if(u.searchParams.get("login")){u.searchParams.delete("login");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
