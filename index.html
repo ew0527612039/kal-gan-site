@@ -1948,10 +1948,10 @@ function settingsBody(t){
        <ol style="margin:0;padding-inline-start:20px;display:flex;flex-direction:column;gap:6px">
         <li>בממשק הניהול של ימות המשיח פותחים שלוחה חדשה (למשל שלוחה 1), ובוחרים "הגדרות מתקדמות" / עריכת קובץ ההגדרות (ext.ini).</li>
         <li>מדביקים את ההגדרות האלה ושומרים:</li></ol>
-       <textarea id="yemotIni" class="mono" readonly rows="8" dir="ltr" style="width:100%">${esc(["type=api","api_link="+adm.punch_base.replace("?action=punch",""),"api_add_0=action=punch","api_add_1=key="+adm.punch_key,"api_000=id,no,9,5,10,TeudatZehut,yes,no","api_001=type,no,1,1,7,Number,yes,yes,,1.2","api_end_goto=hangup"].join("\n"))}</textarea>
+       <textarea id="yemotIni" class="mono" readonly rows="8" dir="ltr" style="width:100%">${esc(["type=api","api_link="+adm.punch_base.replace("?action=punch",""),"api_add_0=action=punch","api_add_1=key="+adm.punch_key].join("\n"))}</textarea>
        <div class="row"><button class="btn" data-act="copyIni">העתקת ההגדרות</button></div>
        <ol start="3" style="margin:0;padding-inline-start:20px;display:flex;flex-direction:column;gap:6px">
-        <li>מעלים לשלוחה שתי הודעות (קובץ קול או טקסט להקראה): <b>000</b> – "נא הקישי את מספר תעודת הזהות וסולמית", <b>001</b> – "לכניסה הקישי 1, ליציאה הקישי 2".</li>
+
         <li>מתקשרים לבדיקה מטלפון של עובדת רשומה. אחרי ההקשה שומעים "…נרשמה כניסה בשעה…", וההחתמה מופיעה מיד בלוח הנוכחות.</li></ol>
        <p class="notice warn">אחרי "החלפת המפתח הסודי" צריך להדביק את ההגדרות מחדש בימות המשיח.</p></section>`:""}`}
   if(t==="fields")body=`<p class="sub">שדות נוספים שיופיעו בטפסים ובטבלאות.</p>${[["children","ילדים"],["staff","אנשי צוות"],["gardens","מוסדות"]].map(([k,l])=>`<section class="card" style="display:flex;flex-direction:column;gap:8px"><div class="row" style="justify-content:space-between"><h2>${l}</h2>${isAdmin?`<button class="btn sm" data-act="editcf" data-k="${k}">עריכה</button>`:""}</div><div class="chips">${((settings.custom||{})[k]||[]).map(f=>`<span class="pill">${esc(f.l)}</span>`).join("")||'<span class="sub">אין שדות נוספים</span>'}</div></section>`).join("")}`;
