@@ -701,6 +701,13 @@ details.menu.flipx .mnu{inset-inline-start:auto;inset-inline-end:0}
 details.menu.end.flipx .mnu{inset-inline-start:0;inset-inline-end:auto}
 details.menu.up .mnu{top:auto;bottom:calc(100% + 6px)}
 details.menu[open]{z-index:60}.ph:has(details.menu[open]),.bar:has(details.menu[open]){position:relative;z-index:61}
+
+.gegrid table{border-collapse:collapse;width:100%;table-layout:auto}.gegrid td{padding:2px 3px;border-bottom:1px solid var(--line2)}.gegrid th,.gegrid td{min-width:0}.gegrid th{position:sticky;top:0;background:var(--surface);z-index:1;text-align:start;padding:8px 6px;font-size:.82rem}
+.gein{width:100%;border:1px solid transparent;background:transparent;border-radius:8px;padding:7px 8px;font:inherit;color:inherit}.gein:hover{border-color:var(--line)}.gein:focus{border-color:var(--accent,#15803d);background:var(--surface);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent,#15803d) 18%,transparent)}
+.gein.saving{background:color-mix(in srgb,#f59e0b 12%,transparent)}.gein.saved{background:color-mix(in srgb,#16a34a 16%,transparent);transition:background .8s}
+.gegrp td{background:var(--raise);font-weight:700;padding:8px 10px;position:sticky;top:34px}.gemeta{white-space:nowrap}
+.gegrid{max-height:calc(100vh - 230px);overflow:auto}
+.gemeta .btn{font-size:.78rem;padding:4px 8px}
 </style>
 
 <button class="skip" data-act="skip">דילוג לתוכן הראשי</button>
@@ -1941,8 +1948,8 @@ function settingsBody(t){
       <p class="sub">פרמטרים: <span class="mono">id</span> (ת.ז.) או <span class="mono">phone</span>, <span class="mono">type</span> = in / out (או 1 / 2), ואופציונלית <span class="mono">date</span> ו-<span class="mono">time</span>. אפשר בקשת GET או POST. הכתובת כוללת מפתח סודי: אין לפרסם אותה.</p>
       <div class="row"><button class="btn bad" data-act="rotatePunch">החלפת המפתח הסודי</button><span class="sub">אחרי החלפה צריך לעדכן את הכתובת אצל ספק המערכת הטלפונית.</span></div></section>
       <section class="card" style="display:flex;flex-direction:column;gap:10px"><h2>זיהוי העובדת בהחתמה</h2>
-       <label class="f full"><select id="punchMatch"><option value="garden"${adm.punch_match==="garden"?" selected":""}>תעודת זהות + התקשרות מהטלפון של הגן שלה (מומלץ לגנים)</option><option value="both"${adm.punch_match==="both"?" selected":""}>תעודת זהות + הטלפון האישי הרשום בכרטיס שלה</option><option value="either"${adm.punch_match==="either"?" selected":""}>תעודת זהות או טלפון רשום (אחד מהם מספיק)</option></select></label>
-       ${adm.punch_match==="garden"?`<p class="sub">ההחתמה נקלטת רק אם העובדת הקישה את תעודת הזהות שלה והתקשרה <b>מהטלפון של הגן שלה</b> (שדה "טלפון הגן" במסך הגנים). ממלאת מקום: מסמנים בכרטיס שלה "רשאית לדווח מכל הגנים", או בוחרים גנים נוספים. כל כניסה ויציאה נשמרת – גם כמה פעמים ביום – ואם חסרה כניסה או יציאה, מה שדווח נשמר והשעות של אותו קטע לא נספרות עד לתיקון.</p>${punchHealth()}`:`<p class="sub">ההחתמה נקלטת לפי האפשרות שנבחרה. אפשר לרשום בכרטיס העובדת כמה מספרים, מופרדים בפסיק.</p>`}
+       <label class="f full"><select id="punchMatch"><option value="anygarden"${!adm.punch_match||adm.punch_match==="anygarden"?" selected":""}>תעודת זהות + התקשרות מהטלפון של אחד הגנים (כל גננת מכל גן)</option><option value="garden"${adm.punch_match==="garden"?" selected":""}>תעודת זהות + התקשרות מהטלפון של הגן שלה (מומלץ לגנים)</option><option value="both"${adm.punch_match==="both"?" selected":""}>תעודת זהות + הטלפון האישי הרשום בכרטיס שלה</option><option value="either"${adm.punch_match==="either"?" selected":""}>תעודת זהות או טלפון רשום (אחד מהם מספיק)</option></select></label>
+       ${adm.punch_match==="anygarden"||!adm.punch_match?`<p class="sub">ההחתמה נקלטת אם העובדת הקישה את תעודת הזהות שלה והתקשרה <b>מהטלפון של אחד הגנים</b> (שדה "טלפון הגן" במסך הגנים). אפשר להתקשר מכל גן – לא רק מהגן שלה. מטלפון אישי או ממספר חסוי הדיווח לא נקלט.</p>${punchHealth()}`:adm.punch_match==="garden"?`<p class="sub">ההחתמה נקלטת רק אם העובדת הקישה את תעודת הזהות שלה והתקשרה <b>מהטלפון של הגן שלה</b> (שדה "טלפון הגן" במסך הגנים). ממלאת מקום: מסמנים בכרטיס שלה "רשאית לדווח מכל הגנים", או בוחרים גנים נוספים. כל כניסה ויציאה נשמרת – גם כמה פעמים ביום – ואם חסרה כניסה או יציאה, מה שדווח נשמר והשעות של אותו קטע לא נספרות עד לתיקון.</p>${punchHealth()}`:`<p class="sub">ההחתמה נקלטת לפי האפשרות שנבחרה. אפשר לרשום בכרטיס העובדת כמה מספרים, מופרדים בפסיק.</p>`}
        <div class="row"><button class="btn primary" data-act="punchMatchSave">שמירה</button></div></section>
       ${adm.punch_base?`<section class="card" style="display:flex;flex-direction:column;gap:10px"><h2>הגדרה בימות המשיח</h2>
        <ol style="margin:0;padding-inline-start:20px;display:flex;flex-direction:column;gap:6px">
@@ -2538,7 +2545,8 @@ PAGES.gardens=()=>{
   if(inst.gid)return gardenPage(S.gardens.get(inst.gid));
   const q=inst.gq.trim().toLowerCase();const match=g=>!q||[g.name,g.symbol,g.manager_name,g.city,g.institution,g.building].some(v=>String(v||"").toLowerCase().includes(q));
   const bySel=`<label class="row sub">חלוקה לפי <select data-x2="instBy" aria-label="חלוקה לפי">${INST_LV.map(([k,l])=>`<option value="${k}"${instBy()===k?" selected":""}>${l}</option>`).join("")}</select></label>`;
-  const modeSeg=`<div class="seg" role="group" aria-label="תצוגה"><button data-x="instMode" data-m="cards" aria-pressed="${inst.mode==="cards"}">${ico("grid")}כרטיסים</button><button data-x="instMode" data-m="table" aria-pressed="${inst.mode==="table"}">${ico("rows")}טבלה</button></div>`;
+  const modeSeg=`<div class="seg" role="group" aria-label="תצוגה"><button data-x="instMode" data-m="cards" aria-pressed="${inst.mode==="cards"}">${ico("grid")}כרטיסים</button><button data-x="instMode" data-m="table" aria-pressed="${inst.mode==="table"}">${ico("rows")}טבלה</button>${canWrite?`<button data-x="instMode" data-m="edit" aria-pressed="${inst.mode==="edit"}">${ico("edit")}עריכה מהירה</button>`:""}</div>`;
+  if(inst.mode==="edit"&&canWrite)return gEditHTML(all,modeSeg);
   if(inst.mode==="table")return `<div class="ph"><div><h1>מוסדות וגנים</h1><p class="sub">כל הגנים בטבלה אחת</p></div><div class="bar">${modeSeg}</div></div>`+listHTML("inst_g",{def:defOf("gardens"),formKey:"gardens"});
   if(inst.grp==null){const groups=new Map();all.filter(match).forEach(g=>{const k=grpOf(g);(groups.get(k)||groups.set(k,[]).get(k)).push(g)});
     return `<div class="ph"><div><h1>מוסדות וגנים</h1><p class="sub">בוחרים ${esc(instLabel())} ← גן ← רשימת הילדים והצוות של הגן</p></div><div class="bar">${modeSeg}${canWrite?`<button class="btn" data-x="staffAssign">${ico("users")}שיוך צוות</button><button class="btn" data-x="kidsAssign">${ico("child")}שיוך ילדים</button>`:""}${canWrite?`<button class="btn primary" data-act="new" data-key="gardens">+ גן חדש</button>`:""}</div></div>
@@ -2669,6 +2677,30 @@ function notifBar(){const pr=store("chat_prefs")||{};const can="Notification" in
 document.addEventListener("click",async e=>{const el=e.target.closest('[data-x="nPerm"]');if(!el)return;try{const p=await Notification.requestPermission();toast(p==="granted"?"מעכשיו תקבלי התראה על הודעות חדשות":"ההתראות לא אושרו בדפדפן");render()}catch(err){}});
 document.addEventListener("change",e=>{const t=e.target;if(t.dataset.x2==="nSound"){const p=store("chat_prefs")||{};p.sound=t.checked;store("chat_prefs",p)}
   if(t.dataset.x2==="nMail"){call("chatPrefs",{mail:t.checked}).then(()=>toast(t.checked?"יישלח מייל על הודעות שלא נקראו":"לא יישלחו מיילים על הצ'אט")).catch(x=>toast(x.message))}});
+
+const GE_F=[["name","שם הגן",140],["symbol","סמל",75],["institution","מוסד",110],["city","עיר",90],["manager_name","גננת אחראית",110],["phone","טלפון הגן",110],["address","כתובת",120],["building","מבנה",80],["area","אזור",80]];
+let GE={q:"",grp:"city"};
+function gEditHTML(all,modeSeg){const q=GE.q.trim().toLowerCase();
+  const L=all.filter(g=>!q||GE_F.some(([k])=>String(g[k]||"").toLowerCase().includes(q)));
+  const key=g=>GE.grp?String(g[GE.grp]||"").trim()||"ללא "+(GE_F.find(f=>f[0]===GE.grp)||[,""])[1]:"";
+  const groups=new Map();L.sort((a,b)=>key(a).localeCompare(key(b),"he")||String(a.name).localeCompare(b.name,"he")).forEach(g=>{const k=key(g);(groups.get(k)||groups.set(k,[]).get(k)).push(g)});
+  const dl=k=>`<datalist id="ge_${k}">${[...new Set(vals("gardens").map(g=>String(g[k]||"").trim()).filter(Boolean))].sort().map(v=>`<option value="${esc(v)}">`).join("")}</datalist>`;
+  const row=g=>`<tr data-ge="${g._id}">${GE_F.map(([k,l])=>`<td><input class="gein${k==="symbol"||k==="phone"?" mono":""}" data-gef="${k}" value="${esc(g[k]||"")}" aria-label="${esc(l)} – ${esc(g.name||"")}"${["city","institution","building","area"].includes(k)?` list="ge_${k}"`:""}${k==="phone"?' inputmode="tel" dir="ltr"':""}></td>`).join("")}<td class="gemeta"><button class="btn sm ghost" data-x="instGarden" data-id="${g._id}" title="פתיחת הגן">${kidsOf(g).length} ילדים · ${staffOf(g).length} צוות</button></td></tr>`;
+  return `<div class="ph"><div><h1>מוסדות וגנים</h1><p class="sub">כל הגנים במסך אחד – לוחצים על תא, מקלידים, והשינוי נשמר אוטומטית</p></div><div class="bar">${modeSeg}<button class="btn primary" data-act="new" data-key="gardens">${ico("plus")}גן חדש</button></div></div>
+   <div class="row" style="margin-bottom:10px"><input class="search" type="search" id="geQ" value="${esc(GE.q)}" placeholder="חיפוש גן, עיר, סמל, גננת…" style="flex:1" aria-label="חיפוש גנים">
+    <label class="row sub">קיבוץ לפי <select data-x2="geGrp"><option value="">ללא</option>${[["city","עיר"],["institution","מוסד"],["building","מבנה"],["area","אזור"]].map(([k,l])=>`<option value="${k}"${GE.grp===k?" selected":""}>${l}</option>`).join("")}</select></label>
+    <span class="sub">${L.length} גנים</span></div>
+   ${["city","institution","building","area"].map(dl).join("")}
+   <div class="tbox gegrid"><table><thead><tr>${GE_F.map(([k,l,w])=>`<th style="min-width:${w}px">${l}</th>`).join("")}<th></th></tr></thead>
+   <tbody>${[...groups].map(([k,gs])=>(GE.grp?`<tr class="gegrp"><td colspan="${GE_F.length+1}">${esc(k)} <span class="sub">(${gs.length})</span></td></tr>`:"")+gs.map(row).join("")).join("")||`<tr><td colspan="${GE_F.length+1}"><div class="empty"><b>לא נמצאו גנים</b></div></td></tr>`}</tbody></table></div>`}
+document.addEventListener("input",e=>{if(e.target.id==="geQ"){GE.q=e.target.value;clearTimeout(GE.t);GE.t=setTimeout(()=>{const p=e.target.selectionStart;render();const i=$("#geQ");if(i){i.focus();try{i.setSelectionRange(p,p)}catch(_){}}},250)}});
+document.addEventListener("change",async e=>{const t=e.target;
+  if(t.dataset.x2==="geGrp"){GE.grp=t.value;return render()}
+  if(!t.classList?.contains("gein"))return;const id=t.closest("[data-ge]")?.dataset.ge,k=t.dataset.gef,g=S.gardens?.get(id);if(!g)return;
+  const v=t.value.trim();if(String(g[k]||"")===v)return;if(k==="name"&&!v){t.value=g.name||"";return toast("שם הגן חובה")}
+  t.classList.add("saving");try{await save(E.gardens,id,{[k]:v});t.classList.remove("saving");t.classList.add("saved");setTimeout(()=>t.classList.remove("saved"),1200)}catch(err){t.classList.remove("saving");t.value=g[k]||"";toast(err.message||"השמירה נכשלה")}});
+document.addEventListener("keydown",e=>{const t=e.target;if(!t.classList?.contains("gein")||e.key!=="Enter")return;e.preventDefault();t.blur();
+  const tr=t.closest("tr");let n=tr.nextElementSibling;while(n&&!n.dataset.ge)n=n.nextElementSibling;n?.querySelector(`[data-gef="${t.dataset.gef}"]`)?.focus()});
 
 Object.assign(IC,{
  plus:'<path d="M12 5v14M5 12h14"/>',upload:'<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/>',download:'<path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/>',
