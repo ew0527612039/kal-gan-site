@@ -708,6 +708,22 @@ details.menu[open]{z-index:60}.ph:has(details.menu[open]),.bar:has(details.menu[
 .gegrp td{background:var(--raise);font-weight:700;padding:8px 10px;position:sticky;top:34px}.gemeta{white-space:nowrap}
 .gegrid{max-height:calc(100vh - 230px);overflow:auto}
 .gemeta .btn{font-size:.78rem;padding:4px 8px}
+
+
+.asfab{position:fixed;left:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:80;display:flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 18px;background:linear-gradient(135deg,#15803d,#0f766e);color:#fff;font:inherit;font-weight:700;box-shadow:0 10px 30px rgba(15,118,110,.35);cursor:pointer}
+.asfab .ico{width:20px;height:20px}.asfab.on{opacity:0;pointer-events:none}
+#asDrawer{position:fixed;left:0;top:0;bottom:0;width:min(420px,100vw);z-index:85;background:var(--surface);border-inline-end:1px solid var(--line);box-shadow:var(--shadow-lg);display:flex;flex-direction:column;animation:vin .18s ease}
+.ashead{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line2)}.ashead b{display:flex;gap:6px;align-items:center;font-size:1.05rem}.ashead .sub{flex:1;font-size:.8rem}.ashead .ico{width:18px;height:18px}
+.asmsgs{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.asmsg{max-width:92%;padding:10px 12px;border-radius:14px;line-height:1.55;font-size:.95rem}.asmsg.u{align-self:flex-start;background:color-mix(in srgb,var(--accent,#15803d) 14%,var(--surface));border-end-start-radius:4px}
+.asmsg.a{align-self:flex-end;background:var(--raise);border-end-end-radius:4px;width:92%}
+.asul{margin:6px 0 0;padding-inline-start:18px;font-size:.88rem}.asul li{margin:3px 0}.asul i{color:var(--muted)}
+.aslist{display:flex;flex-direction:column;gap:4px;margin-top:6px}.asgrp{margin-top:10px;font-weight:700;font-size:.85rem}
+.asres{display:flex;gap:10px;align-items:center;text-align:start;border:1px solid var(--line2);background:var(--surface);border-radius:10px;padding:7px 10px;font:inherit;color:inherit;cursor:pointer}.asres:hover{border-color:var(--accent,#15803d)}
+.asres .t{display:flex;flex-direction:column;min-width:0}.asres small{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.asic .ico{width:16px;height:16px;color:var(--muted)}
+.aschips{display:flex;gap:6px;flex-wrap:wrap;padding:8px 14px 0}
+.asform{display:flex;gap:8px;padding:12px 14px calc(12px + env(safe-area-inset-bottom,0px))}.asform input{flex:1}
+@media (max-width:640px){.asfab span{display:none}.asfab{padding:14px}}
 </style>
 
 <button class="skip" data-act="skip">דילוג לתוכן הראשי</button>
@@ -3115,6 +3131,97 @@ document.addEventListener("click",e=>{const el=e.target.closest("[data-sa-f],[da
   const L=[...SA.ch].filter(([id,v])=>(S.staff.get(id)?.garden_id||"")!==v);if(!L.length)return;
   busy(el,async()=>{const fail=await pool(L.map(([id,v])=>()=>save(E.staff,id,{garden_id:v})),()=>{},10);audit("שיוך צוות לגן","אנשי צוות",gName(SA.gid),L.length+" שינויים");
     toast(`נשמר: ${L.length-fail} שינויים${fail?` · ${fail} נכשלו`:""}`);SA.ch=new Map();saPaint()})});
+
+const AS={open:false,msgs:[],pend:new Map(),n:0};
+const asNorm=s=>String(s??"").replace(/["'״׳`]/g,"").replace(/[-־]/g," ").replace(/\s+/g," ").trim().toLowerCase();
+const asCols=["children","staff","gardens","office","suppliers","tasks","notes","emails","programs"];
+function asLoad(){asCols.forEach(c=>{try{live(c)}catch(e){}})}
+const AS_HELP=`<b>מה אפשר לבקש:</b><ul class="asul">
+ <li><b>חיפוש בכל המערכת</b> – שם, ת.ז., טלפון, סמל, נושא מייל, מילה מפתק… <i>לדוגמה: "רחל כהן", "0521234567", "חשבונית חשמל"</i></li>
+ <li><b>מיילים</b> – "מיילים חדשים", "מיילים מ-dana@…"</li>
+ <li><b>נוכחות</b> – "מי לא דיווח היום", "מי בגן היום"</li>
+ <li><b>משימה</b> – "משימה: להתקשר להורים של יוסי מחר"</li>
+ <li><b>פתק</b> – "פתק: הספק מגיע ביום שלישי"</li>
+ <li><b>עדכון</b> – "עדכן טלפון של הגננת רחל כהן ל 0521234567", "עדכן מייל של גן שושנים ל x@y.com"</li>
+ <li><b>שיוך</b> – "העבר את הילד יוסי לוי לגן שושנים", "שייך את הגננת מרים לגן חבצלת"</li></ul>`;
+function asItem(kind,id,title,sub,ic){const open=kind==="notes"?`data-x="noteOpen" data-id="${id}"`:`data-open="${kind}|${id}"`;return `<button class="asres" ${open}><span class="asic">${ico(ic)}</span><span class="t"><b>${esc(title)}</b>${sub?`<small>${esc(sub)}</small>`:""}</span></button>`}
+const AS_KIND={children:["ילדים","child",c=>[fullName(c),[gName(c.garden_id),c.id_number&&"ת.ז. "+c.id_number].filter(Boolean).join(" · ")]],
+ staff:["צוות","users",x=>[x.full_name,[(x.roles||[]).join(", "),gName(x.garden_id),x.phone].filter(Boolean).join(" · ")]],
+ gardens:["גנים","school",g=>[g.name,[g.city,g.symbol&&"סמל "+g.symbol,g.phone].filter(Boolean).join(" · ")]],
+ office:["משתמשי משרד","user",o=>[o.full_name,[o.email,o.role].filter(Boolean).join(" · ")]],
+ suppliers:["ספקים","coin",s=>[s.name,[s.phone,(s.emails||"")].filter(Boolean).join(" · ")]],
+ tasks:["משימות","check",t=>[t.title,[t.status,t.due_date].filter(Boolean).join(" · ")]],
+ notes:["פתקים","note",n=>[n.title,String(n.content||"").slice(0,80)]],
+ emails:["מיילים","mail",m=>[m.subject||"(ללא נושא)",[m.from_name||m.from_email,fmtTs(m.received_date),m.status].filter(Boolean).join(" · ")]],
+ programs:["צהרונים","school",p=>[p.name,gName(p.garden_id)]]};
+function asSearch(q){const words=asNorm(q).split(" ").filter(w=>w.length>1),dq=q.replace(/\D/g,"");const out=[];
+  for(const col of asCols){const K=AS_KIND[col];if(!K)continue;const hits=[];
+    for(const r of vals(col)){const hay=asNorm(Object.entries(r).filter(([k,v])=>typeof v!=="object"&&!/^(created|updated)_|_id$|^html$/.test(k)).map(([,v])=>v).join(" ")+" "+(col==="children"?fullName(r):""));
+      let sc=0;if(dq.length>=5&&hay.replace(/\D/g,"").includes(dq))sc+=5;for(const w of words)if(hay.includes(w))sc+=hay.includes(" "+w)||hay.startsWith(w)?2:1;
+      if(sc>=Math.max(1,words.length)||dq.length>=5&&sc>=5)hits.push([sc,r])}
+    hits.sort((a,b)=>b[0]-a[0]);if(hits.length)out.push([col,hits.map(h=>h[1])])}
+  return out}
+function asFind(name,cols){const q=asNorm(name);const res=[];for(const col of cols)for(const r of vals(col)){const n=asNorm(col==="children"?fullName(r):r.full_name||r.name||"");if(!n)continue;if(n===q)res.unshift([col,r]);else if(n.includes(q)||q.includes(n)&&n.length>3)res.push([col,r])}
+  const exact=res.filter(([c,r])=>asNorm(c==="children"?fullName(r):r.full_name||r.name)===q);return exact.length?exact:res}
+function asSplitTo(m){const rest=m[2];let best=-1,len=0;const re=/\s+ל(?:[-־:]\s*|\s+)/g;let x;while(x=re.exec(rest)){best=x.index;len=x[0].length}
+  if(best<0){const y=rest.match(/^(.+?)\s+ל(\S.*)$/);return y?[m[0],m[1],y[1],y[2]]:null}return [m[0],m[1],rest.slice(0,best),rest.slice(best+len)]}
+function asDate(t){const d=new Date();if(/מחרתיים/.test(t))d.setDate(d.getDate()+2);else if(/מחר/.test(t))d.setDate(d.getDate()+1);else if(!/היום/.test(t)){const m=t.match(/(\d{1,2})[./](\d{1,2})(?:[./](\d{2,4}))?/);if(!m)return "";d.setMonth(+m[2]-1,+m[1]);if(m[3])d.setFullYear(+m[3]<100?2000+ +m[3]:+m[3])}
+  return d.toISOString().slice(0,10)}
+function asConfirm(text,fn){const id="p"+(++AS.n);AS.pend.set(id,fn);return `${text}<div class="row" style="margin-top:8px"><button class="btn sm primary" data-asok="${id}">${ico("check")}אישור</button><button class="btn sm ghost" data-asno="${id}">ביטול</button></div>`}
+const AS_FIELD={"טלפון":"phone","נייד":"phone","מייל":"email","אימייל":"email","דואל":"email","כתובת":"address","תז":"id_number","ת.ז":"id_number","תעודת זהות":"id_number","סמל":"symbol","עיר":"city","הערות":"notes"};
+async function asAnswer(q){const t=q.trim(),n=asNorm(t);
+  if(!t||/^(עזרה|help|\?)$/.test(n))return AS_HELP;
+  let m;
+  if(m=t.match(/^(?:משימה|צור משימה|הוסף משימה|תזכורת)\s*[:\-–]?\s*(.+)$/)){if(!canWrite)return "אין לך הרשאת עריכה.";const title=m[1].replace(/\s*(מחרתיים|מחר|היום|ב?-?\d{1,2}[./]\d{1,2}(?:[./]\d{2,4})?)\s*$/,"").trim()||m[1];const due=asDate(m[1]);
+    return asConfirm(`ליצור משימה: <b>${esc(title)}</b>${due?` · יעד ${esc(due.split("-").reverse().join("/"))}`:""} · אחראית: את`,async()=>{const id=await save(E.tasks,null,{title,status:"פעיל",priority:"רגילה",assigned_to:myOid(),...(due?{due_date:due}:{})});return `✓ המשימה נוצרה. ${asItem("tasks",id,title,"פתיחה","check")}`})}
+  if(m=t.match(/^(?:פתק|רשום|תרשום|תזכיר לי)\s*[:\-–]?\s*(.+)$/s)){if(!canWrite)return "אין לך הרשאת עריכה.";const body=m[1].trim();
+    return asConfirm(`ליצור פתק פרטי: <b>${esc(body.slice(0,80))}</b>`,async()=>{const id=await save({col:"notes"},null,{title:body.split(/\n|[.!?]/)[0].slice(0,60),content:body,share:"private"});return `✓ הפתק נשמר. ${asItem("notes",id,body.slice(0,60),"פתיחה","note")}`})}
+  if((m=t.match(/^(?:עדכן|תעדכן|שנה|תשנה)\s+(?:את\s+)?(?:ה)?(טלפון|נייד|מייל|אימייל|דוא"?ל|כתובת|ת\.?ז\.?|תעודת זהות|סמל|עיר|הערות)\s+(?:של\s+)?(.+)$/))&&(m=asSplitTo(m))){if(!canWrite)return "אין לך הרשאת עריכה.";
+    const fk=AS_FIELD[m[1].replace(/["\.]/g,"").replace("דואל","דואל")]||AS_FIELD[m[1]]||(/ת.?ז/.test(m[1])?"id_number":/דוא/.test(m[1])?"email":"phone");let val=m[3].trim();if(fk==="phone"||fk==="id_number"||fk==="symbol")val=val.replace(/[^\d,\s-]/g,"").trim();
+    let nm2=m[2].trim(),cols=["staff","children","gardens","office","suppliers"];const pre=nm2.match(/^(הגננת|הסייעת|העובדת|איש הצוות|המטפלת|הילד|הילדה|התלמיד|הגן|הספק|המשתמשת)\s+/);if(pre){nm2=nm2.slice(pre[0].length);cols=/ילד|תלמיד/.test(pre[1])?["children"]:/גן$/.test(pre[1])?["gardens"]:/ספק/.test(pre[1])?["suppliers"]:/משתמשת/.test(pre[1])?["office"]:["staff"]}
+    const found=asFind(nm2,cols);if(!found.length)return `לא מצאתי את "${esc(nm2)}". נסי לכתוב את השם המלא.`;
+    if(found.length>1)return `מצאתי כמה אפשרויות ל"${esc(nm2)}". לחצי על הנכונה ועדכני בכרטיס:<div class="aslist">${found.slice(0,8).map(([c,r])=>{const[a,b]=AS_KIND[c][2](r);return asItem(c,r._id,a,b,AS_KIND[c][1])}).join("")}</div>`;
+    const [col,r]=found[0],key=col==="gardens"&&fk==="email"?"email":fk,[nm]=AS_KIND[col][2](r);
+    return asConfirm(`לעדכן <b>${esc(m[1])}</b> של <b>${esc(nm)}</b> (${AS_KIND[col][0]}): <span class="mono">${esc(r[key]||"—")}</span> ← <span class="mono">${esc(val)}</span>`,async()=>{await save(E[col]||{col},r._id,{[key]:val});return `✓ עודכן. ${asItem(col,r._id,nm,"פתיחת הכרטיס",AS_KIND[col][1])}`})}
+  if(m=t.match(/^(?:העבר|תעביר|שייך|תשייך|שבץ)\s+(?:את\s+)?(.+?)\s+(?:לגן|ל-?גן|לגני)\s+(.+)$/)){if(!canWrite)return "אין לך הרשאת עריכה.";
+    const g=asFind(m[2],["gardens"]);if(!g.length)return `לא מצאתי גן בשם "${esc(m[2])}".`;if(g.length>1)return `יש כמה גנים שמתאימים ל"${esc(m[2])}": ${g.slice(0,6).map(([,x])=>esc(x.name)).join(", ")}. כתבי את השם המלא.`;
+    const gd=g[0][1];let wn=m[1].trim(),wc=["children","staff"];const wp=wn.match(/^(הגננת|הסייעת|העובדת|המטפלת|הילד|הילדה)\s+/);if(wp){wn=wn.slice(wp[0].length);wc=/ילד/.test(wp[1])?["children"]:["staff"]}const who=asFind(wn,wc);if(!who.length)return `לא מצאתי ילד/ה או איש צוות בשם "${esc(wn)}".`;
+    if(who.length>1)return `מצאתי כמה אפשרויות ל"${esc(wn)}":<div class="aslist">${who.slice(0,8).map(([c,r])=>{const[a,b]=AS_KIND[c][2](r);return asItem(c,r._id,a,b,AS_KIND[c][1])}).join("")}</div>`;
+    const [col,r]=who[0],nm=AS_KIND[col][2](r)[0];
+    return asConfirm(`להעביר את <b>${esc(nm)}</b> ${r.garden_id?`מ<b>${esc(gName(r.garden_id))}</b> `:""}ל<b>${esc(gd.name)}</b>?`,async()=>{if(col==="children")await crmMove(r,gd._id);else await save(E.staff,r._id,{garden_id:gd._id});return `✓ ${esc(nm)} שויכ/ה ל${esc(gd.name)}.`})}
+  if(/מי לא (דיווח|החתים|הגיע)|מי (בגן|בעבודה|הגיע|החתים|דיווח)|נוכחות (היום|עכשיו)/.test(n)){const ym=new Date().toISOString().slice(0,7),dd=new Date().toISOString().slice(8,10),col="attendance_"+ym;try{live(col)}catch(e){}for(let i=0;i<30&&!ready.has(col);i++)await new Promise(r=>setTimeout(r,250));
+    const docs=vals(col),by=new Map(docs.map(d=>[d.staff_id,(d.days||{})[dd]||[]]));const st=vals("staff").filter(x=>isOn(x.is_active)&&!x.office_id);
+    if(!docs.length&&!ready.has(col))return "נתוני הנוכחות עוד נטענים – נסי שוב בעוד כמה שניות.";
+    const inn=st.filter(x=>(by.get(x._id)||[]).length),out=st.filter(x=>!(by.get(x._id)||[]).length);const now=x=>{const a=by.get(x._id)||[];const l=a[a.length-1];return l?`${l.type} ${l.time}`:""};
+    const want=/לא/.test(n)?out:inn;
+    return `<b>${/לא/.test(n)?`${out.length} מתוך ${st.length} עוד לא דיווחו היום`:`${inn.length} מתוך ${st.length} דיווחו היום`}</b><div class="aslist">${want.slice(0,40).map(x=>asItem("staff",x._id,x.full_name,[gName(x.garden_id),now(x)].filter(Boolean).join(" · "),"users")).join("")}</div>${want.length>40?`<p class="sub">ועוד ${want.length-40}…</p>`:""}`}
+  if(/^מיילים?\s*(חדשים|שלא טופלו|פתוחים)?$/.test(n)||/מיילים חדשים/.test(n)){const L=vals("emails").filter(e=>e.status==="חדש").sort((a,b)=>String(b.received_date).localeCompare(a.received_date));
+    return `<b>${L.length} מיילים חדשים</b><div class="aslist">${L.slice(0,25).map(e=>{const[a,b]=AS_KIND.emails[2](e);return asItem("emails",e._id,a,b,"mail")}).join("")}</div>`}
+  if(m=n.match(/^מיילים? מ(?:-|־)?\s*(.+)$/)){const w=m[1];const L=vals("emails").filter(e=>asNorm(e.from_email+" "+e.from_name).includes(w)).sort((a,b)=>String(b.received_date).localeCompare(a.received_date));
+    return L.length?`<b>${L.length} מיילים מ"${esc(w)}"</b><div class="aslist">${L.slice(0,25).map(e=>{const[a,b]=AS_KIND.emails[2](e);return asItem("emails",e._id,a,b,"mail")}).join("")}</div>`:`לא נמצאו מיילים מ"${esc(w)}".`}
+  const R=asSearch(t);if(!R.length)return `לא מצאתי שום דבר על "${esc(t)}". אפשר לנסות מילה אחרת, או לכתוב <b>עזרה</b>.`;
+  const tot=R.reduce((a,[,L])=>a+L.length,0);
+  return `<b>נמצאו ${tot} תוצאות</b>${R.map(([col,L])=>`<div class="asgrp">${esc(AS_KIND[col][0])} <span class="sub">(${L.length})</span></div><div class="aslist">${L.slice(0,8).map(r=>{const[a,b]=AS_KIND[col][2](r);return asItem(col,r._id,a,b,AS_KIND[col][1])}).join("")}${L.length>8?`<p class="sub">ועוד ${L.length-8}…</p>`:""}</div>`).join("")}`}
+function asPaint(){let d=$("#asDrawer");if(!AS.open){d?.remove();$("#asFab")?.classList.remove("on");return}
+  if(!d){d=document.createElement("aside");d.id="asDrawer";d.setAttribute("role","dialog");d.setAttribute("aria-label","עוזר אישי");document.body.appendChild(d);
+    d.innerHTML=`<div class="ashead"><b>${ico("spark")} עוזר אישי</b><span class="sub">חיפוש בכל המערכת ועדכונים מהירים</span><button class="iconbtn" data-asclose aria-label="סגירה">${ico("x")}</button></div><div class="asmsgs" id="asMsgs" aria-live="polite"></div>
+     <div class="aschips">${["מי לא דיווח היום","מיילים חדשים","משימה: ","פתק: ","עזרה"].map(c=>`<button class="chip" data-aschip="${esc(c)}">${esc(c.replace(/: $/,"…"))}</button>`).join("")}</div>
+     <form id="asForm" class="asform"><input id="asIn" autocomplete="off" placeholder="מה לחפש או לעשות? למשל: רחל כהן / משימה: …" aria-label="שאלה לעוזר"><button class="btn primary" aria-label="שליחה">${ico("send")}</button></form>`;
+    if(!AS.msgs.length)AS.msgs.push(["a",`שלום ${esc((me.name||"").split(" ")[0])}! אני יכולה לחפש בכל המערכת – ילדים, צוות, גנים, מיילים, משימות ופתקים – ולעדכן דברים בשבילך.<br>${AS_HELP}`])}
+  $("#asFab")?.classList.add("on");const box=$("#asMsgs");box.innerHTML=AS.msgs.map(([w,h])=>`<div class="asmsg ${w}">${h}</div>`).join("");box.scrollTop=box.scrollHeight}
+async function asAsk(q){if(!q.trim())return;AS.msgs.push(["u",esc(q)]);AS.msgs.push(["a",'<span class="spin"></span>']);asPaint();
+  let h;try{h=await asAnswer(q)}catch(e){h="משהו השתבש: "+esc(e.message||e)}AS.msgs[AS.msgs.length-1]=["a",h];asPaint()}
+function asToggle(on){AS.open=on??!AS.open;if(AS.open)asLoad();asPaint();if(AS.open)setTimeout(()=>$("#asIn")?.focus(),30)}
+function asFab(){if($("#asFab")||!me.email||document.body.classList.contains("login"))return;const b=document.createElement("button");b.id="asFab";b.className="asfab";b.title="עוזר אישי (Ctrl+J)";b.setAttribute("aria-label","עוזר אישי");b.innerHTML=ico("spark")+"<span>עוזר</span>";b.onclick=()=>asToggle();document.body.appendChild(b)}
+setInterval(()=>{try{if(db&&me.email)asFab();else $("#asFab")?.remove()}catch(e){}},1500);
+document.addEventListener("submit",e=>{if(e.target.id!=="asForm")return;e.preventDefault();const i=$("#asIn");const q=i.value;i.value="";asAsk(q)});
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&(e.key==="j"||e.key==="J"||e.code==="KeyJ")){e.preventDefault();asToggle()}else if(e.key==="Escape"&&AS.open&&!$("#modal .modal"))asToggle(false)});
+document.addEventListener("click",async e=>{const el=e.target.closest("[data-asclose],[data-aschip],[data-asok],[data-asno]");if(!el)return;
+  if(el.dataset.asclose!==undefined)return asToggle(false);
+  if(el.dataset.aschip!==undefined){const v=el.dataset.aschip;if(/: $/.test(v)){const i=$("#asIn");i.value=v;i.focus()}else asAsk(v);return}
+  const id=el.dataset.asok||el.dataset.asno,fn=AS.pend.get(id);AS.pend.delete(id);const host=el.closest(".asmsg");host?.querySelectorAll("[data-asok],[data-asno]").forEach(b=>b.disabled=true);
+  if(el.dataset.asno||!fn){AS.msgs.push(["a","בוטל."]);return asPaint()}
+  try{const r=await fn();AS.msgs.push(["a",r]);audit("עוזר אישי","עדכון","",String(r).replace(/<[^>]+>/g,"").slice(0,120))}catch(err){AS.msgs.push(["a","השמירה נכשלה: "+esc(err.message||err)])}asPaint()});
 
 (async()=>{
   let lk=window.KG_LOGIN||"";try{const u=new URL(location.href);if(!lk)lk=u.searchParams.get("login")||"";if(u.searchParams.get("login")){u.searchParams.delete("login");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
