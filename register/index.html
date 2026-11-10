@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>גני מלכות – הרשמה לשנת הלימודים</title>
+<meta name="description" content="הרשמה לגני הבנות ולמעונות היום של רשת גני מלכות. מידע להורים, בדיקת התאמת גיל וטופס הרשמה מקוון.">
+<meta name="theme-color" content="#3a1645">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%233a1645'/%3E%3Cpath d='M14 44 L18 22 L27 32 L32 18 L37 32 L46 22 L50 44 Z' fill='%23d4a94f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Assistant:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'">
+<script>window.KG_API="https://script.google.com/macros/s/AKfycbx1S1OEbhTtgp_j4PyiEPCTwTtD25FZUO8pmNYHj9z1ZbzAt_0_uW-UImWbz9hH1_UVCg/exec";</script>
+<style>
+:root{
+  --plum:#3a1645;--plum2:#5b2a6e;--ink:#2a1530;--gold:#d4a94f;--gold2:#b8862b;--blush:#f6e4ee;--petal:#fbf5f9;--paper:#fffdfe;--mute:#7a6680;--line:#ead9e4;--ok:#2f8f6b;--bad:#c2410c;
+  --r:22px;--shadow:0 30px 60px -30px rgba(58,22,69,.35);
+  font-family:"Assistant",system-ui,sans-serif;color:var(--ink);background:var(--petal)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--petal);font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--plum2)}h1,h2,h3{font-family:"Frank Ruhl Libre",serif;line-height:1.15;margin:0;color:var(--plum);text-wrap:balance}p{text-wrap:pretty}
+img,svg{display:block}button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:8px}
+.wrap{width:min(1120px,100% - 32px);margin-inline:auto}
+.skip{position:absolute;top:8px;inset-inline-start:16px;z-index:99;background:#fff;padding:8px 14px;border-radius:10px;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}.skip:focus{clip-path:none;width:auto;height:auto}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--petal) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .3s}
+.nav.scrolled{border-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:18px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--plum);font-family:"Frank Ruhl Libre",serif;font-weight:900;font-size:1.35rem}
+.logo svg{width:34px;height:34px}
+.nav nav{display:flex;gap:4px;margin-inline-start:auto}.nav nav a{text-decoration:none;color:var(--ink);padding:8px 12px;border-radius:999px;font-weight:600;font-size:.95rem}.nav nav a:hover{background:var(--blush)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:13px 26px;font-weight:800;font-size:1rem;cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .2s,background .2s}
+.btn.main{background:var(--plum);color:#fff;box-shadow:0 12px 28px -12px rgba(58,22,69,.65)}.btn.main:hover{transform:translateY(-2px);background:var(--plum2)}
+.btn.gold{background:var(--gold);color:var(--plum)}.btn.gold:hover{background:#e0b85f}
+.btn.line{background:transparent;color:var(--plum);box-shadow:inset 0 0 0 2px var(--plum)}.btn.line:hover{background:var(--plum);color:#fff}
+.btn[disabled]{opacity:.55;cursor:not-allowed;transform:none}
+@media (max-width:760px){.nav nav{display:none}.nav .btn{padding:10px 18px;margin-inline-start:auto}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding:70px 0 90px;background:radial-gradient(1200px 520px at 80% -10%,#f1d6e6 0,transparent 60%),radial-gradient(900px 500px at 0% 110%,#efe0f5 0,transparent 55%),var(--petal)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(2.6rem,6.2vw,5.2rem);font-weight:900;letter-spacing:-.01em}
+.hero h1 .l2{display:block;color:var(--plum2);font-weight:700;font-size:.62em;margin-top:.25em}
+.verse{display:inline-block;margin:0 0 18px;font-family:"Frank Ruhl Libre",serif;color:var(--gold2);font-size:1.1rem}
+.hero p.lead{font-size:1.2rem;max-width:34ch;color:#4d3a54;margin:22px 0 30px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.crownbox{position:relative;aspect-ratio:1;max-width:460px;justify-self:center;width:100%}
+.crownbox svg{width:100%;height:100%;overflow:visible}
+.cr-line{fill:none;stroke:var(--gold);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.2s cubic-bezier(.65,0,.35,1) .25s forwards}
+.cr-fill{fill:url(#gg);opacity:0;animation:fadein 1s ease 2s forwards}
+.cr-gem{fill:var(--plum2);transform-box:fill-box;transform-origin:center;transform:scale(0);animation:pop .5s cubic-bezier(.3,1.6,.5,1) forwards}
+.cr-ring{fill:none;stroke:color-mix(in srgb,var(--plum) 10%,transparent);stroke-width:1.2}
+.spark{fill:var(--gold);transform-box:fill-box;transform-origin:center;opacity:0;animation:twinkle 3.6s ease-in-out infinite}
+.hero .reveal{opacity:0;transform:translateY(18px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+.hero .r1{animation-delay:.9s}.hero .r2{animation-delay:1.15s}.hero .r3{animation-delay:1.4s}.hero .r4{animation-delay:1.6s}
+@keyframes draw{to{stroke-dashoffset:0}}@keyframes fadein{to{opacity:1}}@keyframes pop{to{transform:scale(1)}}@keyframes rise{to{opacity:1;transform:none}}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.4) rotate(0)}45%{opacity:1;transform:scale(1) rotate(45deg)}60%{opacity:.2}}
+@media (max-width:860px){.hero{padding:30px 0 60px}.hero .wrap{grid-template-columns:1fr}.crownbox{max-width:260px;order:-1}.hero p.lead{max-width:none}}
+
+/* age finder */
+.finder{position:relative;margin-top:-46px;z-index:2}
+.finder .card{background:var(--plum);color:#fff;border-radius:28px;padding:30px 34px;display:grid;grid-template-columns:1fr auto 1.2fr;gap:26px;align-items:center;box-shadow:var(--shadow)}
+.finder h2{color:#fff;font-size:1.6rem}.finder p{margin:4px 0 0;color:#e9d7ef;font-size:1rem}
+.finder label{display:flex;flex-direction:column;gap:6px;font-weight:700;color:#f3e6f6}
+.finder input{background:#fff;color:var(--ink);border:0;border-radius:14px;padding:12px 14px;min-width:200px}
+.fres{min-height:76px;border-radius:18px;background:color-mix(in srgb,#fff 9%,transparent);padding:14px 18px;display:flex;flex-direction:column;justify-content:center}
+.fres b{font-family:"Frank Ruhl Libre",serif;font-size:1.7rem;color:var(--gold);line-height:1.2}.fres span{color:#ecdcf1;font-size:.98rem}
+.fres.pulse{animation:fpulse .5s ease}@keyframes fpulse{50%{transform:scale(1.03)}}
+@media (max-width:860px){.finder .card{grid-template-columns:1fr;padding:24px}}
+
+/* sections */
+section.blk{padding:96px 0}section.blk>.wrap>h2{font-size:clamp(2rem,4vw,3rem);max-width:20ch}
+.sub{color:var(--mute);font-size:1.08rem;max-width:52ch;margin:12px 0 0}
+.frames{display:grid;grid-template-columns:1.25fr 1fr .8fr;gap:18px;margin-top:44px;align-items:stretch}
+.frame{position:relative;border-radius:var(--r);padding:30px;background:var(--paper);border:1px solid var(--line);display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.frame h3{font-size:1.75rem}.frame .ages{display:flex;flex-wrap:wrap;gap:6px}.frame .ages span{background:var(--blush);color:var(--plum);border-radius:999px;padding:3px 12px;font-weight:700;font-size:.85rem}
+.frame p{margin:0;color:#56435c}
+.frame .ic{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:var(--blush)}.frame .ic svg{width:32px;height:32px;stroke:var(--plum);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.frame.big{background:linear-gradient(160deg,#fff 0,#fbeef6 100%)}
+.frame.soon{background:transparent;border-style:dashed}.frame.soon h3{color:var(--mute)}.frame .tag{align-self:flex-start;background:var(--gold);color:var(--plum);font-weight:800;border-radius:999px;padding:2px 12px;font-size:.8rem}
+.frame .go{margin-top:auto;align-self:flex-start}
+@media (max-width:860px){.frames{grid-template-columns:1fr}}
+
+/* process */
+.proc{background:var(--paper);border-block:1px solid var(--line)}
+.steps{list-style:none;padding:0;margin:48px 0 0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;counter-reset:st}
+.steps::before{content:"";position:absolute;top:27px;inset-inline:12% 12%;height:2px;background:linear-gradient(90deg,var(--gold),var(--plum2));transform-origin:right;transform:scaleX(var(--prog,0));transition:transform 1.4s cubic-bezier(.6,0,.2,1)}
+.steps li{counter-increment:st;text-align:center;padding:0 14px;position:relative}
+.steps li::before{content:counter(st);display:grid;place-items:center;width:56px;height:56px;margin:0 auto 16px;border-radius:50%;background:var(--paper);border:2px solid var(--gold);font-family:"Frank Ruhl Libre",serif;font-weight:900;font-size:1.4rem;color:var(--plum);position:relative;z-index:1}
+.steps h3{font-size:1.25rem;margin-bottom:6px}.steps p{margin:0;color:var(--mute);font-size:.98rem}
+@media (max-width:860px){.steps{grid-template-columns:1fr;gap:26px}.steps::before{display:none}.steps li{display:grid;grid-template-columns:56px 1fr;text-align:start;gap:0 14px;padding:0}.steps li::before{margin:0;grid-row:span 2}}
+
+/* info */
+.info{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px}
+.info ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px}
+.info li{display:flex;gap:12px;align-items:flex-start}.info li svg{flex:none;width:26px;height:26px;margin-top:3px;stroke:var(--gold2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.privacy{border-radius:var(--r);padding:26px;background:linear-gradient(140deg,var(--plum),#4d1f5c);color:#f2e6f5}.privacy h3{color:#fff;font-size:1.35rem;margin-bottom:8px}.privacy p{margin:0 0 8px;font-size:.98rem}
+@media (max-width:860px){.info{grid-template-columns:1fr}}
+
+/* faq */
+.faq{margin-top:34px;display:flex;flex-direction:column;gap:10px;max-width:820px}
+.faq details{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:0 20px}
+.faq summary{cursor:pointer;list-style:none;padding:18px 0;font-weight:700;display:flex;justify-content:space-between;gap:12px}.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:1.4rem;line-height:1;color:var(--gold2);transition:transform .2s}.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0 0 18px;color:#56435c;white-space:pre-line}
+
+/* form */
+.formsec{background:linear-gradient(180deg,var(--petal),#f3e3ee)}
+.sheet{margin-top:40px;background:var(--paper);border-radius:30px;box-shadow:var(--shadow);border:1px solid var(--line);overflow:hidden;display:grid;grid-template-columns:260px 1fr}
+.side{background:var(--plum);color:#eedff3;padding:32px 26px;display:flex;flex-direction:column;gap:6px}
+.side h3{color:#fff;font-size:1.3rem;margin-bottom:14px}
+.side ol{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}
+.side li{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:14px;font-weight:600;color:#cdb6d6;transition:background .2s,color .2s}
+.side li i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-style:normal;border:1.5px solid currentColor;font-size:.9rem;flex:none}
+.side li.cur{background:color-mix(in srgb,#fff 12%,transparent);color:#fff}.side li.cur i{background:var(--gold);border-color:var(--gold);color:var(--plum)}
+.side li.done{color:#fff}.side li.done i{background:#fff;color:var(--plum);border-color:#fff}
+.side .note{margin-top:auto;font-size:.85rem;color:#c8b1d1}
+.pane{padding:36px 40px;min-height:520px;display:flex;flex-direction:column}
+.pane h3{font-size:1.7rem;margin-bottom:4px}.pane .hint{color:var(--mute);margin:0 0 22px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}.full{grid-column:1/-1}
+.fld{display:flex;flex-direction:column;gap:6px}.fld>span{font-weight:700;font-size:.95rem}.fld>span em{font-style:normal;color:var(--mute);font-weight:400}
+.fld input,.fld select,.fld textarea{border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;transition:border-color .15s,box-shadow .15s;width:100%}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--plum2);box-shadow:0 0 0 4px color-mix(in srgb,var(--plum2) 14%,transparent)}
+.fld.err input,.fld.err select{border-color:var(--bad)}.fld .msg{color:var(--bad);font-size:.85rem;min-height:0}
+.choice{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.choice label{position:relative;cursor:pointer}.choice input{position:absolute;opacity:0}
+.choice .opt{display:flex;flex-direction:column;gap:2px;border:1.5px solid var(--line);border-radius:18px;padding:16px 18px;background:#fff;transition:border-color .15s,background .15s,transform .15s}
+.choice .opt b{font-family:"Frank Ruhl Libre",serif;font-size:1.3rem;color:var(--plum)}.choice .opt small{color:var(--mute)}
+.choice input:checked+.opt{border-color:var(--plum2);background:#faf1f7;box-shadow:inset 0 0 0 1px var(--plum2)}
+.choice input:focus-visible+.opt{outline:3px solid var(--gold);outline-offset:2px}
+.choice input:disabled+.opt{opacity:.5;cursor:not-allowed}
+.agebadge{display:none;align-items:center;gap:8px;margin-top:8px;padding:8px 14px;border-radius:999px;background:#f2ecdb;color:#6b4f12;font-weight:700;font-size:.92rem;align-self:flex-start}.agebadge.on{display:inline-flex}
+.agebadge.warn{background:#fde7d9;color:var(--bad)}
+.nav2{display:flex;gap:10px;justify-content:space-between;margin-top:auto;padding-top:28px}
+.sum{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;background:var(--petal);border-radius:18px;padding:18px 20px;margin-bottom:18px}.sum dt{color:var(--mute)}.sum dd{margin:0;font-weight:700}
+.consent{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;font-size:.95rem}.consent input{width:22px;height:22px;margin-top:3px;accent-color:var(--plum)}
+.alert{border-radius:14px;padding:12px 16px;margin-bottom:14px;background:#fdecea;color:#8a2a0a;font-weight:600}
+.hp{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;opacity:0;pointer-events:none}
+.panein{animation:panein .45s cubic-bezier(.2,.7,.2,1)}@keyframes panein{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@media (max-width:860px){.sheet{grid-template-columns:1fr}.side{padding:18px}.side ol{flex-direction:row;overflow:auto}.side li{flex-direction:column;gap:4px;font-size:.78rem;padding:8px;min-width:76px;text-align:center}.side h3,.side .note{display:none}.pane{padding:24px 18px}.grid2{grid-template-columns:1fr}}
+
+/* done / status */
+.fin{text-align:center;align-items:center;justify-content:center;gap:12px}
+.fin .seal{width:120px;height:120px}.fin .seal circle{fill:none;stroke:var(--gold);stroke-width:4;stroke-dasharray:340;stroke-dashoffset:340;animation:dsh 1s ease forwards}
+.fin .seal path{fill:none;stroke:var(--plum);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:80;stroke-dashoffset:80;animation:dsh .5s ease .8s forwards}@keyframes dsh{to{stroke-dashoffset:0}}
+.ref{font-family:"Frank Ruhl Libre",serif;font-size:2rem;color:var(--plum);letter-spacing:.04em;background:var(--blush);border-radius:16px;padding:6px 18px;direction:ltr}
+.track{list-style:none;padding:0;margin:26px 0;display:flex;flex-direction:column;gap:0;max-width:520px;width:100%;text-align:start}
+.track li{display:grid;grid-template-columns:40px 1fr;gap:14px;padding-bottom:22px;position:relative}
+.track li::before{content:"";position:absolute;inset-inline-start:19px;top:36px;bottom:0;width:2px;background:var(--line)}.track li:last-child::before{display:none}
+.track i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);background:#fff;font-style:normal;font-weight:800;color:var(--mute)}
+.track li.done i{background:var(--plum);border-color:var(--plum);color:#fff}.track li.cur i{border-color:var(--gold);color:var(--plum);box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 25%,transparent)}
+.track b{display:block;color:var(--plum)}.track span{color:var(--mute);font-size:.95rem}
+.solo{min-height:calc(100vh - 68px);display:grid;place-items:center;padding:40px 0}
+.solo .box{background:var(--paper);border-radius:30px;box-shadow:var(--shadow);border:1px solid var(--line);padding:40px;width:min(760px,100% - 32px)}
+.drop{border:2px dashed var(--line);border-radius:18px;padding:22px;text-align:center;background:#fff;cursor:pointer;transition:border-color .2s,background .2s}.drop.over,.drop:hover{border-color:var(--plum2);background:#faf1f7}
+.files{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-direction:column;gap:6px}.files li{display:flex;justify-content:space-between;gap:10px;background:var(--petal);border-radius:12px;padding:8px 12px;font-size:.92rem}
+.files button{border:0;background:none;color:var(--bad);cursor:pointer;font-weight:700}
+footer{background:var(--plum);color:#e2cfe8;padding:46px 0 34px;font-size:.95rem}footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center}footer a{color:#fff}
+.loading{display:inline-block;width:18px;height:18px;border-radius:50%;border:2.5px solid currentColor;border-inline-end-color:transparent;animation:spin .7s linear infinite;vertical-align:middle}@keyframes spin{to{transform:rotate(360deg)}}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;transition-duration:.001s!important}.cr-line{stroke-dashoffset:0}.hero .reveal{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#register">דילוג לטופס ההרשמה</a>
+<header class="nav" id="nav"><div class="wrap">
+  <a class="logo" href="./" aria-label="גני מלכות – דף הבית"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#3a1645"/><path d="M14 44 L18 22 L27 32 L32 18 L37 32 L46 22 L50 44 Z" fill="#d4a94f"/></svg><span id="brandName">גני מלכות</span></a>
+  <nav aria-label="ניווט באתר"><a href="./#frames">המסגרות</a><a href="./#process">איך נרשמים</a><a href="./#info">מידע להורים</a><a href="./#faq" id="navFaq">שאלות</a></nav>
+  <a class="btn main" href="#register">להרשמה</a>
+</div></header>
+
+<main id="landing">
+  <section class="hero"><div class="wrap">
+    <div>
+      <p class="verse reveal r1">״כל כבודה בת מלך פנימה״</p>
+      <h1 class="reveal r2">גני מלכות<span class="l2">מקום שבו כל ילדה גדלה כבת מלך</span></h1>
+      <p class="lead reveal r3" id="intro">גני ילדות ומעונות יום לבנות, עם צוות חינוכי מסור, אווירה חמה ויסודות של תורה ויראת שמים. ההרשמה לשנת הלימודים הבאה פתוחה כעת.</p>
+      <div class="ctas reveal r4"><a class="btn main" href="#register">להרשמה מקוונת</a><a class="btn line" href="#process">איך זה עובד</a></div>
+    </div>
+    <div class="crownbox" aria-hidden="true">
+      <svg viewBox="0 0 400 400">
+        <defs><linearGradient id="gg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ecc979"/><stop offset="1" stop-color="#c39130"/></linearGradient></defs>
+        <circle class="cr-ring" cx="200" cy="205" r="170"/><circle class="cr-ring" cx="200" cy="205" r="128"/>
+        <path class="cr-fill" d="M86 278 L70 140 L140 200 L200 104 L260 200 L330 140 L314 278 Z"/>
+        <path class="cr-line" pathLength="1" d="M86 278 L70 140 L140 200 L200 104 L260 200 L330 140 L314 278 Z M92 304 H308"/>
+        <circle class="cr-gem" cx="70" cy="132" r="11" style="animation-delay:1.8s"/><circle class="cr-gem" cx="200" cy="94" r="13" style="animation-delay:1.95s"/><circle class="cr-gem" cx="330" cy="132" r="11" style="animation-delay:2.1s"/>
+        <circle class="cr-gem" cx="200" cy="244" r="15" style="animation-delay:2.25s;fill:#fff"/><circle class="cr-gem" cx="200" cy="244" r="8" style="animation-delay:2.35s"/>
+        <path class="spark" d="M0-12 L3-3 L12 0 L3 3 L0 12 L-3 3 L-12 0 L-3-3Z" transform="translate(110 92)" style="animation-delay:2.6s"/>
+        <path class="spark" d="M0-12 L3-3 L12 0 L3 3 L0 12 L-3 3 L-12 0 L-3-3Z" transform="translate(305 70) scale(.8)" style="animation-delay:3.3s"/>
+        <path class="spark" d="M0-12 L3-3 L12 0 L3 3 L0 12 L-3 3 L-12 0 L-3-3Z" transform="translate(346 236) scale(.6)" style="animation-delay:4s"/>
+        <path class="spark" d="M0-12 L3-3 L12 0 L3 3 L0 12 L-3 3 L-12 0 L-3-3Z" transform="translate(52 236) scale(.7)" style="animation-delay:4.6s"/>
+      </svg>
+    </div>
+  </div></section>
+
+  <div class="finder wrap"><div class="card">
+    <div><h2>לאיזו מסגרת מתאימה הבת שלכם?</h2><p>הכניסו תאריך לידה, ונראה מיד את שכבת הגיל לשנה הבאה.</p></div>
+    <label>תאריך לידה<input type="date" id="fBirth" aria-describedby="fRes"></label>
+    <div class="fres" id="fRes" aria-live="polite"><b>—</b><span>שכבת הגיל תופיע כאן</span></div>
+  </div></div>
+
+  <section class="blk" id="frames"><div class="wrap">
+    <h2>מסגרות לכל גיל</h2>
+    <p class="sub">מהתינוקייה ועד גן חובה – רצף חינוכי אחד, באותה רוח ובאותה תשומת לב.</p>
+    <div class="frames">
+      <article class="frame big"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 9.5V20h14V9.5"/><path d="M10 20v-5h4v5"/></svg></div><h3>גני ילדות</h3>
+        <div class="ages"><span>טרום טרום חובה</span><span>טרום חובה</span><span>חובה</span></div>
+        <p>גנים לבנות בגילאי 3–6, עם תוכנית לימודים מוכרת, חגים ומועדים, הכנה לכיתה א׳ וליווי צמוד של הגננת.</p>
+        <a class="btn line go" href="#register" data-pick="גן">להרשמה לגן</a></article>
+      <article class="frame"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21c4.5-2.5 7-6 7-10a7 7 0 0 0-14 0c0 4 2.5 7.5 7 10Z"/><path d="M9.5 11.5c.8 1 1.6 1.5 2.5 1.5s1.7-.5 2.5-1.5"/></svg></div><h3>מעונות יום</h3>
+        <div class="ages"><span>תינוקייה</span><span>פעוטון</span><span>בוגרים</span></div>
+        <p>מעונות מפוקחים לגילאי 3 חודשים עד 3 שנים, בקבוצות קטנות ובאווירה ביתית.</p>
+        <a class="btn line go" href="#register" data-pick="מעון יום">להרשמה למעון</a></article>
+      <article class="frame soon" id="soonCard"><span class="tag">בקרוב</span><h3>צהרונים</h3><p>צהרונים בגנים, עם ארוחה חמה והפעלות. ההרשמה תיפתח בהמשך.</p></article>
+    </div>
+  </div></section>
+
+  <section class="blk proc" id="process"><div class="wrap">
+    <h2>איך נרשמים</h2>
+    <p class="sub">ארבעה שלבים פשוטים. בכל שלב תקבלו עדכון במייל, ותוכלו לבדוק את מצב הבקשה בכל רגע.</p>
+    <ol class="steps" id="steps">
+      <li><h3>ממלאים בקשה</h3><p>טופס קצר באתר – כחמש דקות.</p></li>
+      <li><h3>משלימים פרטים</h3><p>נשלח אליכם טופס השלמה ומעלים צילום ת.ז. עם ספח.</p></li>
+      <li><h3>שיבוץ</h3><p>המשרד משבץ לגן המתאים לפי האזור והגיל.</p></li>
+      <li><h3>אישור הרשמה</h3><p>מקבלים אישור במייל עם כל פרטי הגן.</p></li>
+    </ol>
+  </div></section>
+
+  <section class="blk" id="info"><div class="wrap">
+    <h2>מה כדאי להכין</h2>
+    <div class="info">
+      <ul>
+        <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><div><b>תעודת הזהות של הילדה</b><br>מספר הזהות ותאריך הלידה.</div></li>
+        <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><div><b>פרטי ההורים</b><br>שם, טלפון נייד וכתובת מייל לקבלת העדכונים.</div></li>
+        <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><div><b>צילום ת.ז. עם ספח</b><br>נבקש אותו רק בשלב ההשלמה – אפשר לצלם בטלפון.</div></li>
+        <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><div><b>האזור המבוקש</b><br>נשבץ לגן הקרוב והמתאים ביותר.</div></li>
+      </ul>
+      <div class="privacy"><h3>הפרטים שלכם שמורים</h3><p>המידע נשמר במערכת מאובטחת של הרשת, ומשמש רק לצורך ההרשמה והשיבוץ.</p><p>המסמכים נשמרים בתיקייה חסויה, והגישה אליהם מוגבלת לצוות המשרד בלבד.</p><p>אפשר לבקש לעיין בפרטים או לתקן אותם בכל עת דרך המשרד.</p></div>
+    </div>
+  </div></section>
+
+  <section class="blk" id="faq" hidden><div class="wrap"><h2>שאלות נפוצות</h2><div class="faq" id="faqList"></div></div></section>
+
+  <section class="blk formsec" id="register"><div class="wrap">
+    <h2 id="regTitle">טופס הרשמה</h2>
+    <p class="sub" id="regSub">ממלאים פעם אחת – ואנחנו מלווים אתכם עד אישור ההרשמה.</p>
+    <div class="sheet">
+      <aside class="side"><h3>שלבי הטופס</h3><ol id="sideSteps"></ol><p class="note">אפשר לחזור אחורה בכל שלב. שום דבר לא נשלח עד הלחיצה על "שליחת הבקשה".</p></aside>
+      <form class="pane" id="regForm" novalidate autocomplete="on"></form>
+    </div>
+  </div></section>
+</main>
+
+<main id="solo" hidden><div class="solo"><div class="box" id="soloBox"></div></div></main>
+
+<footer><div class="wrap"><div><b style="font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;color:#fff" id="fBrand">גני מלכות</b><div id="contact"></div></div><div>© <span id="yr"></span> · כל הזכויות שמורות</div></div></footer>
+
+<script>
+(()=>{
+const API=window.KG_API||"";
+const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rpc=(fn,...args)=>new Promise((res,rej)=>{if(!API)return rej(new Error("השרת לא הוגדר"));const ac=new AbortController(),t=setTimeout(()=>ac.abort(),90000);
+  fetch(API,{method:"POST",redirect:"follow",signal:ac.signal,headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({rpc:fn,args})}).then(r=>r.text()).then(x=>{clearTimeout(t);let o;try{o=JSON.parse(x)}catch(e){return rej(new Error("לא ניתן להתחבר לשרת כרגע. נסו שוב בעוד רגע."))}o.err?rej(new Error(o.err)):res(o.ok)},e=>{clearTimeout(t);rej(new Error(e.name==="AbortError"?"החיבור איטי מדי. נסו שוב.":"לא ניתן להתחבר לשרת. בדקו את החיבור לאינטרנט ונסו שוב."))})});
+$("#yr").textContent=new Date().getFullYear();
+addEventListener("scroll",()=>$("#nav").classList.toggle("scrolled",scrollY>8),{passive:true});
+/* ---------- shared rules (same as server) ---------- */
+let INFO={year_start:(new Date().getMonth()>=0?new Date().getFullYear()+1:new Date().getFullYear()),types:["גן","מעון יום"],soon:["צהרון"],areas:[],open:true};
+const ageGroup=b=>{const d=new Date(b);if(isNaN(d))return "";const g=INFO.year_start-d.getFullYear();if(g>=6)return "מעל גיל גן";if(g===5)return "חובה";if(g===4)return "טרום חובה";if(g===3)return "טרום טרום חובה";const m=g*12+(8-d.getMonth());return m<3?"צעירה מדי":"מעון"};
+const frameOf=a=>a==="מעון"?"מעון יום":/חובה/.test(a)?"גן":"";
+const tzOk=v=>{const d=String(v||"").replace(/\D/g,"");if(d.length<5||d.length>9)return false;const s=d.padStart(9,"0");let t=0;for(let i=0;i<9;i++){let x=+s[i]*(i%2+1);if(x>9)x-=9;t+=x}return t%10===0};
+const phoneOk=v=>{let d=String(v||"").replace(/\D/g,"");if(d.startsWith("972"))d="0"+d.slice(3);return /^0(5\d{8}|[2-489]\d{7}|7\d{8})$/.test(d)};
+const mailOk=v=>/^[^\s@<>,;"']+@[^\s@<>,;"']+\.[a-z]{2,}$/i.test(String(v||"").trim());
+const yearLabel=()=>INFO.year_label||`${INFO.year_start-1}–${INFO.year_start}`;
+/* ---------- age finder ---------- */
+$("#fBirth").addEventListener("input",e=>{const a=ageGroup(e.target.value),box=$("#fRes");if(!a){box.innerHTML="<b>—</b><span>שכבת הגיל תופיע כאן</span>";return}
+  const fr=frameOf(a);box.innerHTML=a==="מעל גיל גן"?`<b>כיתה א׳ ומעלה</b><span>בשנת ${esc(yearLabel())} הילדה כבר לא בגיל הגן</span>`:a==="צעירה מדי"?`<b>עוד מעט…</b><span>הקבלה למעונות היא מגיל 3 חודשים</span>`:`<b>${esc(a)}</b><span>${esc(fr==="גן"?"גן ילדות":"מעון יום")} · שנת הלימודים ${esc(yearLabel())}</span>`;
+  box.classList.remove("pulse");void box.offsetWidth;box.classList.add("pulse");if(fr&&!F.data.type){F.data.type=fr}F.data.birth_date=e.target.value});
+/* process line animation (one reveal) */
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.style.setProperty("--prog",1);io.disconnect()}}),{threshold:.4});io.observe($("#steps"));
+document.addEventListener("click",e=>{const p=e.target.closest("[data-pick]");if(p){F.data.type=p.dataset.pick;F.step=0;paint()}});
+/* ---------- registration wizard ---------- */
+const F={step:0,data:{type:"",area:"",city:""},t0:Date.now(),busy:false,err:""};
+const STEPS=[["מסגרת ואזור","באיזו מסגרת ובאיזה אזור?"],["פרטי הילדה","כפי שמופיעים בתעודת הזהות"],["פרטי ההורים","לכאן נשלח את כל העדכונים"],["אישור ושליחה","בודקים שהכול נכון"]];
+const fld=(k,l,o={})=>`<label class="fld${o.full?" full":""}" data-f="${k}"><span>${l}${o.opt?" <em>(לא חובה)</em>":""}</span>${o.area?`<textarea name="${k}" rows="3">${esc(F.data[k]||"")}</textarea>`:`<input name="${k}" type="${o.type||"text"}" value="${esc(F.data[k]||"")}"${o.mode?` inputmode="${o.mode}"`:""}${o.ac?` autocomplete="${o.ac}"`:""}${o.dir?` dir="${o.dir}"`:""}${o.max?` maxlength="${o.max}"`:""}>`}<small class="msg"></small></label>`;
+function paint(){const s=F.step,d=F.data;
+  $("#sideSteps").innerHTML=STEPS.map(([l],i)=>`<li class="${i<s?"done":i===s?"cur":""}"><i>${i<s?"✓":i+1}</i>${l}</li>`).join("");
+  if(!INFO.open){$("#regForm").innerHTML=`<div class="panein"><h3>ההרשמה סגורה כרגע</h3><p class="hint">${esc(INFO.closed_msg||"")}</p></div>`;return}
+  let h=`<div class="panein"><h3>${STEPS[s][0]}</h3><p class="hint">${STEPS[s][1]}</p>`;
+  if(F.err)h+=`<div class="alert" role="alert">${esc(F.err)}</div>`;
+  if(s===0){const types=[...INFO.types,...INFO.soon.filter(x=>!INFO.types.includes(x))];
+    h+=`<div class="fld full" data-f="type"><span>סוג המסגרת</span><div class="choice" role="radiogroup">${types.map(t=>{const soon=!INFO.types.includes(t);return `<label><input type="radio" name="type" value="${esc(t)}"${d.type===t?" checked":""}${soon?" disabled":""}><span class="opt"><b>${esc(t==="גן"?"גן ילדות":t)}</b><small>${soon?"ההרשמה תיפתח בקרוב":t==="גן"?"גילאי 3–6":t==="מעון יום"?"גילאי 3 חודשים עד 3":""}</small></span></label>`}).join("")}</div><small class="msg"></small></div>
+      <div class="grid2" style="margin-top:18px"><label class="fld" data-f="area"><span>אזור מבוקש</span><select name="area"><option value="">בחירת אזור…</option>${INFO.areas.map(a=>`<option${d.area===a?" selected":""}>${esc(a)}</option>`).join("")}<option value="אחר"${d.area==="אחר"?" selected":""}>אחר</option></select><small class="msg"></small></label>${fld("city","עיר מגורים",{ac:"address-level2"})}</div>`}
+  if(s===1){const a=ageGroup(d.birth_date),warn=a&&(a==="מעל גיל גן"||a==="צעירה מדי"||frameOf(a)!==d.type);
+    h+=`<div class="grid2">${fld("first_name","שם פרטי",{ac:"off"})}${fld("last_name","שם משפחה",{ac:"family-name"})}${fld("id_number","מספר זהות",{mode:"numeric",max:9,dir:"ltr"})}${fld("birth_date","תאריך לידה",{type:"date"})}</div>
+      <span class="agebadge${a?" on":""}${warn?" warn":""}" id="ageB">${a?esc(warn?(a==="מעל גיל גן"?"לפי תאריך הלידה – מעל גיל הגן":a==="צעירה מדי"?"צעירה מדי לשנה זו":`מתאימה ל${frameOf(a)==="גן"?"גן":"מעון יום"} (${a}) – אפשר לחזור ולשנות את המסגרת`):`${a} · שנת הלימודים ${yearLabel()}`):""}</span>`}
+  if(s===2){h+=`<div class="grid2">${fld("parent1_first_name","שם פרטי – הורה",{ac:"given-name"})}${fld("parent1_last_name","שם משפחה",{ac:"family-name"})}${fld("parent1_phone","טלפון נייד",{type:"tel",mode:"tel",dir:"ltr",ac:"tel"})}${fld("email","מייל לעדכונים",{type:"email",dir:"ltr",ac:"email"})}
+      ${fld("parent2_first_name","שם הורה נוסף",{opt:1})}${fld("parent2_phone","טלפון הורה נוסף",{opt:1,type:"tel",mode:"tel",dir:"ltr"})}
+      ${fld("street","רחוב",{opt:1,ac:"address-line1"})}${fld("house_number","מספר בית",{opt:1,mode:"numeric"})}${fld("notes","משהו שחשוב שנדע?",{opt:1,area:1,full:1})}</div>`}
+  if(s===3){const a=ageGroup(d.birth_date),row=(k,v)=>v?`<dt>${k}</dt><dd>${esc(v)}</dd>`:"";
+    h+=`<dl class="sum">${row("מסגרת",d.type)}${row("אזור",d.area)}${row("עיר",d.city)}${row("הילדה",[d.first_name,d.last_name].join(" "))}${row("מספר זהות",d.id_number)}${row("תאריך לידה",d.birth_date&&d.birth_date.split("-").reverse().join("/"))}${row("שכבת גיל",a)}${row("הורה",[d.parent1_first_name,d.parent1_last_name].join(" "))}${row("טלפון",d.parent1_phone)}${row("מייל",d.email)}${row("הורה נוסף",[d.parent2_first_name,d.parent2_phone].filter(Boolean).join(" · "))}${row("כתובת",[d.street,d.house_number].filter(Boolean).join(" "))}</dl>
+      <label class="consent" data-f="consent"><input type="checkbox" name="consent"${d.consent?" checked":""}><span>קראתי ואני מסכים/ה שהפרטים יישמרו במערכת הרשת לצורך הטיפול בהרשמה ובשיבוץ, בהתאם למדיניות הפרטיות. הפרטים לא יועברו לגורם חיצוני.</span></label><small class="msg" data-m="consent"></small>`}
+  h+=`<div class="hp" aria-hidden="true"><label>אתר<input name="website" tabindex="-1" autocomplete="off"></label></div>
+    <div class="nav2">${s?`<button type="button" class="btn line" data-back>חזרה</button>`:"<span></span>"}<button class="btn main" ${F.busy?"disabled":""}>${F.busy?'<span class="loading"></span> שולח…':s<3?"המשך":"שליחת הבקשה"}</button></div></div>`;
+  $("#regForm").innerHTML=h;
+  const fb=$("#regForm [name=birth_date]");if(fb)fb.addEventListener("input",()=>{F.data.birth_date=fb.value;const a=ageGroup(fb.value),b=$("#ageB");const warn=a&&(a==="מעל גיל גן"||a==="צעירה מדי"||frameOf(a)!==F.data.type);b.className="agebadge"+(a?" on":"")+(warn?" warn":"");b.textContent=a?(warn?(a==="מעל גיל גן"?"לפי תאריך הלידה – מעל גיל הגן":a==="צעירה מדי"?"צעירה מדי לשנה זו":`מתאימה ל${frameOf(a)==="גן"?"גן":"מעון יום"} (${a}) – אפשר לחזור ולשנות את המסגרת`):`${a} · שנת הלימודים ${yearLabel()}`):""});
+}
+function collect(){const f=$("#regForm");f.querySelectorAll("input,select,textarea").forEach(el=>{if(el.name==="website")return F.hp=el.value;if(el.type==="radio"){if(el.checked)F.data[el.name]=el.value}else if(el.type==="checkbox")F.data[el.name]=el.checked;else F.data[el.name]=el.value.trim()})}
+function check(){const d=F.data,e={};
+  if(F.step===0){if(!d.type)e.type="נא לבחור מסגרת";if(!d.area)e.area="נא לבחור אזור";if(!d.city)e.city="נא לכתוב עיר"}
+  if(F.step===1){if(!d.first_name)e.first_name="נא למלא";if(!d.last_name)e.last_name="נא למלא";if(!tzOk(d.id_number))e.id_number="מספר הזהות אינו תקין – בדקו את הספרות";
+    const a=ageGroup(d.birth_date);if(!a)e.birth_date="נא לבחור תאריך";else if(a==="מעל גיל גן")e.birth_date="לפי תאריך הלידה הילדה מעל גיל הגן לשנה זו";else if(a==="צעירה מדי")e.birth_date="הילדה צעירה מדי לשנה זו";else if(frameOf(a)!==d.type)e.birth_date=`לפי הגיל הילדה מתאימה ל${frameOf(a)==="גן"?"גן":"מעון יום"} – חזרו לשלב הראשון ושנו את המסגרת`}
+  if(F.step===2){if(!d.parent1_first_name)e.parent1_first_name="נא למלא";if(!phoneOk(d.parent1_phone))e.parent1_phone="מספר טלפון לא תקין";if(!mailOk(d.email))e.email="כתובת מייל לא תקינה";if(d.parent2_phone&&!phoneOk(d.parent2_phone))e.parent2_phone="מספר טלפון לא תקין"}
+  if(F.step===3&&!d.consent)e.consent="יש לאשר כדי לשלוח";
+  document.querySelectorAll("#regForm [data-f]").forEach(x=>{const k=x.dataset.f;x.classList.toggle("err",!!e[k]);const m=x.querySelector(".msg")||document.querySelector(`[data-m="${k}"]`);if(m)m.textContent=e[k]||""});
+  const first=Object.keys(e)[0];if(first){const el=document.querySelector(`#regForm [name="${first}"]`);el?.focus();return false}return true}
+$("#regForm").addEventListener("click",e=>{if(e.target.closest("[data-back]")){collect();F.err="";F.step--;paint();$("#register").scrollIntoView({behavior:"smooth"})}});
+$("#regForm").addEventListener("submit",async e=>{e.preventDefault();if(F.busy)return;collect();if(!check())return;F.err="";
+  if(F.step<3){F.step++;paint();$("#register").scrollIntoView({behavior:"smooth"});return}
+  F.busy=true;paint();try{const r=await rpc("regSubmit",Object.assign({},F.data,{t0:F.t0,website:F.hp||""}));showDone(r)}catch(err){F.err=err.message;F.busy=false;paint()}});
+function showDone(r){$("#sideSteps").innerHTML=STEPS.map(([l])=>`<li class="done"><i>✓</i>${l}</li>`).join("");
+  $("#regForm").innerHTML=`<div class="panein fin" style="display:flex;flex-direction:column"><svg class="seal" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/><path d="M38 62 54 77 84 45"/></svg>
+   <h3>הבקשה התקבלה!</h3><p class="hint" style="margin:0">שמרו את מספר הבקשה:</p><span class="ref">${esc(r.ref)}</span>
+   <p style="max-width:46ch">שלחנו אישור ל-<b dir="ltr">${esc(F.data.email)}</b> עם קישור למעקב. בשלב הבא נשלח אליכם טופס השלמת פרטים.</p>
+   <a class="btn main" href="${esc(r.status_url)}">מעקב אחרי הבקשה</a></div>`}
+/* ---------- status page ---------- */
+const TRACK=[["הבקשה התקבלה","קיבלנו את פרטי ההרשמה"],["השלמת פרטים","טופס קצר וצילום ת.ז. עם ספח"],["בבדיקה ושיבוץ","המשרד משבץ לגן המתאים"],["אישור הרשמה","האישור נשלח במייל"]];
+async function statusPage(tok){solo(`<p><span class="loading"></span> טוען את מצב הבקשה…</p>`);
+  try{const r=await rpc("regStatus",tok);const closed=["נדחתה","בוטלה"].includes(r.status);
+    solo(`<h2 style="font-size:2rem">ההרשמה של ${esc(r.child)}</h2><p class="hint">מספר בקשה <span class="ref" style="font-size:1.1rem;padding:2px 10px">${esc(r.ref)}</span> · ${esc(r.type)}${r.year?` · ${esc(r.year)}`:""}</p>
+     <ol class="track">${TRACK.map(([t,s],i)=>{const n=i+1,st=closed?"":n<r.step||(r.status==="אושרה"&&n<=4)?"done":n===r.step?"cur":"";return `<li class="${st}"><i>${st==="done"?"✓":n}</i><div><b>${t}</b><span>${s}</span></div></li>`}).join("")}</ol>
+     ${r.need_form&&r.form_url?`<p><b>מחכה לכם טופס השלמת פרטים.</b></p><a class="btn main" href="${esc(r.form_url)}">למילוי טופס ההשלמה</a>`:""}
+     ${r.status==="אושרה"&&r.garden?`<div class="privacy" style="margin-top:10px"><h3>ההרשמה אושרה 🎉</h3><p><b>${esc(r.garden.name)}</b></p>${r.garden.address?`<p>${esc(r.garden.address)}</p>`:""}${r.garden.phone?`<p dir="ltr" style="text-align:end">${esc(r.garden.phone)}</p>`:""}</div>`:""}
+     ${r.status==="רשימת המתנה"?`<p class="alert" style="background:#f2ecdb;color:#6b4f12">הבקשה ברשימת ההמתנה. נעדכן ברגע שיתפנה מקום.${r.note?"<br>"+esc(r.note):""}</p>`:""}
+     ${closed?`<p class="alert">הבקשה ${esc(r.status)}.${r.note?"<br>"+esc(r.note):""}</p>`:""}`)}
+  catch(e){solo(`<h2>לא הצלחנו לטעון את הבקשה</h2><p>${esc(e.message)}</p><a class="btn line" href="./">לאתר ההרשמה</a>`)}}
+/* ---------- completion form ---------- */
+const C={files:[],tok:"",data:{}};
+async function completePage(tok){C.tok=tok;solo(`<p><span class="loading"></span> טוען את הטופס…</p>`);
+  try{const r=await rpc("regFormLoad",tok);C.data=r.fields;C.ref=r.ref;paintComplete()}catch(e){solo(`<h2>הטופס לא זמין</h2><p>${esc(e.message)}</p><a class="btn line" href="./">לאתר ההרשמה</a>`)}}
+function paintComplete(err){const d=C.data,f=(k,l,o={})=>`<label class="fld${o.full?" full":""}" data-f="${k}"><span>${l}${o.opt?" <em>(לא חובה)</em>":""}</span>${o.area?`<textarea name="${k}" rows="3">${esc(d[k]||"")}</textarea>`:`<input name="${k}" value="${esc(d[k]||"")}"${o.mode?` inputmode="${o.mode}"`:""}${o.dir?` dir="${o.dir}"`:""}${o.type?` type="${o.type}"`:""}>`}<small class="msg"></small></label>`;
+  solo(`<h2 style="font-size:2rem">השלמת פרטים – ${esc(d.first_name)} ${esc(d.last_name)}</h2><p class="hint">בקשה ${esc(C.ref)} · כמה פרטים אחרונים ונמשיך לשיבוץ</p>${err?`<div class="alert" role="alert">${esc(err)}</div>`:""}
+   <form id="cForm" novalidate><div class="grid2">
+    <h3 class="full" style="font-size:1.25rem;margin-top:8px">הורים</h3>${f("parent1_first_name","שם פרטי – הורה 1")}${f("parent1_last_name","שם משפחה")}${f("parent1_id","מספר זהות – הורה 1",{mode:"numeric",dir:"ltr"})}${f("parent1_phone","טלפון",{dir:"ltr",type:"tel"})}
+    ${f("parent2_first_name","שם פרטי – הורה 2",{opt:1})}${f("parent2_last_name","שם משפחה",{opt:1})}${f("parent2_id","מספר זהות – הורה 2",{opt:1,mode:"numeric",dir:"ltr"})}${f("parent2_phone","טלפון",{opt:1,dir:"ltr",type:"tel"})}${f("email","מייל",{dir:"ltr",type:"email",full:1})}
+    <h3 class="full" style="font-size:1.25rem;margin-top:8px">כתובת</h3>${f("city","עיר")}${f("neighborhood","שכונה",{opt:1})}${f("street","רחוב")}${f("house_number","מספר בית")}
+    <h3 class="full" style="font-size:1.25rem;margin-top:8px">חשוב שנדע</h3>${f("emergency_name","איש קשר לשעת חירום")}${f("emergency_phone","טלפון לשעת חירום",{dir:"ltr",type:"tel"})}
+    ${f("health_notes","רגישויות או מצב בריאותי",{opt:1,area:1,full:1})}${f("allergies","אלרגיות",{opt:1})}${f("prev_framework","מסגרת קודמת",{opt:1})}${f("siblings","אחיות שלומדות ברשת",{opt:1,full:1})}
+    <div class="full fld"><span>צילום תעודת זהות של ההורים כולל ספח</span><div class="drop" id="drop" tabindex="0" role="button" aria-label="בחירת קבצים">גררו לכאן או <u>בחרו קבצים</u> · תמונה או PDF, עד 7MB<input type="file" id="cFile" accept="image/*,application/pdf" multiple hidden></div><ul class="files" id="cFiles"></ul></div>
+   </div><div class="nav2"><span></span><button class="btn main" id="cGo">שליחת הטופס</button></div></form>`);
+  paintFiles();const drop=$("#drop"),inp=$("#cFile");drop.onclick=()=>inp.click();drop.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();inp.click()}};
+  inp.onchange=()=>addFiles(inp.files);drop.ondragover=e=>{e.preventDefault();drop.classList.add("over")};drop.ondragleave=()=>drop.classList.remove("over");drop.ondrop=e=>{e.preventDefault();drop.classList.remove("over");addFiles(e.dataTransfer.files)};
+  $("#cForm").onsubmit=submitComplete}
+async function shrink(file){if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size<1.2e6)return file;try{const bmp=await createImageBitmap(file),k=Math.min(1,2200/Math.max(bmp.width,bmp.height)),c=document.createElement("canvas");c.width=bmp.width*k;c.height=bmp.height*k;c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);
+  const b=await new Promise(r=>c.toBlob(r,"image/jpeg",.85));return new File([b],file.name.replace(/\.\w+$/,"")+".jpg",{type:"image/jpeg"})}catch(e){return file}}
+async function addFiles(list){for(const f0 of list){if(!/^(image\/|application\/pdf)/.test(f0.type)){alert("אפשר לצרף רק תמונות או PDF");continue}const f=await shrink(f0);if(f.size>7*1024*1024){alert(`${f.name} גדול מדי (עד 7MB)`);continue}if(C.files.length>=6)break;C.files.push(f)}paintFiles()}
+function paintFiles(){const ul=$("#cFiles");if(!ul)return;ul.innerHTML=C.files.map((f,i)=>`<li><span>${esc(f.name)} · ${Math.max(1,Math.round(f.size/1024))}KB</span><button type="button" data-rm="${i}" aria-label="הסרת ${esc(f.name)}">הסרה</button></li>`).join("");ul.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{C.files.splice(+b.dataset.rm,1);paintFiles()})}
+const b64=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(",")[1]);r.onerror=rej;r.readAsDataURL(f)});
+async function submitComplete(e){e.preventDefault();const fm=$("#cForm"),d={};fm.querySelectorAll("input[name],textarea[name]").forEach(x=>d[x.name]=x.value.trim());Object.assign(C.data,d);
+  const er={};if(!tzOk(d.parent1_id))er.parent1_id="מספר זהות לא תקין";if(d.parent2_id&&!tzOk(d.parent2_id))er.parent2_id="מספר זהות לא תקין";if(!phoneOk(d.parent1_phone))er.parent1_phone="טלפון לא תקין";if(!mailOk(d.email))er.email="מייל לא תקין";if(!d.emergency_name)er.emergency_name="נא למלא";if(!phoneOk(d.emergency_phone))er.emergency_phone="טלפון לא תקין";if(!d.street)er.street="נא למלא";if(!d.city)er.city="נא למלא";
+  fm.querySelectorAll("[data-f]").forEach(x=>{x.classList.toggle("err",!!er[x.dataset.f]);x.querySelector(".msg").textContent=er[x.dataset.f]||""});
+  if(Object.keys(er).length){fm.querySelector(`[name="${Object.keys(er)[0]}"]`)?.focus();return}
+  if(!C.files.length){alert("נא לצרף צילום תעודת זהות כולל ספח");return}
+  const go=$("#cGo");go.disabled=true;go.innerHTML='<span class="loading"></span> שולח…';
+  try{const files=[];for(const f of C.files)files.push({name:f.name,mime:f.type,b64:await b64(f)});await rpc("regFormSubmit",C.tok,Object.assign({},d,{files}));
+    solo(`<div class="fin" style="display:flex;flex-direction:column"><svg class="seal" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/><path d="M38 62 54 77 84 45"/></svg><h2>תודה! הטופס התקבל</h2><p>הצוות שלנו יבדוק את הפרטים ויעדכן אתכם במייל על השיבוץ.</p></div>`)}
+  catch(err){paintComplete(err.message)}}
+function solo(h){$("#landing").hidden=true;$("#solo").hidden=false;$("#soloBox").innerHTML=h;scrollTo(0,0)}
+/* ---------- boot ---------- */
+const q=new URLSearchParams(location.search);
+if(q.get("s"))statusPage(q.get("s"));else if(q.get("f"))completePage(q.get("f"));
+paint();
+rpc("regInfo").then(i=>{INFO=Object.assign(INFO,i);
+  if(i.intro)$("#intro").textContent=i.intro;
+  $("#regSub").textContent=`הרשמה לשנת הלימודים ${yearLabel()}. ממלאים פעם אחת – ואנחנו מלווים אתכם עד אישור ההרשמה.`;
+  if(!INFO.soon.includes("צהרון")&&INFO.types.includes("צהרון"))$("#soonCard").hidden=true;
+  if((i.faq||[]).length){$("#faq").hidden=false;$("#faqList").innerHTML=i.faq.map(f=>`<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("")}else $("#navFaq").hidden=true;
+  const ct=[i.phone&&`<a href="tel:${esc(i.phone)}" dir="ltr">${esc(i.phone)}</a>`,i.email&&`<a href="mailto:${esc(i.email)}" dir="ltr">${esc(i.email)}</a>`].filter(Boolean).join(" · ");$("#contact").innerHTML=ct;
+  paint()}).catch(e=>{F.err=e.message;paint()});
+})();
+</script>
+</body>
+</html>

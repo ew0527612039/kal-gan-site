@@ -724,6 +724,33 @@ details.menu[open]{z-index:60}.ph:has(details.menu[open]),.bar:has(details.menu[
 .aschips{display:flex;gap:6px;flex-wrap:wrap;padding:8px 14px 0}
 .asform{display:flex;gap:8px;padding:12px 14px calc(12px + env(safe-area-inset-bottom,0px))}.asform input{flex:1}
 @media (max-width:640px){.asfab span{display:none}.asfab{padding:14px}}
+
+.rgpill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:.8rem;font-weight:700;color:var(--c);background:color-mix(in srgb,var(--c) 13%,transparent);white-space:nowrap}
+.rgpill::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c)}
+.rgflow{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px;align-items:stretch}
+.rgstep{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:118px;flex:1;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font:inherit;color:inherit;text-align:start;transition:transform .15s,box-shadow .15s}
+.rgstep b{font-size:1.6rem;line-height:1;color:var(--c)}.rgstep span{font-size:.85rem;color:var(--muted);font-weight:600}
+.rgstep:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.06)}.rgstep.on{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent)}
+.rgstep i{position:absolute;inset-inline-end:-9px;top:50%;transform:translateY(-50%);font-style:normal;color:var(--muted);font-size:1.3rem;z-index:1}
+.rgside{display:flex;gap:8px;flex-direction:column}.rgstep.small{min-width:120px;flex:none;padding:7px 12px;flex-direction:row;align-items:center;gap:8px}.rgstep.small b{font-size:1.1rem}
+.rghint{display:flex;gap:6px;align-items:center}.rghint .ico{width:16px;height:16px;color:#7c3aed}
+.rgfil{margin-bottom:10px;flex-wrap:wrap}
+.rgtbl td{vertical-align:middle}.rgtbl td small{display:block;color:var(--muted)}.rgtbl tbody tr{cursor:pointer}.rgtbl tbody tr:hover{background:var(--raise)}
+.rgd{display:flex;flex-direction:column;gap:14px}.rgd h2 .rgpill{font-size:.75rem;vertical-align:middle}
+.rgstepper{display:flex;list-style:none;padding:0;margin:0;gap:4px;counter-reset:s}.rgstepper li{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.78rem;color:var(--muted);position:relative}
+.rgstepper li span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--raise);border:2px solid var(--line);font-weight:700}
+.rgstepper li.done span{background:#16a34a;border-color:#16a34a;color:#fff}.rgstepper li.cur span{border-color:#7c3aed;color:#7c3aed;box-shadow:0 0 0 4px color-mix(in srgb,#7c3aed 18%,transparent)}.rgstepper li.cur{color:var(--fg);font-weight:700}
+.rgstepper li:not(:last-child)::after{content:"";position:absolute;top:14px;inset-inline-start:calc(50% + 18px);inset-inline-end:calc(-50% + 18px);height:2px;background:var(--line)}.rgstepper li.done::after{background:#16a34a}
+.rgacts{flex-wrap:wrap;gap:8px}.btn.bad{color:#dc2626}
+.rgfit{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.rgfitc{display:flex;flex-direction:column;gap:2px;text-align:start;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font:inherit;color:inherit}.rgfitc:hover{border-color:#7c3aed}.rgfitc.on{border-color:#16a34a;background:color-mix(in srgb,#16a34a 8%,var(--surface))}.rgfitc.weak{opacity:.6}
+.rgfitc small{color:var(--muted);font-size:.78rem}.rgocc{font-size:.78rem;font-weight:700;color:#7c3aed}
+.rggrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}.rgf{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dashed var(--line2)}.rgf span{color:var(--muted);font-size:.85rem}.rgf b{text-align:end;font-weight:600}
+.rghist{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;max-height:220px;overflow:auto}.rghist li small{color:var(--muted)}
+.rgset label{display:flex;flex-direction:column;gap:4px;font-weight:600}.rgset label.row{flex-direction:row;align-items:center}.faqrow{display:flex;flex-direction:column;gap:6px;padding:10px}
+.assug{display:flex;gap:6px;flex-wrap:wrap;padding:6px 14px 0}.assug:empty{display:none}.assug .chip .ico{width:14px;height:14px}
+.asmic{padding:8px 12px;font-size:1.1rem}.asmic.on{background:#fee2e2;animation:micp 1s ease-in-out infinite}@keyframes micp{50%{box-shadow:0 0 0 6px rgba(220,38,38,.15)}}
+body:has(#modal .modal) .asfab{display:none}
 </style>
 
 <button class="skip" data-act="skip">דילוג לתוכן הראשי</button>
@@ -3133,8 +3160,11 @@ document.addEventListener("click",e=>{const el=e.target.closest("[data-sa-f],[da
     toast(`נשמר: ${L.length-fail} שינויים${fail?` · ${fail} נכשלו`:""}`);SA.ch=new Map();saPaint()})});
 
 const AS={open:false,msgs:[],pend:new Map(),n:0};
-const asNorm=s=>String(s??"").replace(/["'״׳`]/g,"").replace(/[-־]/g," ").replace(/\s+/g," ").trim().toLowerCase();
-const asCols=["children","staff","gardens","office","suppliers","tasks","notes","emails","programs"];
+const asNorm=s=>String(s??"").replace(/["'״׳`]/g,"").replace(/[-־]/g," ").replace(/[ךםןףץ]/g,c=>({"ך":"כ","ם":"מ","ן":"נ","ף":"פ","ץ":"צ"}[c])).replace(/\s+/g," ").trim().toLowerCase();
+const asStem=w=>w.length>3&&/^[הובלמשכ]/.test(w)?w.slice(1):w;
+function asLev(a,b){if(Math.abs(a.length-b.length)>1)return 9;let p=Array.from({length:b.length+1},(_,i)=>i);for(let i=1;i<=a.length;i++){const c=[i];for(let j=1;j<=b.length;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[b.length]}
+function asWordHit(w,hay,toks){if(hay.includes(w))return 2;const st=asStem(w);if(st!==w&&hay.includes(st))return 1.5;if(w.length>=4&&toks.some(t=>t.length>=4&&asLev(w,t)<=1))return 1;return 0}
+const asCols=["children","staff","gardens","office","suppliers","tasks","notes","emails","programs","registrations"];
 function asLoad(){asCols.forEach(c=>{try{live(c)}catch(e){}})}
 const AS_HELP=`<b>מה אפשר לבקש:</b><ul class="asul">
  <li><b>חיפוש בכל המערכת</b> – שם, ת.ז., טלפון, סמל, נושא מייל, מילה מפתק… <i>לדוגמה: "רחל כהן", "0521234567", "חשבונית חשמל"</i></li>
@@ -3143,8 +3173,12 @@ const AS_HELP=`<b>מה אפשר לבקש:</b><ul class="asul">
  <li><b>משימה</b> – "משימה: להתקשר להורים של יוסי מחר"</li>
  <li><b>פתק</b> – "פתק: הספק מגיע ביום שלישי"</li>
  <li><b>עדכון</b> – "עדכן טלפון של הגננת רחל כהן ל 0521234567", "עדכן מייל של גן שושנים ל x@y.com"</li>
- <li><b>שיוך</b> – "העבר את הילד יוסי לוי לגן שושנים", "שייך את הגננת מרים לגן חבצלת"</li></ul>`;
-function asItem(kind,id,title,sub,ic){const open=kind==="notes"?`data-x="noteOpen" data-id="${id}"`:`data-open="${kind}|${id}"`;return `<button class="asres" ${open}><span class="asic">${ico(ic)}</span><span class="t"><b>${esc(title)}</b>${sub?`<small>${esc(sub)}</small>`:""}</span></button>`}
+ <li><b>שיוך</b> – "העבר את הילד יוסי לוי לגן שושנים", "שייך את הגננת מרים לגן חבצלת"</li>
+ <li><b>שאלות</b> – "כמה ילדים בגן שושנים", "מי בגן חבצלת", "המשימות שלי", "ימי הולדת השבוע", "הרשמות חדשות"</li>
+ <li><b>מעבר מסך</b> – "פתח נוכחות", "פתח הרשמה"</li>
+ <li><b>המשך שיחה</b> – אחרי שמצאתי מישהו אפשר לכתוב "עדכן טלפון שלה ל…"</li>
+ <li>🎤 אפשר גם לדבר – לחיצה על המיקרופון</li></ul>`;
+function asItem(kind,id,title,sub,ic){const open=kind==="notes"?`data-x="noteOpen" data-id="${id}"`:kind==="registrations"?`data-rgopen="${id}"`:`data-open="${kind}|${id}"`;return `<button class="asres" ${open}><span class="asic">${ico(ic)}</span><span class="t"><b>${esc(title)}</b>${sub?`<small>${esc(sub)}</small>`:""}</span></button>`}
 const AS_KIND={children:["ילדים","child",c=>[fullName(c),[gName(c.garden_id),c.id_number&&"ת.ז. "+c.id_number].filter(Boolean).join(" · ")]],
  staff:["צוות","users",x=>[x.full_name,[(x.roles||[]).join(", "),gName(x.garden_id),x.phone].filter(Boolean).join(" · ")]],
  gardens:["גנים","school",g=>[g.name,[g.city,g.symbol&&"סמל "+g.symbol,g.phone].filter(Boolean).join(" · ")]],
@@ -3153,12 +3187,13 @@ const AS_KIND={children:["ילדים","child",c=>[fullName(c),[gName(c.garden_id
  tasks:["משימות","check",t=>[t.title,[t.status,t.due_date].filter(Boolean).join(" · ")]],
  notes:["פתקים","note",n=>[n.title,String(n.content||"").slice(0,80)]],
  emails:["מיילים","mail",m=>[m.subject||"(ללא נושא)",[m.from_name||m.from_email,fmtTs(m.received_date),m.status].filter(Boolean).join(" · ")]],
- programs:["צהרונים","school",p=>[p.name,gName(p.garden_id)]]};
+ programs:["צהרונים","school",p=>[p.name,gName(p.garden_id)]],
+ registrations:["הרשמות","spark",r=>[[r.first_name,r.last_name].filter(Boolean).join(" "),[r.status,r.type,r.age_group,r.ref].filter(Boolean).join(" · ")]]};
 function asSearch(q){const words=asNorm(q).split(" ").filter(w=>w.length>1),dq=q.replace(/\D/g,"");const out=[];
   for(const col of asCols){const K=AS_KIND[col];if(!K)continue;const hits=[];
     for(const r of vals(col)){const hay=asNorm(Object.entries(r).filter(([k,v])=>typeof v!=="object"&&!/^(created|updated)_|_id$|^html$/.test(k)).map(([,v])=>v).join(" ")+" "+(col==="children"?fullName(r):""));
-      let sc=0;if(dq.length>=5&&hay.replace(/\D/g,"").includes(dq))sc+=5;for(const w of words)if(hay.includes(w))sc+=hay.includes(" "+w)||hay.startsWith(w)?2:1;
-      if(sc>=Math.max(1,words.length)||dq.length>=5&&sc>=5)hits.push([sc,r])}
+      const nm0=asNorm(K[2](r)[0]||""),qn=asNorm(q);let sc=nm0===qn?20:nm0.startsWith(qn)?8:0,all=true;if(dq.length>=5&&hay.replace(/\D/g,"").includes(dq))sc+=5;const toks=hay.split(" ");for(const w of words){const h=asWordHit(w,hay,toks);if(!h)all=false;sc+=h}
+      if(words.length&&all||dq.length>=5&&sc>=5)hits.push([sc,r])}
     hits.sort((a,b)=>b[0]-a[0]);if(hits.length)out.push([col,hits.map(h=>h[1])])}
   return out}
 function asFind(name,cols){const q=asNorm(name);const res=[];for(const col of cols)for(const r of vals(col)){const n=asNorm(col==="children"?fullName(r):r.full_name||r.name||"");if(!n)continue;if(n===q)res.unshift([col,r]);else if(n.includes(q)||q.includes(n)&&n.length>3)res.push([col,r])}
@@ -3169,7 +3204,11 @@ function asDate(t){const d=new Date();if(/מחרתיים/.test(t))d.setDate(d.ge
   return d.toISOString().slice(0,10)}
 function asConfirm(text,fn){const id="p"+(++AS.n);AS.pend.set(id,fn);return `${text}<div class="row" style="margin-top:8px"><button class="btn sm primary" data-asok="${id}">${ico("check")}אישור</button><button class="btn sm ghost" data-asno="${id}">ביטול</button></div>`}
 const AS_FIELD={"טלפון":"phone","נייד":"phone","מייל":"email","אימייל":"email","דואל":"email","כתובת":"address","תז":"id_number","ת.ז":"id_number","תעודת זהות":"id_number","סמל":"symbol","עיר":"city","הערות":"notes"};
-async function asAnswer(q){const t=q.trim(),n=asNorm(t);
+function asRemember(col,r){if(r)AS.ctx={col,r}}
+function asCtxName(){const c=AS.ctx;if(!c)return "";return AS_KIND[c.col][2](c.r)[0]}
+async function asAnswer(q0){let t=q0.trim();
+  if(AS.ctx&&/\b(שלה|שלו|אותה|אותו)\b|\s(שלה|שלו|אותה|אותו)(\s|$)/.test(" "+t+" ")){const nm=asCtxName();if(nm)t=t.replace(/(^|\s)(שלה|שלו)(?=\s|$)/,`$1של ${nm}`).replace(/(^|\s)(אותה|אותו)(?=\s|$)/,`$1את ${nm}`)}
+  const n=String(t).replace(/["'״׳`]/g,"").replace(/[-־]/g," ").replace(/\s+/g," ").trim().toLowerCase();
   if(!t||/^(עזרה|help|\?)$/.test(n))return AS_HELP;
   let m;
   if(m=t.match(/^(?:משימה|צור משימה|הוסף משימה|תזכורת)\s*[:\-–]?\s*(.+)$/)){if(!canWrite)return "אין לך הרשאת עריכה.";const title=m[1].replace(/\s*(מחרתיים|מחר|היום|ב?-?\d{1,2}[./]\d{1,2}(?:[./]\d{2,4})?)\s*$/,"").trim()||m[1];const due=asDate(m[1]);
@@ -3181,7 +3220,7 @@ async function asAnswer(q){const t=q.trim(),n=asNorm(t);
     let nm2=m[2].trim(),cols=["staff","children","gardens","office","suppliers"];const pre=nm2.match(/^(הגננת|הסייעת|העובדת|איש הצוות|המטפלת|הילד|הילדה|התלמיד|הגן|הספק|המשתמשת)\s+/);if(pre){nm2=nm2.slice(pre[0].length);cols=/ילד|תלמיד/.test(pre[1])?["children"]:/גן$/.test(pre[1])?["gardens"]:/ספק/.test(pre[1])?["suppliers"]:/משתמשת/.test(pre[1])?["office"]:["staff"]}
     const found=asFind(nm2,cols);if(!found.length)return `לא מצאתי את "${esc(nm2)}". נסי לכתוב את השם המלא.`;
     if(found.length>1)return `מצאתי כמה אפשרויות ל"${esc(nm2)}". לחצי על הנכונה ועדכני בכרטיס:<div class="aslist">${found.slice(0,8).map(([c,r])=>{const[a,b]=AS_KIND[c][2](r);return asItem(c,r._id,a,b,AS_KIND[c][1])}).join("")}</div>`;
-    const [col,r]=found[0],key=col==="gardens"&&fk==="email"?"email":fk,[nm]=AS_KIND[col][2](r);
+    const [col,r]=found[0];asRemember(col,r);const key=col==="children"&&fk==="phone"?"parent1_phone":fk,[nm]=AS_KIND[col][2](r);
     return asConfirm(`לעדכן <b>${esc(m[1])}</b> של <b>${esc(nm)}</b> (${AS_KIND[col][0]}): <span class="mono">${esc(r[key]||"—")}</span> ← <span class="mono">${esc(val)}</span>`,async()=>{await save(E[col]||{col},r._id,{[key]:val});return `✓ עודכן. ${asItem(col,r._id,nm,"פתיחת הכרטיס",AS_KIND[col][1])}`})}
   if(m=t.match(/^(?:העבר|תעביר|שייך|תשייך|שבץ)\s+(?:את\s+)?(.+?)\s+(?:לגן|ל-?גן|לגני)\s+(.+)$/)){if(!canWrite)return "אין לך הרשאת עריכה.";
     const g=asFind(m[2],["gardens"]);if(!g.length)return `לא מצאתי גן בשם "${esc(m[2])}".`;if(g.length>1)return `יש כמה גנים שמתאימים ל"${esc(m[2])}": ${g.slice(0,6).map(([,x])=>esc(x.name)).join(", ")}. כתבי את השם המלא.`;
@@ -3189,7 +3228,7 @@ async function asAnswer(q){const t=q.trim(),n=asNorm(t);
     if(who.length>1)return `מצאתי כמה אפשרויות ל"${esc(wn)}":<div class="aslist">${who.slice(0,8).map(([c,r])=>{const[a,b]=AS_KIND[c][2](r);return asItem(c,r._id,a,b,AS_KIND[c][1])}).join("")}</div>`;
     const [col,r]=who[0],nm=AS_KIND[col][2](r)[0];
     return asConfirm(`להעביר את <b>${esc(nm)}</b> ${r.garden_id?`מ<b>${esc(gName(r.garden_id))}</b> `:""}ל<b>${esc(gd.name)}</b>?`,async()=>{if(col==="children")await crmMove(r,gd._id);else await save(E.staff,r._id,{garden_id:gd._id});return `✓ ${esc(nm)} שויכ/ה ל${esc(gd.name)}.`})}
-  if(/מי לא (דיווח|החתים|הגיע)|מי (בגן|בעבודה|הגיע|החתים|דיווח)|נוכחות (היום|עכשיו)/.test(n)){const ym=new Date().toISOString().slice(0,7),dd=new Date().toISOString().slice(8,10),col="attendance_"+ym;try{live(col)}catch(e){}for(let i=0;i<30&&!ready.has(col);i++)await new Promise(r=>setTimeout(r,250));
+  if(/מי לא (דיווח|החתים|הגיע)|מי (בגן|בעבודה|הגיע|החתים|דיווח) (היום|עכשיו)|^מי (הגיע|החתים|דיווח)$|נוכחות (היום|עכשיו)/.test(n)){const ym=new Date().toISOString().slice(0,7),dd=new Date().toISOString().slice(8,10),col="attendance_"+ym;try{live(col)}catch(e){}for(let i=0;i<30&&!ready.has(col);i++)await new Promise(r=>setTimeout(r,250));
     const docs=vals(col),by=new Map(docs.map(d=>[d.staff_id,(d.days||{})[dd]||[]]));const st=vals("staff").filter(x=>isOn(x.is_active)&&!x.office_id);
     if(!docs.length&&!ready.has(col))return "נתוני הנוכחות עוד נטענים – נסי שוב בעוד כמה שניות.";
     const inn=st.filter(x=>(by.get(x._id)||[]).length),out=st.filter(x=>!(by.get(x._id)||[]).length);const now=x=>{const a=by.get(x._id)||[];const l=a[a.length-1];return l?`${l.type} ${l.time}`:""};
@@ -3199,14 +3238,31 @@ async function asAnswer(q){const t=q.trim(),n=asNorm(t);
     return `<b>${L.length} מיילים חדשים</b><div class="aslist">${L.slice(0,25).map(e=>{const[a,b]=AS_KIND.emails[2](e);return asItem("emails",e._id,a,b,"mail")}).join("")}</div>`}
   if(m=n.match(/^מיילים? מ(?:-|־)?\s*(.+)$/)){const w=m[1];const L=vals("emails").filter(e=>asNorm(e.from_email+" "+e.from_name).includes(w)).sort((a,b)=>String(b.received_date).localeCompare(a.received_date));
     return L.length?`<b>${L.length} מיילים מ"${esc(w)}"</b><div class="aslist">${L.slice(0,25).map(e=>{const[a,b]=AS_KIND.emails[2](e);return asItem("emails",e._id,a,b,"mail")}).join("")}</div>`:`לא נמצאו מיילים מ"${esc(w)}".`}
-  const R=asSearch(t);if(!R.length)return `לא מצאתי שום דבר על "${esc(t)}". אפשר לנסות מילה אחרת, או לכתוב <b>עזרה</b>.`;
+
+  if(m=t.match(/^(?:פתח|פתחי|תפתח|לך ל|עבור ל|הצג|תציג)\s*-?\s*(?:את\s+)?(?:מסך\s+)?(.+)$/)){const w=asNorm(m[1]).replace(/^ה/,"");const tabs=MODS.flatMap(md=>md.tabs().map(([k,l])=>[k,l,md.l]));
+    const hit=tabs.find(([k,l])=>asNorm(l)===w)||tabs.find(([k,l,ml])=>asNorm(l).includes(w)||asNorm(ml).includes(w));if(hit){nav(hit[0]);return `פתחתי את <b>${esc(hit[1])}</b>.`}}
+
+  if(m=n.match(/^כמה\s+(ילדים|ילדות|תלמידות|גננות|סייעות|אנשי צוות|עובדות|גנים|מיילים|משימות|הרשמות)(?:\s+(?:יש|רשומים|רשומות|פעילים|פעילות))?(?:\s+(?:ב|בגן|במוסד)\s*(.+))?\??$/)){
+    const what=m[1],gq=m[2];let g=null;if(gq){const f=asFind(gq.replace(/^גן\s+/,""),["gardens"]);if(!f.length)return `לא מצאתי גן בשם "${esc(gq)}".`;g=f[0][1]}
+    const K=vals("children").filter(c=>isOn(c.is_active)&&(!g||c.garden_id===g._id)),ST=vals("staff").filter(x=>isOn(x.is_active)&&!x.office_id&&(!g||x.garden_id===g._id));
+    const v=/ילד|תלמיד/.test(what)?[K.length,"ילדים פעילים"]:/גננ/.test(what)?[ST.filter(x=>(x.roles||[]).includes("גננת")).length,"גננות"]:/סייע/.test(what)?[ST.filter(x=>(x.roles||[]).includes("סייעת")).length,"סייעות"]:/צוות|עובד/.test(what)?[ST.length,"אנשי צוות"]:/גנים/.test(what)?[vals("gardens").length,"גנים"]:/מייל/.test(what)?[vals("emails").filter(e=>e.status==="חדש").length,"מיילים חדשים"]:/משימ/.test(what)?[myTasks().filter(x=>x.status!=="הושלם").length,"משימות פתוחות שלך"]:[vals("registrations").filter(r=>!["בוטלה","נדחתה"].includes(r.status)).length,"בקשות הרשמה פעילות"];
+    if(g)asRemember("gardens",g);return `<b style="font-size:1.4rem">${v[0].toLocaleString("he-IL")}</b> ${v[1]}${g?` ב${esc(g.name)}`:""}.${g?`<div class="aslist">${asItem("gardens",g._id,g.name,"פתיחת הגן","school")}</div>`:""}`}
+
+  if(m=t.match(/^(?:מי|רשימת|רשימה של)\s+(?:ה?ילדים|ה?ילדות|ה?צוות|ה?גננות)?\s*(?:ב|בגן|של גן|של)\s*(.+?)\??$/)){const f=asFind(m[1].replace(/^גן\s+/,""),["gardens"]);if(f.length===1){const g=f[0][1];asRemember("gardens",g);const K=vals("children").filter(c=>isOn(c.is_active)&&c.garden_id===g._id).sort((a,b)=>fullName(a).localeCompare(fullName(b),"he")),ST=vals("staff").filter(x=>isOn(x.is_active)&&x.garden_id===g._id);
+    return `<b>${esc(g.name)}</b> – ${ST.length} אנשי צוות, ${K.length} ילדים<div class="asgrp">צוות</div><div class="aslist">${ST.map(x=>asItem("staff",x._id,x.full_name,(x.roles||[]).join(", "),"users")).join("")||'<span class="sub">אין</span>'}</div><div class="asgrp">ילדים</div><div class="aslist">${K.slice(0,40).map(c=>asItem("children",c._id,fullName(c),c.birth_date||"","child")).join("")}${K.length>40?`<p class="sub">ועוד ${K.length-40}…</p>`:""}</div>`}}
+  if(/^(ה?משימות( שלי| פתוחות)?|מה יש לי לעשות|מה המשימות)/.test(n)){const L=myTasks().filter(x=>x.status!=="הושלם").sort((a,b)=>String(a.due_date||"9").localeCompare(b.due_date||"9"));
+    return L.length?`<b>${L.length} משימות פתוחות</b><div class="aslist">${L.slice(0,25).map(x=>asItem("tasks",x._id,x.title,[x.status,x.due_date&&("יעד "+x.due_date.split("-").reverse().join("/"))].filter(Boolean).join(" · "),"check")).join("")}</div>`:"אין לך משימות פתוחות 🎉"}
+  if(/ימי הולדת|יום הולדת/.test(n)&&typeof birthdaysSoon==="function"){const L=birthdaysSoon(/חודש/.test(n)?31:7);return L.length?`<b>ימי הולדת ${/חודש/.test(n)?"בחודש הקרוב":"השבוע"}</b><div class="aslist">${L.map(({c,dd,age})=>asItem("children",c._id,fullName(c),`${gName(c.garden_id)||""} · ${dd===0?"היום!":dd===1?"מחר":`בעוד ${dd} ימים`} · בן/בת ${age}`,"child")).join("")}</div>`:"אין ימי הולדת בתקופה הקרובה."}
+  if(/^(ה?הרשמות|בקשות הרשמה|הרשמה)( חדשות| פתוחות)?$/.test(n)||/הרשמות חדשות/.test(n)){const L=vals("registrations").filter(r=>/חדש/.test(n)?r.status==="חדשה":!["בוטלה","נדחתה","אושרה"].includes(r.status));
+    return `<b>${L.length} בקשות הרשמה ${/חדש/.test(n)?"חדשות":"בטיפול"}</b><div class="aslist">${L.slice(0,25).map(r=>{const[a,b]=AS_KIND.registrations[2](r);return asItem("registrations",r._id,a,b,"spark")}).join("")}</div><button class="btn sm ghost" data-go="reg">למסך ההרשמה</button>`}
+  const R=asSearch(t);if(R.length===1&&R[0][1].length===1)asRemember(R[0][0],R[0][1][0]);if(!R.length)return `לא מצאתי שום דבר על "${esc(t)}". אפשר לנסות מילה אחרת, או לכתוב <b>עזרה</b>.`;
   const tot=R.reduce((a,[,L])=>a+L.length,0);
   return `<b>נמצאו ${tot} תוצאות</b>${R.map(([col,L])=>`<div class="asgrp">${esc(AS_KIND[col][0])} <span class="sub">(${L.length})</span></div><div class="aslist">${L.slice(0,8).map(r=>{const[a,b]=AS_KIND[col][2](r);return asItem(col,r._id,a,b,AS_KIND[col][1])}).join("")}${L.length>8?`<p class="sub">ועוד ${L.length-8}…</p>`:""}</div>`).join("")}`}
 function asPaint(){let d=$("#asDrawer");if(!AS.open){d?.remove();$("#asFab")?.classList.remove("on");return}
   if(!d){d=document.createElement("aside");d.id="asDrawer";d.setAttribute("role","dialog");d.setAttribute("aria-label","עוזר אישי");document.body.appendChild(d);
     d.innerHTML=`<div class="ashead"><b>${ico("spark")} עוזר אישי</b><span class="sub">חיפוש בכל המערכת ועדכונים מהירים</span><button class="iconbtn" data-asclose aria-label="סגירה">${ico("x")}</button></div><div class="asmsgs" id="asMsgs" aria-live="polite"></div>
      <div class="aschips">${["מי לא דיווח היום","מיילים חדשים","משימה: ","פתק: ","עזרה"].map(c=>`<button class="chip" data-aschip="${esc(c)}">${esc(c.replace(/: $/,"…"))}</button>`).join("")}</div>
-     <form id="asForm" class="asform"><input id="asIn" autocomplete="off" placeholder="מה לחפש או לעשות? למשל: רחל כהן / משימה: …" aria-label="שאלה לעוזר"><button class="btn primary" aria-label="שליחה">${ico("send")}</button></form>`;
+     <div class="assug" id="asSug"></div><form id="asForm" class="asform">${(window.SpeechRecognition||window.webkitSpeechRecognition)?`<button type="button" class="btn ghost asmic" id="asMic" aria-label="דיבור במקום הקלדה" title="דיבור">🎤</button>`:""}<input id="asIn" autocomplete="off" placeholder="מה לחפש או לעשות? למשל: רחל כהן / משימה: …" aria-label="שאלה לעוזר"><button class="btn primary" aria-label="שליחה">${ico("send")}</button></form>`;
     if(!AS.msgs.length)AS.msgs.push(["a",`שלום ${esc((me.name||"").split(" ")[0])}! אני יכולה לחפש בכל המערכת – ילדים, צוות, גנים, מיילים, משימות ופתקים – ולעדכן דברים בשבילך.<br>${AS_HELP}`])}
   $("#asFab")?.classList.add("on");const box=$("#asMsgs");box.innerHTML=AS.msgs.map(([w,h])=>`<div class="asmsg ${w}">${h}</div>`).join("");box.scrollTop=box.scrollHeight}
 async function asAsk(q){if(!q.trim())return;AS.msgs.push(["u",esc(q)]);AS.msgs.push(["a",'<span class="spin"></span>']);asPaint();
@@ -3214,7 +3270,7 @@ async function asAsk(q){if(!q.trim())return;AS.msgs.push(["u",esc(q)]);AS.msgs.p
 function asToggle(on){AS.open=on??!AS.open;if(AS.open)asLoad();asPaint();if(AS.open)setTimeout(()=>$("#asIn")?.focus(),30)}
 function asFab(){if($("#asFab")||!me.email||document.body.classList.contains("login"))return;const b=document.createElement("button");b.id="asFab";b.className="asfab";b.title="עוזר אישי (Ctrl+J)";b.setAttribute("aria-label","עוזר אישי");b.innerHTML=ico("spark")+"<span>עוזר</span>";b.onclick=()=>asToggle();document.body.appendChild(b)}
 setInterval(()=>{try{if(db&&me.email)asFab();else $("#asFab")?.remove()}catch(e){}},1500);
-document.addEventListener("submit",e=>{if(e.target.id!=="asForm")return;e.preventDefault();const i=$("#asIn");const q=i.value;i.value="";asAsk(q)});
+document.addEventListener("submit",e=>{if(e.target.id!=="asForm")return;e.preventDefault();const i=$("#asIn");const q=i.value;i.value="";const sg=$("#asSug");if(sg)sg.innerHTML="";asAsk(q)});
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&(e.key==="j"||e.key==="J"||e.code==="KeyJ")){e.preventDefault();asToggle()}else if(e.key==="Escape"&&AS.open&&!$("#modal .modal"))asToggle(false)});
 document.addEventListener("click",async e=>{const el=e.target.closest("[data-asclose],[data-aschip],[data-asok],[data-asno]");if(!el)return;
   if(el.dataset.asclose!==undefined)return asToggle(false);
@@ -3222,6 +3278,131 @@ document.addEventListener("click",async e=>{const el=e.target.closest("[data-asc
   const id=el.dataset.asok||el.dataset.asno,fn=AS.pend.get(id);AS.pend.delete(id);const host=el.closest(".asmsg");host?.querySelectorAll("[data-asok],[data-asno]").forEach(b=>b.disabled=true);
   if(el.dataset.asno||!fn){AS.msgs.push(["a","בוטל."]);return asPaint()}
   try{const r=await fn();AS.msgs.push(["a",r]);audit("עוזר אישי","עדכון","",String(r).replace(/<[^>]+>/g,"").slice(0,120))}catch(err){AS.msgs.push(["a","השמירה נכשלה: "+esc(err.message||err)])}asPaint()});
+
+const AS_SUG=["מי לא דיווח היום","מי בגן היום","מיילים חדשים","המשימות שלי","ימי הולדת השבוע","הרשמות חדשות","כמה ילדים בגן ","מי בגן ","משימה: ","פתק: ","עדכן טלפון של ","העבר את הילד ","שייך את הגננת ","פתח נוכחות","פתח הרשמה"];
+document.addEventListener("input",e=>{if(e.target.id!=="asIn")return;const v=asNorm(e.target.value),box=$("#asSug");if(!box)return;if(!v){box.innerHTML="";return}
+  const intents=AS_SUG.filter(x=>asNorm(x).startsWith(v)&&asNorm(x)!==v).slice(0,3);
+  let names=[];if(v.length>=2&&!/^(מי|כמה|משימה|פתק|עדכן|העבר|שייך|פתח)/.test(v)){for(const col of ["children","staff","gardens"]){for(const r of vals(col)){const nm=AS_KIND[col][2](r)[0];if(nm&&asNorm(nm).includes(v)){names.push([col,r,nm]);if(names.length>=5)break}}if(names.length>=5)break}}
+  box.innerHTML=intents.map(x=>`<button type="button" class="chip" data-assug="${esc(x)}">${esc(x.trim())}…</button>`).join("")+names.map(([c,r,nm])=>`<button type="button" class="chip" data-asnm="${c}|${r._id}">${ico(AS_KIND[c][1])} ${esc(nm)}</button>`).join("")});
+document.addEventListener("click",e=>{const a=e.target.closest("[data-assug],[data-asnm],#asMic,.asres");if(!a)return;
+  if(a.classList.contains("asres")){const k=a.getAttribute("data-open")||"";const[c,id]=k.split("|");if(c&&id&&S[c]?.get(id))asRemember(c,S[c].get(id));return}
+  if(a.dataset.assug){const i=$("#asIn");i.value=a.dataset.assug;i.focus();i.dispatchEvent(new Event("input",{bubbles:true}));if(!/ $/.test(a.dataset.assug)){$("#asSug").innerHTML="";i.value="";asAsk(a.dataset.assug)}return}
+  if(a.dataset.asnm){const[c,id]=a.dataset.asnm.split("|"),r=S[c]?.get(id);if(r){asRemember(c,r);$("#asIn").value="";$("#asSug").innerHTML="";const[t1,t2]=AS_KIND[c][2](r);AS.msgs.push(["u",esc(t1)]);AS.msgs.push(["a",`${asItem(c,r._id,t1,t2,AS_KIND[c][1])}<p class="sub">אפשר עכשיו לכתוב למשל "עדכן טלפון שלה ל…" או "העבר אותה לגן…"</p>`]);asPaint()}return}
+  if(a.id==="asMic"){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return;if(AS.rec){AS.rec.stop();return}const rec=new SR();rec.lang="he-IL";rec.interimResults=true;AS.rec=rec;a.classList.add("on");
+    rec.onresult=ev=>{const tx=[...ev.results].map(r=>r[0].transcript).join("");$("#asIn").value=tx;if(ev.results[ev.results.length-1].isFinal){rec.stop();asAsk(tx);$("#asIn").value=""}};
+    rec.onerror=ev=>{toast(ev.error==="not-allowed"?"צריך לאשר גישה למיקרופון":"לא הצלחתי לשמוע – נסו שוב")};rec.onend=()=>{AS.rec=null;a.classList.remove("on")};rec.start()}});
+
+const REG_ST=["חדשה","נשלח טופס השלמה","טופס הושלם","שובצה","אושרה","רשימת המתנה","נדחתה","בוטלה"];
+const REG_STC={"חדשה":"#2563eb","נשלח טופס השלמה":"#9333ea","טופס הושלם":"#0891b2","שובצה":"#d97706","אושרה":"#16a34a","רשימת המתנה":"#64748b","נדחתה":"#dc2626","בוטלה":"#94a3b8"};
+const REG_HINT={"חדשה":"בקשה חדשה מהאתר – לבדוק ולשלוח להורים טופס השלמה","נשלח טופס השלמה":"מחכים שההורים ימלאו את הטופס ויצרפו מסמכים","טופס הושלם":"הפרטים והמסמכים התקבלו – לשבץ לגן","שובצה":"נבחר גן – לאשר ולשלוח להורים אישור הרשמה","אושרה":"הילדה נקלטה במערכת בגן","רשימת המתנה":"ממתינה למקום פנוי","נדחתה":"הבקשה נדחתה","בוטלה":"הבקשה בוטלה"};
+const REG_AGES=["מעון","טרום טרום חובה","טרום חובה","חובה"];
+let RG={st:"",q:"",type:"",area:"",age:"",sel:null};
+const regCfg=()=>tbl("settings").docs.get("reg")||{};
+const regSite=()=>(regCfg().site||"https:/\/kal-gan.online")+"/register/";
+const regPill=s=>`<span class="rgpill" style="--c:${REG_STC[s]||"#64748b"}">${esc(s||"")}</span>`;
+const regName=r=>[r.first_name,r.last_name].filter(Boolean).join(" ");
+const regAge=r=>r.age_group||"";
+const regAll=()=>vals("registrations");
+
+(()=>{const g=E.gardens;if(!g||g.fields.some(f=>f.k==="kind"))return;
+  g.fields.push({k:"kind",l:"סוג מסגרת",t:"sel",opts:()=>["","גן","מעון יום"],sec:"הרשמה ושיבוץ"},{k:"age_groups",l:"שכבות גיל",t:"multi",opts:()=>REG_AGES,sec:"הרשמה ושיבוץ"},{k:"capacity",l:"מספר מקומות",t:"num",sec:"הרשמה ושיבוץ"})})();
+
+(()=>{if(MODS.some(m=>m.k==="reg"))return;const i=MODS.findIndex(m=>m.k==="kids")+1;
+  MODS.splice(i,0,{k:"reg",l:"הרשמה",i:"spark",tabs:()=>[["reg","בקשות הרשמה",regAll().filter(r=>["חדשה","טופס הושלם"].includes(r.status)).length],...(isAdmin?[["regset","הגדרות הרשמה"]]:[])]});
+  MOD_C.reg="#7c3aed";NEEDS.reg=["registrations","gardens","children","settings"];NEEDS.regset=["settings","gardens"];MOD_AREA.reg=["kids"];TAB_AREA.reg="kids";TAB_AREA.regset="kids"})();
+function gardenFit(r){const gs=vals("gardens"),kids=vals("children").filter(c=>isOn(c.is_active));
+  return gs.map(g=>{let sc=0,why=[];const n=kids.filter(c=>c.garden_id===g._id).length,cap=+g.capacity||0;
+    if(r.area&&(g.area===r.area||g.city===r.area)){sc+=4;why.push("באזור")}else if(r.city&&g.city===r.city){sc+=3;why.push("באותה עיר")}
+    if(g.kind){if((g.kind==="מעון יום")===(r.type==="מעון יום")){sc+=2;why.push(g.kind)}else sc-=5}
+    if((g.age_groups||[]).length){if(g.age_groups.includes(r.age_group)){sc+=2;why.push(r.age_group)}else sc-=2}
+    if(cap){if(n<cap){sc+=1;why.push(`${cap-n} מקומות פנויים`)}else{sc-=3;why.push("מלא")}}
+    return {g,sc,n,cap,why}}).sort((a,b)=>b.sc-a.sc||String(a.g.name).localeCompare(b.g.name,"he"))}
+PAGES.reg=()=>{const all=regAll(),q=asNorm?asNorm(RG.q):RG.q.toLowerCase();
+  const cnt=Object.fromEntries(REG_ST.map(s=>[s,all.filter(r=>r.status===s).length]));
+  const areas=[...new Set(all.map(r=>r.area||r.city).filter(Boolean))].sort();
+  const L=all.filter(r=>(!RG.st?!["בוטלה","נדחתה"].includes(r.status):RG.st==="__closed"?["בוטלה","נדחתה"].includes(r.status):r.status===RG.st)&&(!RG.type||r.type===RG.type)&&(!RG.area||(r.area||r.city)===RG.area)&&(!RG.age||r.age_group===RG.age)&&(!q||(asNorm?asNorm:String)([regName(r),r.ref,r.id_number,r.parent1_first_name,r.parent1_last_name,r.parent1_phone,r.email,r.city,r.area,r.garden_name].join(" ")).includes(q)))
+    .sort((a,b)=>String(b.submitted_at||b.created_date||"").localeCompare(a.submitted_at||a.created_date||""));
+  const flow=["חדשה","נשלח טופס השלמה","טופס הושלם","שובצה","אושרה"];
+  return `<div class="ph"><div><h1>הרשמת תלמידות</h1><p class="sub">כל בקשות ההרשמה מהאתר – מקליטה ועד אישור ושיבוץ בגן</p></div>
+   <div class="bar"><a class="btn" href="${esc(regSite())}" target="_blank" rel="noopener">${ico("link")}אתר ההרשמה</a><button class="btn" data-x="regCopy">${ico("copy")}העתקת הקישור</button>${isAdmin?`<button class="btn" data-go="regset">${ico("gear")}הגדרות</button>`:""}</div></div>
+   <div class="rgflow">${flow.map((s,i)=>`<button class="rgstep${RG.st===s?" on":""}" data-rgst="${esc(s)}" style="--c:${REG_STC[s]}"><b>${cnt[s]||0}</b><span>${esc(s)}</span>${i<flow.length-1?'<i aria-hidden="true">›</i>':""}</button>`).join("")}
+    <div class="rgside">${["רשימת המתנה"].map(s=>`<button class="rgstep small${RG.st===s?" on":""}" data-rgst="${esc(s)}" style="--c:${REG_STC[s]}"><b>${cnt[s]||0}</b><span>${s}</span></button>`).join("")}<button class="rgstep small${RG.st==="__closed"?" on":""}" data-rgst="__closed" style="--c:#94a3b8"><b>${(cnt["נדחתה"]||0)+(cnt["בוטלה"]||0)}</b><span>נדחו / בוטלו</span></button></div></div>
+   ${RG.st&&RG.st!=="__closed"?`<p class="sub rghint">${ico("spark")} ${esc(REG_HINT[RG.st]||"")} <button class="btn sm ghost" data-rgst="">הצגת הכל</button></p>`:""}
+   <div class="row rgfil"><input class="search" type="search" id="rgQ" value="${esc(RG.q)}" placeholder="חיפוש לפי שם, ת.ז., טלפון, מספר בקשה…" style="flex:1" aria-label="חיפוש הרשמות">
+    <select data-rgf="type" aria-label="סוג"><option value="">כל הסוגים</option>${["גן","מעון יום","צהרון"].map(t=>`<option${RG.type===t?" selected":""}>${t}</option>`).join("")}</select>
+    <select data-rgf="age" aria-label="שכבת גיל"><option value="">כל הגילאים</option>${REG_AGES.map(t=>`<option${RG.age===t?" selected":""}>${t}</option>`).join("")}</select>
+    <select data-rgf="area" aria-label="אזור"><option value="">כל האזורים</option>${areas.map(t=>`<option${RG.area===t?" selected":""}>${esc(t)}</option>`).join("")}</select></div>
+   ${L.length?`<div class="tbox"><table class="rgtbl"><thead><tr><th>תלמידה</th><th>שכבה</th><th>מסגרת</th><th>אזור</th><th>הורה</th><th>סטטוס</th><th>גן</th><th>התקבלה</th></tr></thead><tbody>
+    ${L.map(r=>`<tr data-rgopen="${r._id}" tabindex="0"><td><b>${esc(regName(r))}</b><small class="mono">${esc(r.ref||"")}</small></td><td>${esc(regAge(r))}</td><td>${esc(r.type||"")}</td><td>${esc(r.area||r.city||"")}</td><td>${esc([r.parent1_first_name,r.parent1_last_name].filter(Boolean).join(" "))}<small class="mono" dir="ltr">${esc(r.parent1_phone||"")}</small></td><td>${regPill(r.status)}${(r.docs||[]).length?` <span title="מסמכים מצורפים">${ico("clip")}</span>`:""}</td><td>${esc(r.garden_name||"")}</td><td><small>${esc(fmtTs(r.submitted_at||r.created_date))}</small></td></tr>`).join("")}</tbody></table></div>`
+    :`<div class="empty"><b>${all.length?"אין בקשות שמתאימות לסינון":"עוד אין בקשות הרשמה"}</b>${all.length?"":`כשהורים ימלאו את הטופס באתר ההרשמה, הבקשות יופיעו כאן. <a href="${esc(regSite())}" target="_blank" rel="noopener">לאתר ההרשמה</a>`}</div>`}`};
+function regOpen(id){const r=S.registrations?.get(id);if(!r)return;RG.sel=id;const fit=gardenFit(r).slice(0,6),stepI=["חדשה","נשלח טופס השלמה","טופס הושלם","שובצה","אושרה"].indexOf(r.status);
+  const F=(l,v,c)=>v?`<div class="rgf"><span>${l}</span><b${c?` class="${c}"`:""}>${esc(v)}</b></div>`:"";
+  const parent=(n)=>[r[`parent${n}_first_name`],r[`parent${n}_last_name`]].filter(Boolean).join(" ");
+  const act=[];const st=r.status;
+  if(["חדשה","טופס הושלם","רשימת המתנה"].includes(st))act.push(`<button class="btn${st==="חדשה"?" primary":""}" data-rga="send_form">${ico("send")}${r.form_sent_at?"שליחה חוזרת של טופס ההשלמה":"שליחת טופס השלמה להורים"}</button>`);
+  if(st==="נשלח טופס השלמה")act.push(`<button class="btn" data-rga="send_form">${ico("send")}שליחה חוזרת של הטופס (קישור חדש)</button>`);
+  if(st==="שובצה")act.push(`<button class="btn primary" data-rga="approve">${ico("check")}אישור הרשמה ושליחת אישור להורים</button>`);
+  if(!["אושרה","נדחתה","בוטלה","רשימת המתנה"].includes(st))act.push(`<button class="btn ghost" data-rga="waitlist">רשימת המתנה</button>`);
+  if(!["אושרה","נדחתה","בוטלה"].includes(st))act.push(`<button class="btn ghost bad" data-rga="reject">דחייה</button>`);
+  if(["נדחתה","בוטלה"].includes(st))act.push(`<button class="btn" data-rga="reopen">פתיחה מחדש</button>`);
+  if(st==="אושרה"&&r.child_id)act.push(`<button class="btn primary" data-x="crmOpen" data-id="${r.child_id}">${ico("child")}לכרטיס הילדה</button>`);
+  const canPlace=!["אושרה","נדחתה","בוטלה"].includes(st);
+  modal(`<div class="rgd"><div class="mx-head"><div class="mx-title"><h2>${esc(regName(r))} ${regPill(st)}</h2><p class="sub"><span class="mono">${esc(r.ref||"")}</span> · ${esc(r.type||"")} · ${esc(r.age_group||"")} · שנה"ל ${esc(r.school_year||"")} · התקבלה ${esc(fmtTs(r.submitted_at||r.created_date))}</p></div><button class="iconbtn" data-close aria-label="סגירה">${ico("x")}</button></div>
+   <ol class="rgstepper">${["בקשה","טופס השלמה","פרטים התקבלו","שיבוץ","אישור"].map((l,i)=>`<li class="${i<stepI?"done":i===stepI?"cur":""}"><span>${i<stepI?"✓":i+1}</span>${l}</li>`).join("")}</ol>
+   <p class="notice info">${ico("spark")} ${esc(REG_HINT[st]||"")}</p>
+   <div class="row rgacts">${act.join("")}</div>
+   ${canPlace?`<section class="card flat col"><h3>${ico("school")} שיבוץ לגן</h3><p class="sub">הצעות לפי אזור, סוג מסגרת, שכבת גיל ומקומות פנויים${vals("gardens").some(g=>g.kind||g.capacity)?"":' (כדי לקבל הצעות מדויקות יותר, מלאו בגנים את "סוג מסגרת", "שכבות גיל" ו"מספר מקומות")'}.</p>
+     <div class="rgfit">${fit.map(({g,n,cap,why,sc})=>`<button class="rgfitc${r.garden_id===g._id?" on":""}${sc<0?" weak":""}" data-rgplace="${g._id}"><b>${esc(g.name)}</b><small>${esc([g.city,g.area].filter((x,i,a)=>x&&a.indexOf(x)===i).join(" · "))}</small><small>${esc(why.join(" · ")||"—")}</small><span class="rgocc">${n}${cap?` / ${cap}`:""} ילדים</span></button>`).join("")}</div>
+     <div class="row"><select id="rgG" aria-label="בחירת גן אחר"><option value="">גן אחר…</option>${vals("gardens").sort((a,b)=>String(a.name).localeCompare(b.name,"he")).map(g=>`<option value="${g._id}"${r.garden_id===g._id?" selected":""}>${esc(g.name)}${g.city?" · "+esc(g.city):""}</option>`).join("")}</select><button class="btn" data-rga="place">שיבוץ לגן שנבחר</button></div></section>`:""}
+   <div class="rggrid"><section class="card flat col"><h3>${ico("child")} פרטי הילדה</h3>${F("שם",regName(r))}${F("ת.ז.",r.id_number,"mono")}${F("תאריך לידה",r.birth_date&&r.birth_date.split("-").reverse().join("/"))}${F("שכבת גיל",r.age_group)}${F("מסגרת קודמת",r.prev_framework)}${F("אחיות ברשת",r.siblings)}${F("בריאות",r.health_notes)}${F("אלרגיות",r.allergies)}</section>
+    <section class="card flat col"><h3>${ico("users")} הורים</h3>${F("הורה 1",parent(1))}${F("ת.ז.",r.parent1_id,"mono")}${F("טלפון",r.parent1_phone,"mono")}${F("הורה 2",parent(2))}${F("ת.ז.",r.parent2_id,"mono")}${F("טלפון",r.parent2_phone,"mono")}${F("מייל",r.email,"mono")}${F("חירום",[r.emergency_name,r.emergency_phone].filter(Boolean).join(" · "))}</section>
+    <section class="card flat col"><h3>${ico("home")} כתובת ואזור</h3>${F("אזור מבוקש",r.area)}${F("עיר",r.city)}${F("שכונה",r.neighborhood)}${F("כתובת",[r.street,r.house_number].filter(Boolean).join(" ")+(r.apartment?" / "+r.apartment:""))}${F("הערות ההורים",[r.notes,r.parent_notes].filter(Boolean).join(" · "))}</section>
+    <section class="card flat col"><h3>${ico("clip")} מסמכים</h3>${(r.docs||[]).length?(r.docs||[]).map(d=>`<button class="chip" data-rgdoc="${esc(d.id)}">${ico("clip")} ${esc(d.name)} · ${Math.max(1,Math.round((d.size||0)/1024))}KB</button>`).join(""):'<p class="sub">עוד לא צורפו מסמכים</p>'}<p class="sub">המסמכים שמורים בתיקייה חסויה ב-Drive של המשרד. כל צפייה נרשמת ביומן.</p></section></div>
+   <section class="card flat col"><h3>${ico("note")} הערה פנימית</h3><div class="row"><textarea id="rgNote" rows="2" style="flex:1" placeholder="הערה לצוות המשרד (לא נשלחת להורים)">${esc(r.office_note||"")}</textarea><button class="btn" data-rga="note">שמירה</button></div></section>
+   <section class="card flat col"><h3>${ico("clock")} היסטוריה</h3><ol class="rghist">${(r.history||[]).slice().reverse().map(h=>`<li>${regPill(h.status)} <small>${esc(fmtTs(h.ts))} · ${esc(h.by||"")}</small>${h.note?`<div>${esc(h.note)}</div>`:""}</li>`).join("")||"<li class='sub'>אין</li>"}</ol></section></div>`,"wide")}
+async function regDo(act,extra){const r=S.registrations?.get(RG.sel);if(!r)return;let note="";
+  if(act==="reject"){note=prompt("סיבת הדחייה (תישלח להורים):","");if(note==null)return;if(!note.trim())return toast("יש לכתוב סיבה")}
+  if(act==="waitlist"){note=prompt("הודעה להורים (לא חובה):","");if(note==null)return}
+  if(act==="approve"){note=prompt("תוספת לאישור ההרשמה (לא חובה), למשל תאריך התחלה:","");if(note==null)return}
+  if(act==="note")note=$("#rgNote")?.value||"";
+  if(act==="place"){const gid=extra||$("#rgG")?.value;if(!gid)return toast("בחרו גן");extra=gid}
+  if(act==="send_form"&&r.form_sent_at&&!confirm("לשלוח להורים קישור חדש לטופס? הקישור הקודם יפסיק לעבוד."))return;
+  try{const res=await call("regAct",{id:r._id,act,note,garden_id:extra||""});await syncNow();
+    toast(act==="note"?"ההערה נשמרה":`עודכן: ${res.status}${res.mailed?" · נשלח מייל להורים":""}`);
+    if(res.url&&navigator.clipboard)try{await navigator.clipboard.writeText(res.url);toast("הקישור לטופס הועתק – אפשר גם לשלוח בוואטסאפ")}catch(e){}
+    regOpen(r._id)}catch(e){toast(e.message)}}
+async function regDocOpen(docId){const r=S.registrations?.get(RG.sel);if(!r)return;try{const d=await call("regDoc",{id:r._id,doc:docId});const bin=atob(d.b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+  const url=URL.createObjectURL(new Blob([u],{type:d.mime}));const w=window.open(url,"_blank");if(!w){const a=document.createElement("a");a.href=url;a.download=d.name;a.click()}setTimeout(()=>URL.revokeObjectURL(url),60000)}catch(e){toast(e.message)}}
+document.addEventListener("click",e=>{const el=e.target.closest("[data-rgst],[data-rgopen],[data-rga],[data-rgplace],[data-rgdoc],[data-x='regCopy'],[data-rgsave],[data-rgfaq]");if(!el)return;
+  if(el.dataset.rgst!==undefined){RG.st=RG.st===el.dataset.rgst?"":el.dataset.rgst;return render()}
+  if(el.dataset.rgopen)return regOpen(el.dataset.rgopen);
+  if(el.dataset.rga)return regDo(el.dataset.rga);
+  if(el.dataset.rgplace){if(confirm("לשבץ לגן הזה?"))regDo("place",el.dataset.rgplace);return}
+  if(el.dataset.rgdoc)return regDocOpen(el.dataset.rgdoc);
+  if(el.dataset.x==="regCopy"){navigator.clipboard?.writeText(regSite()).then(()=>toast("הקישור לאתר ההרשמה הועתק"),()=>prompt("הקישור:",regSite()));return}
+  if(el.dataset.rgfaq!==undefined){const box=$("#rgFaq");if(el.dataset.rgfaq==="add"){box.insertAdjacentHTML("beforeend",faqRow({q:"",a:""}))}else el.closest(".faqrow")?.remove();return}
+  if(el.dataset.rgsave!==undefined)return regSaveSet(el)});
+document.addEventListener("keydown",e=>{const tr=e.target.closest?.("[data-rgopen]");if(tr&&e.key==="Enter")regOpen(tr.dataset.rgopen)});
+document.addEventListener("input",e=>{if(e.target.id==="rgQ"){RG.q=e.target.value;clearTimeout(RG.t);RG.t=setTimeout(()=>{const p=e.target.selectionStart;render();const i=$("#rgQ");if(i){i.focus();try{i.setSelectionRange(p,p)}catch(_){}}},250)}});
+document.addEventListener("change",e=>{const t=e.target;if(t.dataset.rgf){RG[t.dataset.rgf]=t.value;render()}});
+
+const faqRow=f=>`<div class="faqrow card flat"><input data-fq value="${esc(f.q)}" placeholder="שאלה"><textarea data-fa rows="2" placeholder="תשובה">${esc(f.a)}</textarea><button class="btn sm ghost" data-rgfaq="del" type="button">הסרה</button></div>`;
+PAGES.regset=()=>{const c=regCfg(),yr=c.year_start||(new Date().getMonth()>=8?new Date().getFullYear()+1:new Date().getFullYear()+1);
+  return `<div class="ph"><div><h1>הגדרות הרשמה</h1><p class="sub">מה ההורים רואים באתר ההרשמה ואיך הבקשות נקלטות</p></div><div class="bar"><a class="btn" href="${esc(regSite())}" target="_blank" rel="noopener">${ico("link")}צפייה באתר</a></div></div>
+   <section class="card col rgset">
+    <label class="row"><input type="checkbox" id="rsOpen"${c.open!==false?" checked":""}> <b>ההרשמה פתוחה</b></label>
+    <label>הודעה כשההרשמה סגורה<input id="rsClosed" value="${esc(c.closed_msg||"ההרשמה סגורה כרגע. ניתן לפנות למשרד.")}"></label>
+    <div class="row"><label style="flex:1">שנת הלימודים מתחילה בספטמבר של שנה<input id="rsYear" type="number" value="${esc(yr)}" min="2025" max="2040"></label><label style="flex:1">שם שנת הלימודים (להצגה)<input id="rsYearL" value="${esc(c.year_label||"")}" placeholder='למשל: תשפ"ח'></label></div>
+    <p class="sub">שכבת הגיל מחושבת לפי שנת הלידה: הפרש של 5 שנים = חובה, 4 = טרום חובה, 3 = טרום טרום חובה, פחות = מעון.</p>
+    <label>סוגי מסגרות פתוחים להרשמה (מופרדים בפסיק)<input id="rsTypes" value="${esc((c.types||["גן","מעון יום"]).join(", "))}"></label>
+    <label>מסגרות שיופיעו כ"בקרוב"<input id="rsSoon" value="${esc((c.soon||["צהרון"]).join(", "))}"></label>
+    <label>אזורים לבחירה (מופרדים בפסיק; ריק = לפי הערים והאזורים של הגנים)<input id="rsAreas" value="${esc((c.areas||[]).join(", "))}" placeholder="${esc([...new Set(vals("gardens").map(g=>g.area||g.city).filter(Boolean))].join(", "))}"></label>
+    <div class="row"><label style="flex:1">טלפון המשרד להורים<input id="rsPhone" value="${esc(c.phone||"")}" dir="ltr"></label><label style="flex:1">מייל המשרד להורים<input id="rsEmail" value="${esc(c.email||"")}" dir="ltr"></label></label></div>
+    <label>פסקת פתיחה באתר<textarea id="rsIntro" rows="3" placeholder="כמה מילים חמות על הרשת">${esc(c.intro||"")}</textarea></label>
+    <h3>שאלות נפוצות</h3><div id="rgFaq" class="col">${(c.faq||[]).map(faqRow).join("")}</div><button class="btn sm" data-rgfaq="add" type="button">${ico("plus")}שאלה</button>
+    <div class="row" style="justify-content:flex-end"><button class="btn primary" data-rgsave>${ico("check")}שמירה</button></div></section>`};
+async function regSaveSet(el){const v=id=>$(id)?.value||"";const faq=[...document.querySelectorAll("#rgFaq .faqrow")].map(r=>({q:r.querySelector("[data-fq]").value.trim(),a:r.querySelector("[data-fa]").value.trim()})).filter(x=>x.q);
+  busy(el,async()=>{await call("regSettings",{open:$("#rsOpen").checked,closed_msg:v("#rsClosed"),year_start:+v("#rsYear"),year_label:v("#rsYearL"),types:v("#rsTypes"),soon:v("#rsSoon"),areas:v("#rsAreas"),phone:v("#rsPhone"),email:v("#rsEmail"),intro:v("#rsIntro"),faq});await syncNow();toast("ההגדרות נשמרו – האתר מתעדכן מיד")})}
 
 (async()=>{
   let lk=window.KG_LOGIN||"";try{const u=new URL(location.href);if(!lk)lk=u.searchParams.get("login")||"";if(u.searchParams.get("login")){u.searchParams.delete("login");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
