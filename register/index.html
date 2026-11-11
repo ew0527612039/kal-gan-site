@@ -173,19 +173,6 @@ button,input,select,textarea{font:inherit;color:inherit}
 .procw.in .dot{transform:none;opacity:1}
 .proc h3{font-size:22px}.proc p{color:var(--muted);font-size:16.5px;max-width:24ch}
 @media (max-width:860px){.proc{grid-template-columns:1fr;gap:16px}.proc-line{display:none}.proc li{grid-template-columns:76px 1fr;text-align:start;justify-items:start;column-gap:18px}.proc .dot{grid-row:span 2}.proc p{max-width:none}}
-.hub{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.tile{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:start;text-align:start;text-decoration:none;color:var(--ink);border-radius:26px;padding:22px 22px 20px;cursor:pointer;transition:opacity .9s var(--ease),transform .4s var(--ease),box-shadow .4s,background .3s}
-.tile:hover{transform:translateY(-4px);box-shadow:var(--sh2);background:var(--g3)}
-.tile.feat{grid-column:1/-1;grid-template-columns:auto 1fr auto;align-items:center;padding:26px 28px;background:linear-gradient(120deg,rgba(255,255,255,.75),rgba(251,225,231,.7))}
-.tile.feat .ti{grid-row:span 2;width:64px;height:64px;border-radius:20px}.tile.feat b{font-size:26px}.tile.feat small{grid-column:3;grid-row:1/span 2;margin:0}
-@media (max-width:620px){.tile.feat{grid-template-columns:auto 1fr}.tile.feat small{grid-column:2;grid-row:auto}}
-.tile .ti{grid-row:span 3;width:52px;height:52px;border-radius:17px;display:grid;place-items:center;background:var(--tc);color:var(--tk)}
-.tile .ti svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.tile b{font-family:var(--f-d);font-weight:600;font-size:21px;line-height:1.2}
-.tile span{color:var(--muted);font-size:16px}
-.tile small{display:flex;align-items:center;gap:8px;color:var(--ink2);font-weight:700;font-size:14px;margin-top:6px}
-.tile small em{font-style:normal;color:var(--rose-d);margin-inline-start:auto;transition:transform .3s var(--ease)}
-.tile:hover small em{transform:translateX(-4px)}
 .hub-search{display:flex;align-items:center;gap:10px;border-radius:999px;padding:6px 8px 6px 18px;margin-bottom:18px;max-width:520px}
 .hub-search svg{width:20px;height:20px;color:var(--muted);fill:none;stroke:currentColor;stroke-width:2;flex:none}
 .hub-search input{flex:1;border:0;background:transparent;padding:9px 0;min-width:0}.hub-search input:focus{outline:none}
@@ -194,7 +181,6 @@ button,input,select,textarea{font:inherit;color:inherit}
 .hit{display:block;border-radius:20px;padding:14px 18px;text-decoration:none;color:inherit}
 .hit:hover{background:var(--g3)}.hit b{display:block}.hit span{color:var(--muted);font-size:15.5px}
 mark{background:var(--butter);color:inherit;border-radius:4px;padding:0 2px}
-@media (max-width:960px){.hub{grid-template-columns:1fr 1fr}}@media (max-width:620px){.hub{grid-template-columns:1fr}}
 .guide{padding:34px 0 40px}
 .crumbs{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:15px;color:var(--muted);margin-bottom:18px}
 .crumbs a{color:var(--ink2);text-decoration:none;font-weight:700}.crumbs a:hover{color:var(--rose-d)}
@@ -241,6 +227,75 @@ mark{background:var(--butter);color:inherit;border-radius:4px;padding:0 2px}
 .g-cta b{font-family:var(--f-d);font-weight:600;font-size:22px}.g-cta p{opacity:.92}
 .g-cta .btn{background:#fff;color:var(--rose-d)}
 @media (max-width:900px){.g-grid{grid-template-columns:1fr}.g-side{position:static;grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto;scrollbar-width:none;border-radius:20px}.g-side::-webkit-scrollbar{display:none}.g-side h4{display:none}.pn{grid-template-columns:1fr}.tl>li{grid-template-columns:42px 1fr;gap:14px}.tl>li::before{width:42px;height:42px;font-size:18px}.tl>li::after{inset-inline-start:20px;top:46px}}
+
+/* programs by age */
+.prg{display:grid;grid-template-columns:300px minmax(0,1fr);gap:28px;align-items:stretch}
+.prg-tabs{display:grid;gap:4px;align-content:start}
+.prg-tabs h4{font-family:var(--f-b);font-size:14px;font-weight:800;color:var(--muted);margin:10px 4px 4px}
+.prg-tabs h4:first-child{margin-top:0}
+.prg-tabs button{display:flex;justify-content:space-between;align-items:baseline;gap:10px;text-align:start;background:none;border:0;border-radius:16px;padding:12px 16px;cursor:pointer;font-weight:800;font-size:18px;color:var(--ink2);transition:background .25s,color .25s}
+.prg-tabs button small{font-weight:600;font-size:14px;color:var(--muted)}
+.prg-tabs button:hover{background:rgba(255,255,255,.6)}
+.prg-tabs button[aria-selected="true"]{background:var(--ink);color:#fff}.prg-tabs button[aria-selected="true"] small{color:rgba(255,255,255,.7)}
+.prg-panel{position:relative;border-radius:34px;padding:clamp(26px,4vw,48px);overflow:hidden;overflow:clip;background:linear-gradient(150deg,rgba(255,255,255,.85),var(--pc,rgba(251,225,231,.8)));border:1px solid var(--gb);min-height:380px;display:grid;align-content:start;gap:14px}
+.prg-panel .big{position:absolute;inset-inline-end:-10px;bottom:-40px;font-family:var(--f-d);font-weight:700;font-size:clamp(140px,18vw,240px);line-height:1;color:rgba(47,37,66,.05);pointer-events:none;user-select:none}
+.prg-panel .kind{font-weight:800;color:var(--pk,var(--rose-d));font-size:16px}
+.prg-panel h3{font-size:clamp(30px,3.6vw,44px)}
+.prg-panel .who{color:var(--ink2);font-size:18px}
+.prg-panel ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:12px;max-width:56ch}
+.prg-panel li{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;font-size:17.5px;color:var(--ink2)}
+.prg-panel li::before{content:"";width:10px;height:10px;margin:9px 8px 0;border-radius:50%;background:var(--pk,var(--rose))}
+.prg-panel .cta{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+.prg-panel.swap>*{animation:fadeUp .45s var(--ease) both}
+.prg-panel.swap>*:nth-child(3){animation-delay:.04s}.prg-panel.swap>*:nth-child(4){animation-delay:.08s}.prg-panel.swap>*:nth-child(5){animation-delay:.12s}
+@media (max-width:900px){.prg{grid-template-columns:1fr}.prg-tabs{grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}.prg-tabs::-webkit-scrollbar{display:none}.prg-tabs h4{display:none}.prg-tabs button{background:rgba(255,255,255,.6);padding:10px 16px}.prg-panel{min-height:0}}
+/* a day with us */
+.day-sw{display:inline-flex;gap:4px;padding:4px;border-radius:999px;margin-bottom:26px}
+.day-sw button{border:0;background:none;border-radius:999px;padding:9px 20px;font-weight:800;cursor:pointer;color:var(--ink2)}
+.day-sw button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.day{list-style:none;margin:0;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,1fr);gap:0;overflow-x:auto;scrollbar-width:thin;padding-bottom:10px}
+.day li{position:relative;padding:44px 18px 0 0;border-top:2px solid var(--hair)}
+.day li::before{content:"";position:absolute;top:-8px;inset-inline-start:0;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--rose)}
+.day li:nth-child(3n+2)::before{border-color:var(--mint-d)}.day li:nth-child(3n)::before{border-color:var(--gold)}
+.day time{position:absolute;top:12px;inset-inline-start:0;font-weight:800;font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums}
+.day b{display:block;font-family:var(--f-d);font-weight:600;font-size:19px;line-height:1.25;padding-inline-end:12px}
+.day-note{color:var(--muted);font-size:15px;margin-top:14px}
+.day.swap li{animation:fadeUp .5s var(--ease) both}
+@media (max-width:760px){.day{grid-auto-flow:row;grid-auto-columns:auto}.day li{border-top:0;border-inline-start:2px solid var(--hair);padding:0 22px 22px;margin-inline-start:6px}.day li::before{top:2px;inset-inline-start:-8px}.day time{position:static;display:block;margin-bottom:2px}}
+/* values – editorial, no cards */
+.vals{display:grid;grid-template-columns:1fr 1fr;gap:0 64px}
+.val{padding:26px 0;border-top:1px solid var(--hair);display:grid;grid-template-columns:auto 1fr;gap:4px 18px}
+.val i{grid-row:span 2;width:12px;height:12px;border-radius:50%;margin-top:12px;background:var(--rose)}
+.val:nth-child(2) i{background:var(--mint-d)}.val:nth-child(3) i{background:var(--gold)}.val:nth-child(4) i{background:var(--ink)}
+.val h3{font-size:25px}.val p{color:var(--ink2);font-size:17.5px;max-width:46ch}
+@media (max-width:760px){.vals{grid-template-columns:1fr}}
+/* where we are */
+.locs{display:grid;gap:0}
+.loc{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) auto;gap:18px;align-items:center;padding:22px 4px;border-bottom:1px solid var(--hair);transition:background .25s}
+.loc:first-child{border-top:1px solid var(--hair)}
+.loc:hover{background:rgba(255,255,255,.5)}
+.loc h3{font-size:28px}
+.loc .cnt{color:var(--muted);font-weight:700;font-size:16px;margin-top:2px}
+.loc .ars{display:flex;flex-wrap:wrap;gap:6px}
+.loc .ars span{background:rgba(255,255,255,.75);border:1px solid var(--hair2);border-radius:999px;padding:3px 12px;font-size:14.5px;font-weight:700;color:var(--ink2)}
+@media (max-width:760px){.loc{grid-template-columns:1fr;gap:10px}.loc .btn{justify-self:start}}
+/* information index (replaces card grid) */
+.hub{display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+.tile{display:grid;grid-template-columns:48px 1fr auto;gap:2px 16px;align-items:center;text-decoration:none;color:var(--ink);padding:20px 4px;border-bottom:1px solid var(--hair);transition:background .25s}
+.tile:hover{background:rgba(255,255,255,.55)}
+.tile .ti{grid-row:span 2;width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:var(--tc);color:var(--tk)}
+.tile .ti svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tile b{font-family:var(--f-d);font-weight:600;font-size:21px;line-height:1.2;transition:color .2s}
+.tile span{color:var(--muted);font-size:15.5px}
+.tile small{grid-column:3;grid-row:1/span 2;color:var(--muted);font-weight:700;font-size:14px;display:flex;align-items:center;gap:10px;white-space:nowrap}
+.tile small em{font-style:normal;color:var(--rose-d);font-size:18px;transition:transform .3s var(--ease)}
+.tile:hover b{color:var(--rose-d)}.tile:hover small em{transform:translateX(-5px)}
+.hub .tile:nth-child(1),.hub .tile:nth-child(2){border-top:1px solid var(--hair)}
+@media (max-width:860px){.hub{grid-template-columns:1fr}.hub .tile:nth-child(2){border-top:0}.tile small span{display:none}}
+.visit{margin-top:22px;border-radius:24px;padding:20px 22px;display:grid;gap:10px}
+.visit b{font-family:var(--f-d);font-weight:600;font-size:20px}
+.visit p{color:var(--ink2)}
+.visit .btn{justify-self:start}
 .faq-wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(28px,5vw,72px);align-items:start}
 .faq{display:grid;gap:10px}
 .faq details{border-radius:20px;padding:2px 22px}
@@ -399,7 +454,7 @@ footer .fb{margin-top:38px;padding-top:18px;border-top:1px solid rgba(255,255,25
   <a class="brand" href="#" data-home aria-label="גני מלכות – דף הבית">
     <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="20" fill="#FBE1E7"/><path d="M13 45 L15 23 L24.5 32 L32 17 L39.5 32 L49 23 L51 45 Z" fill="#E0668E"/><rect x="13" y="47" width="38" height="5" rx="2.5" fill="#B83E68"/><circle cx="32" cy="14" r="4.2" fill="#E9C677"/><circle cx="14.5" cy="20.5" r="3" fill="#A8E0D4"/><circle cx="49.5" cy="20.5" r="3" fill="#A8E0D4"/></svg>
     <span>גני מלכות</span></a>
-  <nav id="mainNav" aria-label="ניווט באתר"><a href="#frames">המסגרות</a><a href="#process">איך נרשמים</a><a href="#info" id="navInfo">מרכז מידע להורים</a><a href="#faq" id="navFaq">שאלות</a></nav>
+  <nav id="mainNav" aria-label="ניווט באתר"><a href="#frames">לפי גיל</a><a href="#day">יום אצלנו</a><a href="#process">איך נרשמים</a><a href="#info" id="navInfo">מרכז מידע להורים</a><a href="#faq" id="navFaq">שאלות</a></nav>
   <div class="acts"><a class="btn btn-rose btn-sm" href="#register">להרשמה</a>
     <button class="menu-btn" id="menuBtn" aria-label="תפריט" aria-expanded="false" aria-controls="mainNav"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
 </div></div></header>
@@ -442,7 +497,7 @@ footer .fb{margin-top:38px;padding-top:18px;border-top:1px solid rgba(255,255,25
         <span class="cloud a"><svg><use href="#i-cloud"/></svg></span><span class="cloud b"><svg><use href="#i-cloud"/></svg></span><span class="cloud c"><svg><use href="#i-cloud"/></svg></span>
         <span class="pearl p1"></span><span class="pearl p2"></span><span class="pearl p3"></span>
         <div class="chip-f a glass"><i>✓</i>הרשמה מקוונת</div>
-        <div class="chip-f b glass"><i>♥</i>ליווי עד האישור</div>
+        
       </div></div>
     </div>
     <div class="facts glass rv">
@@ -455,23 +510,19 @@ footer .fb{margin-top:38px;padding-top:18px;border-top:1px solid rgba(255,255,25
   </section>
 
   <section class="sec" id="frames"><div class="wrap">
-    <div class="sec-h rv"><h2>מהתינוקייה ועד גן חובה</h2><p>רצף אחד, באותה רוח ובאותה תשומת לב: מעון יום לקטנטנות, וגני ילדות לבנות בגילאי 3 עד 6.</p></div>
-    <div class="frames">
-      <article class="fr rv spot tilt" style="--cb:rgba(251,225,231,.85);--cc:var(--rose-d)">
-        <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 9.5V20h14V9.5"/><path d="M10 20v-5h4v5"/></svg></div>
-        <span class="age">גילאי 3-6</span><h3>גני ילדות</h3>
-        <ul><li>טרום טרום חובה, טרום חובה וחובה</li><li>תוכנית לימודים מוכרת וחגי ישראל</li><li>הכנה לכיתה א׳ בגן חובה</li></ul>
-        <a class="btn btn-ink btn-sm go" href="#register" data-pick="גן">להרשמה לגן</a></article>
-      <article class="fr rv spot tilt" style="--cb:rgba(227,245,241,.9);--cc:var(--mint-d);--d:.1s">
-        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21c4.5-2.5 7-6 7-10a7 7 0 0 0-14 0c0 4 2.5 7.5 7 10Z"/><path d="M9.5 11.5c.8 1 1.6 1.5 2.5 1.5s1.7-.5 2.5-1.5"/></svg></div>
-        <span class="age">3 חודשים עד 3 שנים</span><h3>מעונות יום</h3>
-        <ul><li>תינוקייה, פעוטון ובוגרים</li><li>קבוצות קטנות ואווירה ביתית</li><li>מסגרת מוכרת – אפשר לבקש דרגת סבסוד</li></ul>
-        <a class="btn btn-ink btn-sm go" href="#register" data-pick="מעון יום">להרשמה למעון</a></article>
-      <article class="fr rv spot tilt" id="soonCard" style="--cb:rgba(255,244,217,.9);--cc:var(--gold-d);--d:.2s">
-        <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></div>
-        <span class="soon">בקרוב</span><h3>צהרונים</h3>
-        <ul><li>המשך יום בגן אחרי הצהריים</li><li>ארוחה חמה והפעלות</li><li>ההרשמה תיפתח בהמשך</li></ul></article>
-    </div>
+    <div class="sec-h rv"><h2>מסגרת לכל גיל</h2><p>מהתינוקייה ועד גן חובה – באותה רוח ובאותה תשומת לב. בחרו שכבה כדי לראות במה מתמקדים בה.</p></div>
+    <div class="prg rv"><div class="prg-tabs" id="prgTabs" role="tablist" aria-label="שכבות גיל"></div><div class="prg-panel" id="prgPanel" role="tabpanel" aria-live="polite"></div></div>
+  </div></section>
+
+  <section class="sec" id="day"><div class="wrap">
+    <div class="sec-h rv"><h2>יום אצלנו</h2><p>שגרה קבועה ורגועה נותנת לבנות ביטחון. כך נראה יום טיפוסי.</p></div>
+    <div class="rv"><div class="day-sw glass" role="group" aria-label="סדר יום"><button type="button" data-day="gan" aria-pressed="true">בגן</button><button type="button" data-day="maon" aria-pressed="false">במעון</button></div>
+    <ol class="day" id="dayList"></ol><p class="day-note" id="dayNote"></p></div>
+  </div></section>
+
+  <section class="sec" id="values"><div class="wrap">
+    <div class="sec-h rv"><h2>על מה אנחנו מקפידים</h2></div>
+    <div class="vals rv" id="vals"></div>
   </div></section>
 
   <section class="sec" id="process"><div class="wrap">
@@ -485,15 +536,20 @@ footer .fb{margin-top:38px;padding-top:18px;border-top:1px solid rgba(255,255,25
     </ol></div>
   </div></section>
 
+  <section class="sec" id="locs" hidden><div class="wrap">
+    <div class="sec-h rv"><h2>הגנים שלנו</h2><p>הערים והאזורים שבהם פועלות המסגרות של הרשת. בוחרים עיר – וממשיכים ישר להרשמה.</p></div>
+    <div class="locs rv" id="locList"></div>
+  </div></section>
+
   <section class="sec" id="info"><div class="wrap">
     <div class="sec-h rv"><h2>מרכז מידע להורים</h2><p>מדריכים קצרים, שלב אחר שלב, עם קישורים ישירים לאתרים הרשמיים: מועדי רישום, דרגה במעון, גילאים, מסמכים ומה קורה אחרי ההרשמה.</p></div>
     <label class="hub-search glass rv"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="vh">חיפוש במרכז המידע</span><input type="search" id="icQ" placeholder="מה תרצו לדעת? למשל: דרגה, ספח, מועד" autocomplete="off"></label>
     <div class="hits" id="hits" hidden></div>
-    <div class="hub" id="hub"></div>
+    <div class="hub rv" id="hub"></div>
   </div></section>
 
   <section class="sec" id="faq" hidden><div class="wrap faq-wrap">
-    <div class="sec-h rv"><h2>שאלות נפוצות</h2><p>לא מצאתם תשובה? אפשר לפנות למשרד.</p><div class="cinfo" id="contact"></div></div>
+    <div class="sec-h rv"><h2>שאלות נפוצות</h2><p>לא מצאתם תשובה? אפשר לפנות למשרד.</p><div class="cinfo" id="contact"></div><div class="visit glass" id="visit" hidden><b>רוצים להכיר מקרוב?</b><p id="visitTxt">אפשר לתאם ביקור בגן או במעון.</p><a class="btn btn-ink btn-sm" id="visitBtn" href="#">תיאום ביקור</a></div></div>
     <div class="faq rv" id="faqList"></div>
   </div></section>
 
@@ -603,14 +659,69 @@ const procIO=!hasIO?{observe:e=>e.classList.add("in"),disconnect(){}}:new Inters
 const formLive=()=>!!$("#regForm [name=type],#regForm [name=first_name],#regForm [name=parent1_first_name],#regForm [name=consent]");
 document.addEventListener("click",e=>{const p=e.target.closest("[data-pick]");if(p&&INFO.types.includes(p.dataset.pick)&&!F.busy&&formLive()){collect();F.data.type=p.dataset.pick;F.dir=-1;F.step=0;paint();save()}});
 
+
+/* ---------- programs by age ---------- */
+const PRG=[
+ {id:"inf",grp:"מעון יום",t:"תינוקייה",age:"מגיל 3 חודשים",kind:"מעון יום",type:"מעון יום",pc:"rgba(227,245,241,.85)",pk:"var(--mint-d)",big:"0",pts:["שגרה קבועה של אכילה, שינה ומשחק – לפי הקצב של כל תינוקת","מטפלות שמכירות כל תינוקת, וקשר יומיומי עם ההורים","חושים ותנועה: זחילה, עמידה וצעדים ראשונים בסביבה בטוחה","שירים, ברכות ומילים ראשונות"]},
+ {id:"tod",grp:"מעון יום",t:"פעוטון",age:"בערך שנה ורבע עד שנתיים",kind:"מעון יום",type:"מעון יום",pc:"rgba(227,245,241,.85)",pk:"var(--mint-d)",big:"1",pts:["עצמאות ראשונה: לאכול לבד, לבקש, לשתף","משחק עם חברות וקבוצה קטנה","שפה: סיפורים, שירים ומשחקי מילים","תנועה, יצירה וחצר"]},
+ {id:"old",grp:"מעון יום",t:"בוגרים",age:"בערך שנתיים עד 3",kind:"מעון יום",type:"מעון יום",pc:"rgba(227,245,241,.85)",pk:"var(--mint-d)",big:"2",pts:["הכנה למעבר לגן: שגרה, הקשבה וישיבה במעגל","גמילה בשיתוף ההורים, בקצב של כל ילדה","חגים, פרשת שבוע וברכות – בשפה של קטנטנות","משחק דמיון ויצירה"]},
+ {id:"g3",grp:"גני ילדות",t:"טרום טרום חובה",age:"גיל 3",yr:3,kind:"גן ילדות",type:"גן",pc:"rgba(251,225,231,.85)",pk:"var(--rose-d)",big:"3",pts:["כניסה רכה לשגרת גן: מעגל בוקר, תפילה ושירה","שפה ותקשורת, ומשחק עם חברות","חגי ישראל ופרשת השבוע דרך סיפור ויצירה","תנועה וחצר"]},
+ {id:"g4",grp:"גני ילדות",t:"טרום חובה",age:"גיל 4",yr:4,kind:"גן ילדות",type:"גן",pc:"rgba(251,225,231,.85)",pk:"var(--rose-d)",big:"4",pts:["מידות טובות וחברות – בתוך המשחק והשגרה","אוצר מילים, סיפור ושיחה","היכרות ראשונה עם אותיות ומספרים, בדרך של משחק","יצירה, מוזיקה ותנועה"]},
+ {id:"g5",grp:"גני ילדות",t:"חובה",age:"גיל 5",yr:5,kind:"גן ילדות",type:"גן",pc:"rgba(255,244,217,.9)",pk:"var(--gold-d)",big:"5",pts:["הכנה לכיתה א׳: מוכנות לקריאה וכתיבה","חשיבה מתמטית ראשונה","עצמאות, אחריות ועבודה בקבוצה","תפילה, ברכות ופרשת השבוע"]}];
+let prgCur="g3";
+function paintPrg(anim){const tabs=$("#prgTabs");let lastG="";
+  tabs.innerHTML=PRG.map(p=>{const h=p.grp!==lastG?`<h4>${p.grp}</h4>`:"";lastG=p.grp;return h+`<button role="tab" type="button" data-prg="${p.id}" aria-selected="${p.id===prgCur}" tabindex="${p.id===prgCur?0:-1}">${p.t}<small>${p.yr?"ילידות "+(INFO.year_start-p.yr):p.age}</small></button>`}).join("")+((INFO.soon||[]).includes("צהרון")?`<h4>צהרונים</h4><p style="margin:0 16px;color:var(--muted);font-size:15px">ההרשמה לצהרונים תיפתח בהמשך.</p>`:"");
+  const p=PRG.find(x=>x.id===prgCur),el=$("#prgPanel"),open=INFO.types.includes(p.type);
+  el.style.setProperty("--pc",p.pc);el.style.setProperty("--pk",p.pk);
+  el.innerHTML=`<span class="big" aria-hidden="true">${p.big}</span><span class="kind">${p.kind}</span><h3>${p.t}</h3><p class="who">${p.age}${p.yr?` · בשנת ${esc(yl())}: ילידות ${INFO.year_start-p.yr}`:""}</p><ul>${p.pts.map(x=>`<li>${x}</li>`).join("")}</ul>
+   <div class="cta">${open?`<a class="btn btn-ink btn-sm" href="#register" data-pick="${p.type}">להרשמה ל${p.type==="גן"?"גן":"מעון"}</a>`:""}<a class="btn btn-glass btn-sm" href="#guide/${p.type==="גן"?"ages":"subsidy"}">${p.type==="גן"?"גילאים ושכבות":"דרגה במעון"}</a></div>`;
+  if(anim&&!RM){el.classList.remove("swap");void el.offsetWidth;el.classList.add("swap")}}
+$("#prgTabs").addEventListener("click",e=>{const b=e.target.closest("[data-prg]");if(!b)return;prgCur=b.dataset.prg;paintPrg(true)});
+$("#prgTabs").addEventListener("keydown",e=>{if(!["ArrowDown","ArrowUp","ArrowLeft","ArrowRight"].includes(e.key))return;e.preventDefault();const i=PRG.findIndex(x=>x.id===prgCur),d=(e.key==="ArrowDown"||e.key==="ArrowLeft")?1:-1;prgCur=PRG[(i+d+PRG.length)%PRG.length].id;paintPrg(true);$(`[data-prg="${prgCur}"]`).focus()});
+
+/* ---------- a day with us ---------- */
+const DAY_DEF={gan:["קבלת הבנות ושיחת בוקר","תפילה ושירה","פעילות במליאה: נושא השבוע","ארוחת עשר","משחק בחצר","עבודה בקבוצות ובפינות","ארוחת צהריים וסיום"],
+  maon:["קבלת הפעוטות","ארוחת בוקר","משחק ופעילות לפי גיל","חצר ואוויר צח","ארוחת צהריים","מנוחת צהריים","ארוחת מנחה ואיסוף"]};
+let dayCur="gan";
+function dayItems(k){const t=(INFO.texts||{})["day_"+k];if(t){return t.split(/\n+/).map(l=>l.split("|").map(x=>x.trim())).filter(x=>x[0]).map(x=>x.length>1?{tm:x[0],t:x[1]}:{tm:"",t:x[0]})}return DAY_DEF[k].map(t=>({tm:"",t}))}
+function paintDay(anim){$$("[data-day]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.day===dayCur));const L=dayItems(dayCur),el=$("#dayList");
+  el.innerHTML=L.map((x,i)=>`<li style="animation-delay:${i*.05}s">${x.tm?`<time>${esc(x.tm)}</time>`:""}<b>${esc(x.t)}</b></li>`).join("");
+  $("#dayNote").textContent=(INFO.texts||{})["day_"+dayCur]?"":"סדר היום המדויק ושעות הפעילות נמסרים על ידי הצוות של כל גן ומעון.";
+  if(anim&&!RM){el.classList.remove("swap");void el.offsetWidth;el.classList.add("swap")}}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-day]");if(b){dayCur=b.dataset.day;paintDay(true)}});
+
+/* ---------- values ---------- */
+const VAL_DEF=[["יראת שמים ושמחה","חינוך לתורה, למידות טובות ולאהבת מצוות – מתוך שמחה, פשטות וחום."],["כל ילדה בפני עצמה","תשומת לב לקצב, לאופי ולצרכים של כל ילדה, ושגרה שנותנת ביטחון."],["שותפות עם ההורים","עדכונים שוטפים, צוות זמין ודלת פתוחה לשאלות – לאורך כל השנה."],["סביבה בטוחה ומסודרת","מבנים מותאמים לגיל, נהלים ברורים וצוות שמכיר כל ילדה בשמה."]];
+function paintVals(){const t=(INFO.texts||{}).values,L=t?t.split(/\n+/).map(l=>l.split("|").map(x=>x.trim())).filter(x=>x[0]).slice(0,6):VAL_DEF;
+  $("#vals").innerHTML=L.map(([h,p])=>`<div class="val"><i></i><h3>${esc(h)}</h3><p>${esc(p||"")}</p></div>`).join("")}
+
+/* ---------- where we are ---------- */
+function paintLocs(){const L=INFO.locs||{},C=Object.keys(L).sort((a,b)=>(L[b].gan+L[b].maon+L[b].other)-(L[a].gan+L[a].maon+L[a].other)||a.localeCompare(b,"he"));
+  $("#locs").hidden=!C.length;if(!C.length)return;
+  $("#locList").innerHTML=C.map(c=>{const x=L[c],ar=areasOf(c),parts=[x.gan&&`${x.gan} ${x.gan>1?"גני ילדות":"גן ילדות"}`,x.maon&&`${x.maon} ${x.maon>1?"מעונות יום":"מעון יום"}`,x.other&&`${x.other} מסגרות`].filter(Boolean);
+    return `<div class="loc"><div><h3>${esc(c)}</h3><div class="cnt">${parts.join(" · ")}</div></div><div class="ars">${ar.map(a=>`<span>${esc(a)}</span>`).join("")}</div>${INFO.open?`<a class="btn btn-glass btn-sm" href="#register" data-city="${esc(c)}">להרשמה ב${esc(c)} <span class="arr">←</span></a>`:""}</div>`}).join("");watch()}
+document.addEventListener("click",e=>{const a=e.target.closest("[data-city]");if(a&&!F.busy&&formLive()){collect();if(cityList().includes(a.dataset.city)){F.data.city=a.dataset.city;F.data.city_other=false;F.data.area=""}F.dir=-1;F.step=0;paint();save()}});
+
+/* ---------- default FAQ ---------- */
+const FAQ_DEF=[{q:"מתי מתחילה שנת הלימודים?",a:"ב-1 בספטמבר. פרטים על יום הפתיחה יישלחו במייל לקראת סוף הקיץ."},
+ {q:"אפשר לרשום כמה אחיות?",a:"כן. אחרי שליחת הבקשה הראשונה לוחצים על \"הרשמה של ילדה נוספת\", ופרטי ההורים כבר ממולאים."},
+ {q:"מתי נדע לאיזה גן שובצנו?",a:"אחרי השלמת הפרטים המשרד משבץ לגן המתאים ושולח אישור במייל. בכל רגע אפשר לבדוק את מצב הבקשה בקישור האישי."},
+ {q:"האם אפשר לקבל סבסוד למעון?",a:"כן. במעון מוכר אפשר לבקש דרגת סבסוד ממשרד העבודה. ההסבר המלא נמצא במדריך \"דרגה במעון יום\" במרכז המידע."},
+ {q:"ההרשמה כאן מחליפה את הרישום בעירייה?",a:"לגני ילדות – לא תמיד. בחלק מהמקרים צריך להירשם גם ברשות המקומית. הפרטים במדריך \"מועדי רישום\"."},
+ {q:"טעיתי בפרטים בטופס. מה עושים?",a:"פונים למשרד ונתקן. את פרטי ההורים והכתובת אפשר לעדכן גם בטופס השלמת הפרטים שיישלח אליכם."}];
+const faqList=()=>(INFO.faq||[]).length?INFO.faq:FAQ_DEF;
+function paintFaq(){$("#faq").hidden=false;$("#navFaq").hidden=false;$("#faqList").innerHTML=faqList().map(f=>`<details class="glass"><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("");watch()}
+function paintVisit(){const ph=INFO.phone,em=INFO.email;$("#visit").hidden=!(ph||em);if(!ph&&!em)return;$("#visitTxt").textContent=TX("visit_text","אפשר לתאם ביקור בגן או במעון, לראות את המקום ולהכיר את הצוות.");
+  $("#visitBtn").href=ph?`tel:${ph}`:`mailto:${em}?subject=${encodeURIComponent("תיאום ביקור")}`;$("#visitBtn").textContent=ph?`תיאום ביקור · ${ph}`:"תיאום ביקור במייל"}
+
 /* ---------- information centre ---------- */
 const X=(href,t)=>`<a class="xl ext" href="${href}" target="_blank" rel="noopener">${t}</a>`,IN=(href,t)=>`<a class="xl" href="${href}">${t}</a>`;
 const U={gov:"https://www.gov.il/he/service/daycare-center-parents-request-degree-of-subsidy",check:"https://daycareeligibilitycheck.labor.gov.il/",dept:"https://www.gov.il/he/departments/Units/day-care-centers",
   kzReg:"https://www.kolzchut.org.il/he/%D7%A8%D7%99%D7%A9%D7%95%D7%9D_%D7%9C%D7%92%D7%9F_%D7%99%D7%9C%D7%93%D7%99%D7%9D",
   kzDeg:"https://www.kolzchut.org.il/he/%D7%93%D7%A8%D7%92%D7%95%D7%AA_%D7%94%D7%A9%D7%AA%D7%AA%D7%A4%D7%95%D7%AA_%D7%91%D7%9E%D7%99%D7%9E%D7%95%D7%9F_%D7%9E%D7%A2%D7%95%D7%A0%D7%95%D7%AA_%D7%99%D7%95%D7%9D_%D7%95%D7%9E%D7%A9%D7%A4%D7%97%D7%AA%D7%95%D7%A0%D7%99%D7%9D",
   kzSub:"https://www.kolzchut.org.il/he/%D7%94%D7%A9%D7%AA%D7%AA%D7%A4%D7%95%D7%AA_%D7%91%D7%A9%D7%9B%D7%A8_%D7%9C%D7%99%D7%9E%D7%95%D7%93_%D7%9C%D7%9E%D7%A2%D7%95%D7%A0%D7%95%D7%AA_%D7%99%D7%95%D7%9D_%D7%95%D7%9E%D7%A9%D7%A4%D7%97%D7%AA%D7%95%D7%A0%D7%99%D7%9D_%28%D7%A1%D7%91%D7%A1%D7%95%D7%93_%D7%A9%D7%9B%D7%A8_%D7%9C%D7%99%D7%9E%D7%95%D7%93%29"};
-const ICN={register:'<path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 12l2 2 4-4"/>',dates:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',subsidy:'<path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H18v4"/><path d="M3 7.5V18a2 2 0 0 0 2 2h15V9H5.5A2.5 2.5 0 0 1 3 7.5Z"/><circle cx="16" cy="14.5" r="1.3"/>',ages:'<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>',docs:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',after:'<path d="M3 12h4l3 8 4-16 3 8h4"/>',privacy:'<rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>'};
-const TC={register:["var(--blush)","var(--rose-d)"],dates:["var(--mint-s)","var(--mint-d)"],subsidy:["var(--butter-s)","var(--gold-d)"],ages:["var(--blush)","var(--rose-d)"],docs:["var(--mint-s)","var(--mint-d)"],after:["var(--butter-s)","var(--gold-d)"],privacy:["rgba(47,37,66,.08)","var(--ink)"]};
+const ICN={first:'<path d="M12 3v3M5.6 5.6l2.1 2.1M3 12h3M18 12h3M16.3 7.7l2.1-2.1"/><path d="M8 16a4 4 0 0 1 8 0"/><path d="M3 20h18"/>',register:'<path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 12l2 2 4-4"/>',dates:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',subsidy:'<path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H18v4"/><path d="M3 7.5V18a2 2 0 0 0 2 2h15V9H5.5A2.5 2.5 0 0 1 3 7.5Z"/><circle cx="16" cy="14.5" r="1.3"/>',ages:'<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>',docs:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',after:'<path d="M3 12h4l3 8 4-16 3 8h4"/>',privacy:'<rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>'};
+const TC={first:["var(--mint-s)","var(--mint-d)"],register:["var(--blush)","var(--rose-d)"],dates:["var(--mint-s)","var(--mint-d)"],subsidy:["var(--butter-s)","var(--gold-d)"],ages:["var(--blush)","var(--rose-d)"],docs:["var(--mint-s)","var(--mint-d)"],after:["var(--butter-s)","var(--gold-d)"],privacy:["rgba(47,37,66,.08)","var(--ink)"]};
 const G=[
  {id:"register",t:"איך נרשמים אצלנו",s:"מילוי הטופס באתר, צעד אחר צעד",min:2,
   sum:()=>`ההרשמה לגני מלכות נעשית כאן באתר, בטופס קצר של ארבעה שלבים. לא צריך לצרף מסמכים בשלב הזה, והטופס נשמר אוטומטית במכשיר שלכם.`,
@@ -656,6 +767,16 @@ const G=[
    ["שיבוץ לגן","המשרד משבץ לגן המתאים לפי העיר והאזור שבחרתם, הגיל והמקומות הפנויים."],
    ["אישור הרשמה","מכתב אישור במייל עם שם הגן, הכתובת והטלפון. אם אין כרגע מקום, הבקשה עוברת לרשימת המתנה ונעדכן ברגע שמתפנה.",`<b>לא מצאתם את המייל?</b> בדקו בתיקיית הספאם או ב"קידומי מכירות", או פנו למשרד.`]],
   src:()=>[]},
+ {id:"first",t:"לקראת היום הראשון",s:"הסתגלות, תיק, בריאות והיעדרויות",min:3,
+  sum:()=>`כמה הכנות פשוטות שעושות את ההתחלה רגועה יותר – לבת ולכם. ההמלצות מבוססות על הנחיות משרד החינוך להורים בגני הילדים, והצוות שלנו ימסור לכם את הפרטים של המסגרת שלכם.`,
+  steps:()=>[["מגיעים למפגש ההיכרות","לפני הפתיחה או בימים הראשונים הצוות מזמין למפגש היכרות. כדאי מאוד להגיע – הבת מכירה את המקום ואת הצוות לפני היום הגדול."],
+   ["ממלאים הצהרת בריאות ושאלון","בתחילת כל שנה ממלאים הצהרת בריאות חתומה ושאלון פרטים: אלרגיות, רגישויות וכל מה שחשוב שהצוות יידע. ילדה שצריכה תרופה במסגרת – ממלאים טופס ייעודי בחתימת ההורים והרופא."],
+   ["הסתגלות הדרגתית","בימים הראשונים היום מתארך בהדרגה. נפרדים בקצרה ובחיוך, ומבטיחים לחזור – ומקיימים. ילדה שזקוקה לעוד זמן יכולה לצאת מוקדם יותר, בתיאום עם הצוות.",`<b>טיפ:</b> חפץ מוכר מהבית (בובה קטנה או שמיכה) עוזר לקטנטנות במעון.`],
+   ["מה מכינים בתיק","בגדי החלפה מסומנים בשם, בקבוק מים, ולמעון גם חיתולים, מגבונים ומוצץ אם צריך. הרשימה המדויקת נמסרת על ידי הצוות לפני הפתיחה."],
+   ["אוכל","יוצאים מהבית אחרי ארוחת בוקר מזינה. אם הגן מבקש כריך או פרי – שולחים משהו בריא, בלי ממתקים."],
+   ["היעדרות ומחלה","מודיעים לצוות על כל היעדרות. בגני הילדים, אחרי חמישה ימי היעדרות בגלל מחלה, נדרש אישור רופא לחזרה. ילדה עם חום נשארת בבית עד שהיא מרגישה טוב."],
+   ["שעות הגעה ואיסוף","מקפידים על שעות הפתיחה והאיסוף, ובבוקר מלווים את הבת עד הצוות. אם מישהו אחר אוסף – מודיעים מראש."]],
+  src:()=>[["https://meyda.education.gov.il/files/PreSchool/open-preschool2019.pdf","משרד החינוך – מידע להורים לקראת פתיחת שנה בגן"]]},
  {id:"privacy",t:"פרטיות ואבטחה",s:"איך שומרים על המידע",min:1,
   sum:()=>`הפרטים נשמרים במערכת הניהול של הרשת ומשמשים רק לצורך ההרשמה והשיבוץ. הם לא מועברים לגורם חיצוני.`,
   steps:()=>[["קישורים אישיים","הקישור למעקב ולטופס ההשלמה אישי ומוצפן. אל תעבירו אותו לאחרים."],
@@ -663,7 +784,7 @@ const G=[
    ["עיון ותיקון","אפשר לבקש לעיין בפרטים או לתקן אותם בכל עת, דרך המשרד."]],
   src:()=>[]}];
 const gIcon=g=>`<svg viewBox="0 0 24 24">${ICN[g.id]}</svg>`,gStyle=g=>`--tc:${TC[g.id][0]};--tk:${TC[g.id][1]}`;
-function paintHub(){$("#hub").innerHTML=G.map((g,i)=>`<a class="tile glass rv${i===0?" feat":""}" href="#guide/${g.id}" style="${gStyle(g)};--d:${(i%3)*.06}s"><span class="ti">${gIcon(g)}</span><b>${g.t}</b><span>${g.s}</span><small>${g.steps().length} שלבים · כ-${g.min} דק׳ קריאה<em>←</em></small></a>`).join("");watch()}
+function paintHub(){$("#hub").innerHTML=G.map((g,i)=>`<a class="tile" href="#guide/${g.id}" style="${gStyle(g)}"><span class="ti">${gIcon(g)}</span><b>${g.t}</b><span>${g.s}</span><small><span>כ-${g.min} דק׳</span><em>←</em></small></a>`).join("");watch()}
 const gText=g=>{const t=document.createElement("div");t.innerHTML=g.sum()+" "+g.steps().map(s=>s.join(" ")).join(" ")+(g.extra?g.extra():"");return t.textContent.replace(/\s+/g," ")};
 function showGuide(id){const g=G.find(x=>x.id===id)||G[0],i=G.indexOf(g),prev=G[i-1],next=G[i+1];
   $("#landing").hidden=true;$("#solo").hidden=true;$("#guideView").hidden=false;$("#navInfo").setAttribute("aria-current","page");mcta.classList.remove("show");
@@ -684,7 +805,7 @@ document.addEventListener("click",e=>{const a=e.target.closest("[data-home]");if
 $("#icQ").addEventListener("input",e=>{const q=e.target.value.trim(),box=$("#hits");if(!q){box.hidden=true;$("#hub").hidden=false;return}
   const mk=s=>esc(s).split(esc(q)).join(`<mark>${esc(q)}</mark>`),hits=[];
   G.forEach(g=>{const txt=g.t+" "+gText(g),i=txt.indexOf(q);if(i>=0){const s=Math.max(0,i-50);hits.push(`<a class="hit glass" href="#guide/${g.id}"><b>${g.t}</b><span>${mk((s?"…":"")+txt.slice(s,i+q.length+80)+"…")}</span></a>`)}});
-  (INFO.faq||[]).forEach(f=>{const txt=f.q+" "+f.a,i=txt.indexOf(q);if(i>=0)hits.push(`<a class="hit glass" href="#faq"><b>${esc(f.q)}</b><span>${mk(txt.slice(Math.max(0,i-40),i+q.length+80))}</span></a>`)});
+  faqList().forEach(f=>{const txt=f.q+" "+f.a,i=txt.indexOf(q);if(i>=0)hits.push(`<a class="hit glass" href="#faq"><b>${esc(f.q)}</b><span>${mk(txt.slice(Math.max(0,i-40),i+q.length+80))}</span></a>`)});
   box.innerHTML=hits.length?hits.join(""):`<p class="phint">לא נמצאו תוצאות ל״${esc(q)}״. נסו מילה אחרת, למשל ״דרגה״ או ״ספח״.</p>`;box.hidden=false;$("#hub").hidden=true});
 
 /* ---------- registration wizard ---------- */
@@ -864,7 +985,7 @@ function solo(h){$("#landing").hidden=true;$("#guideView").hidden=true;$("#solo"
 function applyInfo(){$("#pillTxt").textContent=INFO.open?(INFO.texts?.hero_badge||`ההרשמה לשנת ${yl()} פתוחה`):TX("closed_title","ההרשמה סגורה כרגע");$("#pill").classList.toggle("closed",!INFO.open);
   const ht=(INFO.texts||{}).hero_title;if(ht)$("#heroTitle").innerHTML=ht.split(/\n+/).map(l=>l.trim()).filter(Boolean).slice(0,4).map(l=>`<span class="ln"><span>${esc(l)}</span></span>`).join("");
   $("#regTitle").textContent=`${TX("reg_title","נרשמים לשנת הלימודים")} ${yl()}`;if((INFO.texts||{}).reg_sub)$("#regSub").textContent=INFO.texts.reg_sub;
-  paintMarq();paintHub()}
+  paintMarq();paintHub();paintPrg();paintDay();paintVals();paintLocs();paintFaq();paintVisit()}
 const sp=new URLSearchParams(location.search),Q={s:sp.get("s"),f:sp.get("f")};
 if(Q.s)statusPage(Q.s);else if(Q.f)completePage(Q.f);
 applyInfo();paint();watch();route();
@@ -873,8 +994,7 @@ addEventListener("pagehide",()=>{if(!F.busy&&formLive()&&$("#regForm .nav2")){co
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"&&!F.busy&&formLive()){collect();save()}});
 rpc("regInfo").then(i=>{INFO=Object.assign(INFO,i);INFO.areas=INFO.areas||[];INFO.cities=INFO.cities||{};INFO.form=INFO.form||{};INFO.texts=INFO.texts||{};
   if(i.intro)$("#intro").textContent=i.intro;
-  if(!INFO.soon.includes("צהרון")&&INFO.types.includes("צהרון"))$("#soonCard").hidden=true;
-  if((i.faq||[]).length){$("#faq").hidden=false;$("#faqList").innerHTML=i.faq.map(f=>`<details class="glass"><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("");watch()}else $("#navFaq").hidden=true;
+
   const ct=[i.phone&&`<a href="tel:${esc(i.phone)}"><small>טלפון</small><span dir="ltr">${esc(i.phone)}</span></a>`,i.email&&`<a href="mailto:${esc(i.email)}"><small>מייל</small><span dir="ltr">${esc(i.email)}</span></a>`].filter(Boolean);
   $("#contact").innerHTML=ct.join("");if(ct.length)$("#fContact").innerHTML=[i.phone&&`<li><a href="tel:${esc(i.phone)}" dir="ltr">${esc(i.phone)}</a></li>`,i.email&&`<li><a href="mailto:${esc(i.email)}" dir="ltr">${esc(i.email)}</a></li>`].filter(Boolean).join("");
   applyInfo();if(!$("#guideView").hidden)route();
