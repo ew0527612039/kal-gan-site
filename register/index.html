@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>גני מלכות – הרשמה לגנים ולמעונות</title>
-<meta name="description" content="הרשמה לגני הבנות ולמעונות היום של רשת גני מלכות: מרכז מידע להורים, מועדי רישום, מדריך לדרגה במעון וטופס הרשמה מקוון.">
-<meta name="theme-color" content="#FFFBF8">
+<meta name="description" content="הרשמה לגני הבנות ולמעונות היום של רשת גני מלכות: מרכז מידע להורים, מדריכים שלב אחר שלב וטופס הרשמה מקוון.">
+<meta name="theme-color" content="#FBF7F5">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='20' fill='%23FBE1E7'/%3E%3Cpath d='M14 44 L16 22 L25 31 L32 16 L39 31 L48 22 L50 44 Z' fill='%23E0668E'/%3E%3Ccircle cx='32' cy='14' r='4' fill='%23E9C677'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,20 +13,23 @@
 <script>window.KG_API="https://script.google.com/macros/s/AKfycbx1S1OEbhTtgp_j4PyiEPCTwTtD25FZUO8pmNYHj9z1ZbzAt_0_uW-UImWbz9hH1_UVCg/exec";</script>
 <style>
 :root{
-  --bg:#FFFBF8;--paper:#FFFFFF;--soft:#F6F1F4;--ink:#3A2E4F;--ink2:#4A3D62;--muted:#6E6480;--line:#F0E3E6;
+  --bg:#FBF7F5;--ink:#2F2542;--ink2:#4A3F5C;--muted:#6E6480;--hair:rgba(47,37,66,.10);--hair2:rgba(47,37,66,.06);
   --rose:#E0668E;--rose-d:#B83E68;--blush:#FBE1E7;--rose2:#F3A3BF;
   --mint:#A8E0D4;--mint-d:#1F7C80;--mint-s:#E3F5F1;
   --butter:#F7E2AE;--butter-s:#FFF4D9;--gold:#E9C677;--gold-d:#8A6200;
-  --ok:#1E7F55;--ok-s:#DDF2E7;--bad:#B23A3A;--bad-s:#F9DEDE;--warn:#9A5F06;--warn-s:#FDEBC8;
+  --ok:#1E7F55;--bad:#B23A3A;--bad-s:#F9DEDE;--warn:#9A5F06;--warn-s:#FDEBC8;
+  --g2:rgba(255,255,255,.6);--g3:rgba(255,255,255,.82);--gb:rgba(255,255,255,.72);
+  --blur:saturate(160%) blur(18px);
   --f-d:"Fredoka","Assistant","Segoe UI",Arial,sans-serif;--f-b:"Assistant","Segoe UI","Arial Hebrew",Arial,sans-serif;
-  --ease:cubic-bezier(.2,.8,.2,1);--spring:cubic-bezier(.3,1.6,.5,1);
-  --sh:0 1px 0 rgba(58,46,79,.05),0 30px 60px -36px rgba(58,46,79,.45);
+  --ease:cubic-bezier(.2,.8,.2,1);--spring:cubic-bezier(.3,1.5,.5,1);
+  --sh1:0 1px 2px rgba(47,37,66,.05),0 8px 24px -12px rgba(47,37,66,.18);
+  --sh2:0 1px 2px rgba(47,37,66,.05),0 30px 60px -30px rgba(47,37,66,.35);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:90px;overflow-x:clip}
+html{scroll-behavior:smooth;scroll-padding-top:110px;overflow-x:clip}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-b);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-h1,h2,h3,h4{font-family:var(--f-d);font-weight:600;line-height:1.14;margin:0;text-wrap:balance}
-h2{font-size:clamp(32px,4.4vw,52px)}
+h1,h2,h3,h4{font-family:var(--f-d);font-weight:600;line-height:1.12;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font-size:clamp(30px,3.8vw,48px)}
 p{margin:0;text-wrap:pretty}
 a{color:var(--rose-d)}
 img,svg{display:block}
@@ -34,410 +37,383 @@ button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--mint-d);outline-offset:3px;border-radius:10px}
 [hidden]{display:none!important}
 .wrap{width:min(1200px,100% - 40px);margin-inline:auto}
-.skip{position:absolute;top:8px;inset-inline-start:16px;z-index:99;background:#fff;padding:8px 14px;border-radius:10px;clip-path:inset(50%);width:1px;height:1px;overflow:hidden;overflow:clip}.skip:focus{clip-path:none;width:auto;height:auto}
-.kick{display:inline-block;font-weight:800;font-size:15px;color:var(--rose-d);background:var(--blush);border-radius:999px;padding:5px 16px}
-.lead{color:var(--muted);font-size:20px;max-width:40ch}
-
-/* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;font-weight:800;font-size:18px;border-radius:999px;padding:14px 28px;cursor:pointer;text-decoration:none;min-height:50px;white-space:nowrap;line-height:1.2;transition:transform .35s var(--spring),box-shadow .3s,background .2s,color .2s}
-.btn:hover{transform:translateY(-3px)}.btn:active{transform:translateY(1px)}
-.btn-rose{background:var(--rose);color:#fff;box-shadow:0 14px 30px -14px rgba(224,102,142,.85)}.btn-rose:hover{background:var(--rose-d)}
-.btn-soft{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 2px var(--line)}.btn-soft:hover{box-shadow:inset 0 0 0 2px var(--mint-d);color:var(--mint-d)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.skip{position:absolute;top:8px;inset-inline-start:16px;z-index:99;background:#fff;padding:8px 14px;border-radius:10px;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}.skip:focus{clip-path:none;width:auto;height:auto}
+.aura{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;overflow:clip}
+.aura i{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;animation:auraMove 26s ease-in-out infinite alternate}
+.aura i:nth-child(1){width:52vw;height:52vw;background:#F8C9D7;top:-18vw;inset-inline-end:-10vw}
+.aura i:nth-child(2){width:44vw;height:44vw;background:#C6EBE2;bottom:-16vw;inset-inline-start:-12vw;animation-duration:32s}
+.aura i:nth-child(3){width:30vw;height:30vw;background:#FBEBC4;top:38%;inset-inline-start:34%;opacity:.4;animation-duration:38s}
+.aura::after{content:"";position:absolute;inset:0;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+@keyframes auraMove{to{transform:translate(4vw,3vw) scale(1.08)}}
+.glass{background:var(--g2);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--gb);box-shadow:var(--sh1),inset 0 1px 0 rgba(255,255,255,.8)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass{background:rgba(255,255,255,.93)}}
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;font-weight:800;font-size:17px;border-radius:999px;padding:13px 26px;cursor:pointer;text-decoration:none;min-height:50px;white-space:nowrap;line-height:1.2;transition:transform .35s var(--spring),box-shadow .3s,background .2s,color .2s}
+.btn:active{transform:scale(.97)}
+.btn-rose{background:linear-gradient(180deg,#E9799E,var(--rose));color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 14px 30px -14px rgba(224,102,142,.9)}.btn-rose:hover{background:linear-gradient(180deg,var(--rose),var(--rose-d))}
+.btn-glass{background:var(--g2);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);color:var(--ink);box-shadow:inset 0 0 0 1px var(--gb),var(--sh1)}.btn-glass:hover{background:var(--g3)}
 .btn-ink{background:var(--ink);color:#fff}.btn-ink:hover{background:var(--ink2)}
-.btn-sm{padding:8px 18px;font-size:16px;min-height:42px}
+.btn-sm{padding:8px 18px;font-size:15.5px;min-height:42px}
 .btn-lg{padding:16px 34px;font-size:19px}
-.btn[disabled]{opacity:.55;cursor:not-allowed;transform:none}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.btn .arr{display:inline-block;transition:transform .3s var(--ease)}.btn:hover .arr{transform:translateX(-4px)}
 .lnk{background:none;border:0;padding:0;color:var(--rose-d);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1.5px}
-
-/* header */
-.top{position:sticky;top:0;z-index:50;background:rgba(255,251,248,.84);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s}
-.top.scrolled{border-color:var(--line);box-shadow:0 10px 30px -24px rgba(58,46,79,.35)}
-.top .wrap{display:flex;align-items:center;gap:16px;min-height:76px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--f-d);font-weight:700;font-size:26px}
-.brand svg{width:46px;height:46px;transition:transform .5s var(--spring)}.brand:hover svg{transform:rotate(-8deg) scale(1.06)}
-.top nav{display:flex;gap:2px;margin-inline-start:12px}
-.top nav a{color:var(--ink);text-decoration:none;padding:9px 15px;border-radius:999px;font-weight:700;font-size:17px;transition:background .2s,color .2s}
-.top nav a:hover{background:var(--blush);color:var(--rose-d)}
+.xl{color:var(--rose-d);font-weight:700;text-decoration:underline;text-decoration-color:rgba(184,62,104,.35);text-underline-offset:4px;text-decoration-thickness:2px;transition:text-decoration-color .2s}
+.xl:hover{text-decoration-color:var(--rose-d)}
+.xl.ext::after{content:"";display:inline-block;width:.72em;height:.72em;margin-inline-start:4px;vertical-align:.02em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4 10 14M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4 10 14M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E") center/contain no-repeat}
+.prog-top{position:fixed;top:0;inset-inline:0;height:3px;z-index:60;background:linear-gradient(90deg,var(--mint-d),var(--rose));transform-origin:right;transform:scaleX(0)}
+.top{position:sticky;top:12px;z-index:50;margin-top:12px}
+.top .bar{display:flex;align-items:center;gap:14px;min-height:66px;padding:8px 10px 8px 12px;border-radius:999px;transition:background .3s}
+.top.scrolled .bar{background:var(--g3)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--f-d);font-weight:700;font-size:23px;padding-inline-start:6px}
+.brand svg{width:42px;height:42px;transition:transform .5s var(--spring)}.brand:hover svg{transform:rotate(-8deg)}
+.top nav{display:flex;gap:2px;margin-inline-start:10px}
+.top nav a{color:var(--ink2);text-decoration:none;padding:8px 14px;border-radius:999px;font-weight:700;font-size:16px;transition:background .2s,color .2s}
+.top nav a:hover,.top nav a[aria-current="page"]{background:rgba(255,255,255,.75);color:var(--ink)}
 .top .acts{margin-inline-start:auto;display:flex;gap:8px;align-items:center}
-.menu-btn{display:none;background:#fff;border:1px solid var(--line);border-radius:14px;width:46px;height:46px;cursor:pointer;place-items:center}
+.menu-btn{display:none;background:var(--g3);border:1px solid var(--gb);border-radius:50%;width:46px;height:46px;cursor:pointer;place-items:center}
 @media (max-width:980px){.top nav{display:none}.menu-btn{display:inline-grid}
-  .top nav.open{display:flex;flex-direction:column;position:absolute;top:100%;inset-inline:0;background:var(--paper);border-bottom:1px solid var(--line);padding:10px 20px 18px;margin:0;animation:fadeUp .35s both}
-  .top nav.open a{padding:12px 8px;font-size:19px}}
-@media (max-width:520px){.brand{font-size:22px}.brand svg{width:40px;height:40px}.top .wrap{min-height:66px;gap:10px}.top .acts .btn{padding:9px 16px;min-height:42px;font-size:16px}}
-
-/* keyframes */
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .top nav.open{display:flex;flex-direction:column;position:absolute;top:calc(100% + 8px);inset-inline:0;margin:0;padding:10px;border-radius:24px;background:rgba(255,255,255,.94);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--gb);box-shadow:var(--sh2);animation:fadeUp .3s both}
+  .top nav.open a{padding:12px 14px;font-size:18px}}
+@media (max-width:520px){.brand{font-size:20px}.brand svg{width:36px;height:36px}.top .bar{min-height:58px}.top .acts .btn{padding:8px 15px;min-height:40px;font-size:15px}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes lineUp{from{transform:translateY(108%)}to{transform:none}}
-@keyframes popIn{from{transform:scale(.3) rotate(-14deg);opacity:0}to{transform:none;opacity:1}}
-@keyframes pop{0%{transform:scale(.7)}70%{transform:scale(1.06)}100%{transform:scale(1)}}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(-18px,-10px)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
-@keyframes ping{0%{box-shadow:0 0 0 0 rgba(31,124,128,.5)}70%{box-shadow:0 0 0 12px rgba(31,124,128,0)}100%{box-shadow:0 0 0 0 rgba(31,124,128,0)}}
-@keyframes archIn{from{clip-path:inset(100% 0 0 0 round 999px 999px 48px 48px)}to{clip-path:inset(0 0 0 0 round 999px 999px 48px 48px)}}
+@keyframes popIn{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+@keyframes pop{0%{transform:scale(.8)}70%{transform:scale(1.05)}100%{transform:scale(1)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(-16px,-9px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(31,124,128,.45)}70%{box-shadow:0 0 0 11px rgba(31,124,128,0)}100%{box-shadow:0 0 0 0 rgba(31,124,128,0)}}
+@keyframes archIn{from{clip-path:inset(100% 0 0 0 round 999px 999px 44px 44px)}to{clip-path:inset(0 0 0 0 round 999px 999px 44px 44px)}}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes fill{to{opacity:1}}
 @keyframes twinkle{0%,100%{opacity:0;transform:scale(.3) rotate(0)}45%{opacity:1;transform:scale(1) rotate(45deg)}65%{opacity:.15}}
 @keyframes spinS{to{transform:rotate(360deg)}}
 @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @keyframes marq{from{transform:translateX(0)}to{transform:translateX(50%)}}
-
-/* hero */
-.hero{position:relative;padding:54px 0 20px}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:56px;align-items:center}
-.pill{display:inline-flex;align-items:center;gap:10px;background:var(--mint-s);color:var(--mint-d);font-weight:800;font-size:16px;border-radius:999px;padding:8px 18px;animation:fadeUp .8s .1s both}
-.pill i{width:10px;height:10px;border-radius:50%;background:currentColor;animation:ping 2.2s infinite}
-.pill.closed{background:var(--soft);color:var(--muted)}.pill.closed i{animation:none}
-.hero h1{font-size:clamp(46px,6.4vw,86px);margin:22px 0 22px;line-height:1.06}
-.hero h1 .ln{display:block;overflow:hidden;overflow:clip;padding-bottom:.08em}
+@keyframes sheen{from{transform:translateX(120%)}to{transform:translateX(-120%)}}
+.hero{position:relative;padding:58px 0 10px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:52px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:10px;color:var(--mint-d);font-weight:800;font-size:15.5px;border-radius:999px;padding:7px 16px;animation:fadeUp .8s .1s both}
+.pill i{width:9px;height:9px;border-radius:50%;background:currentColor;animation:ping 2.2s infinite}
+.pill.closed{color:var(--muted)}.pill.closed i{animation:none}
+.hero h1{font-size:clamp(46px,6.4vw,88px);margin:22px 0 22px;line-height:1.04}
+.hero h1 .ln{display:block;overflow:hidden;overflow:clip;padding-bottom:.09em}
 .hero h1 .ln>span{display:inline-block;animation:lineUp 1.1s var(--ease) both}
-.hero h1 .ln:nth-child(2)>span{animation-delay:.13s}.hero h1 .ln:nth-child(3)>span{animation-delay:.26s}
-.hero h1 .hl{color:var(--rose)}
-.hero .lead{animation:fadeUp 1s .5s both}
-.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px;animation:fadeUp 1s .65s both}
-.trust{display:flex;gap:10px 24px;flex-wrap:wrap;margin-top:30px;color:var(--muted);font-weight:700;font-size:16px;animation:fadeUp 1s .8s both;list-style:none;padding:0}
-.trust li{display:inline-flex;align-items:center;gap:8px}.trust svg{width:18px;height:18px;color:var(--rose)}
-
+.hero h1 .ln:nth-child(2)>span{animation-delay:.12s}.hero h1 .ln:nth-child(3)>span{animation-delay:.24s}
+.hero h1 .ln:last-child{color:var(--rose)}
+.hero .lead{color:var(--ink2);font-size:20px;max-width:40ch;animation:fadeUp 1s .45s both}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px;animation:fadeUp 1s .6s both}
 .stage{position:relative;aspect-ratio:1/1.04;min-height:420px;--px:0;--py:0}
-.arch{position:absolute;inset:4% 9% 0 7%;border-radius:999px 999px 48px 48px;overflow:hidden;overflow:clip;background:linear-gradient(180deg,#FDEAF0 0%,#FBE1E7 46%,#E3F5F1 100%);box-shadow:0 44px 80px -44px rgba(58,46,79,.5);animation:archIn 1.4s var(--ease) both;transform:translate(calc(var(--px)*-8px),calc(var(--py)*-8px));transition:transform .6s var(--ease)}
+.stage-in{position:absolute;inset:0;transform:translateY(var(--sy,0px));will-change:transform}
+.arch{position:absolute;inset:4% 9% 0 7%;border-radius:999px 999px 44px 44px;overflow:hidden;overflow:clip;background:linear-gradient(180deg,#FDEAF0 0%,#FBE1E7 46%,#E3F5F1 100%);box-shadow:0 44px 80px -44px rgba(47,37,66,.55),inset 0 0 0 1px rgba(255,255,255,.6);animation:archIn 1.4s var(--ease) both;transform:translate(calc(var(--px)*-8px),calc(var(--py)*-8px));transition:transform .6s var(--ease)}
 .arch svg{position:absolute;inset:0;width:100%;height:100%}
-.hill{transform:translate(calc(var(--px)*6px),0);transition:transform .6s var(--ease)}
+.arch::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.45) 50%,transparent 60%);transform:translateX(120%);animation:sheen 2.2s 1.6s var(--ease) both}
 .sun{transform-box:fill-box;transform-origin:center;animation:spinS 60s linear infinite}
 .cr-line{fill:none;stroke:var(--rose-d);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2s var(--ease) .7s forwards}
 .cr-fill{opacity:0;animation:fill .9s ease 2.2s forwards}
 .cr-gem{transform-box:fill-box;transform-origin:center;transform:scale(0);animation:pop .55s var(--spring) forwards}
 .spark{fill:#fff;transform-box:fill-box;transform-origin:center;opacity:0;animation:twinkle 3.8s ease-in-out infinite}
-.cloud{position:absolute;color:#fff;filter:drop-shadow(0 14px 18px rgba(58,46,79,.12));pointer-events:none}
+.cloud{position:absolute;color:#fff;filter:drop-shadow(0 14px 18px rgba(47,37,66,.12));pointer-events:none}
 .cloud svg{width:100%;height:auto}
-.stage .cloud.a{width:150px;top:-1%;inset-inline-start:24%;animation:drift 9s ease-in-out infinite}
+.stage .cloud.a{width:150px;top:-1%;inset-inline-start:22%;animation:drift 9s ease-in-out infinite}
 .stage .cloud.b{width:112px;bottom:22%;inset-inline-end:-3%;animation:drift 11s -3s ease-in-out infinite}
-.stage .cloud.c{width:86px;top:16%;inset-inline-end:2%;animation:drift 13s -6s ease-in-out infinite;opacity:.95}
-.pearl{position:absolute;border-radius:50%;pointer-events:none;box-shadow:inset -6px -8px 14px rgba(0,0,0,.08),0 10px 18px -8px rgba(58,46,79,.25)}
+.stage .cloud.c{width:86px;top:16%;inset-inline-end:2%;animation:drift 13s -6s ease-in-out infinite}
+.pearl{position:absolute;border-radius:50%;pointer-events:none;box-shadow:inset -6px -8px 14px rgba(0,0,0,.08),0 10px 18px -8px rgba(47,37,66,.25)}
 .pearl.p1{width:46px;height:46px;background:radial-gradient(circle at 34% 30%,#fff 0 12%,#F6B9CA 40%,#E58BA8 100%);top:3%;inset-inline-end:14%;animation:float 7s ease-in-out infinite}
 .pearl.p2{width:30px;height:30px;background:radial-gradient(circle at 34% 30%,#fff 0 12%,#BDEBDF 40%,#7CC9B8 100%);bottom:4%;inset-inline-end:34%;animation:float 8s -2s ease-in-out infinite}
 .pearl.p3{width:24px;height:24px;background:radial-gradient(circle at 34% 30%,#fff 0 12%,#FBE7B9 40%,#E9C677 100%);top:48%;inset-inline-start:1%;animation:float 6s -4s ease-in-out infinite}
-.badge-f{position:absolute;inset-inline-end:-1%;top:56%;background:#fff;border-radius:22px;padding:12px 18px;box-shadow:0 20px 40px -18px rgba(58,46,79,.4);display:flex;gap:12px;align-items:center;animation:popIn 1s 1.2s var(--spring) both,bob 6s 2.4s ease-in-out infinite}
-.badge-f b{font-family:var(--f-d);font-size:30px;color:var(--rose);line-height:1}
-.badge-f span{font-weight:700;font-size:15px;line-height:1.25;max-width:13ch}
-.badge-g{position:absolute;inset-inline-start:0;top:20%;background:#fff;border-radius:999px;padding:9px 16px 9px 12px;box-shadow:0 20px 40px -18px rgba(58,46,79,.4);display:flex;gap:8px;align-items:center;font-weight:800;font-size:15px;animation:popIn 1s 1.45s var(--spring) both,bob 7s 3s ease-in-out infinite}
-.badge-g i{width:28px;height:28px;border-radius:50%;background:var(--mint-s);color:var(--mint-d);display:grid;place-items:center;font-style:normal}
-@media (max-width:960px){.hero-grid{grid-template-columns:1fr;gap:26px}.stage{min-height:0;max-width:440px;width:100%;margin:0 auto;order:-1}.hero{padding-top:26px}}
-@media (max-width:520px){.hero h1{font-size:44px}.lead{font-size:18px}.stage .cloud.a{width:110px}.badge-f{padding:9px 13px}.badge-f b{font-size:24px}}
-
-/* marquee */
-.marq{position:relative;background:var(--ink);color:#fff;overflow:hidden;overflow:clip;padding:17px 0;margin:46px 0 0;transform:rotate(-1.2deg);width:104%;margin-inline-start:-2%}
-.marq-track{display:flex;width:max-content;animation:marq 38s linear infinite;font-family:var(--f-d);font-size:23px;font-weight:500;white-space:nowrap}
-.marq-track>span{display:inline-flex;align-items:center;gap:38px;padding-inline-end:38px}
-.marq-track svg{width:20px;height:20px;color:var(--butter)}
-
-/* sections */
-.sec{padding:110px 0;position:relative}
-.sec.white{background:#fff}.sec.mint{background:var(--mint-s)}.sec.blush{background:var(--blush)}
-.sec-h{max-width:760px;margin-bottom:50px;display:grid;gap:16px;justify-items:start}
+.chip-f{position:absolute;border-radius:20px;padding:11px 16px;display:flex;gap:10px;align-items:center;font-weight:700;font-size:15px;line-height:1.25}
+.chip-f.a{inset-inline-start:-2%;top:22%;animation:popIn .9s 1.3s var(--spring) both,bob 7s 3s ease-in-out infinite}
+.chip-f.b{inset-inline-end:-2%;top:60%;animation:popIn .9s 1.55s var(--spring) both,bob 6s 2.6s ease-in-out infinite}
+.chip-f i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-style:normal;flex:none}
+.chip-f.a i{background:var(--mint-s);color:var(--mint-d)}.chip-f.b i{background:var(--blush);color:var(--rose-d)}
+@media (max-width:960px){.hero-grid{grid-template-columns:1fr;gap:22px}.stage{min-height:0;max-width:430px;width:100%;margin:0 auto;order:-1}.hero{padding-top:26px}}
+@media (max-width:520px){.hero h1{font-size:44px}.hero .lead{font-size:18px}.stage .cloud.a{width:110px}.chip-f{font-size:13.5px;padding:8px 12px}.chip-f i{width:24px;height:24px}}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:28px;margin-top:46px;overflow:hidden;overflow:clip}
+.fact{padding:22px 26px;display:grid;gap:2px;position:relative}
+.fact+.fact::before{content:"";position:absolute;inset-inline-start:0;top:22%;bottom:22%;width:1px;background:var(--hair)}
+.fact b{font-family:var(--f-d);font-weight:600;font-size:22px}
+.fact span{color:var(--muted);font-size:16px}
+@media (max-width:760px){.facts{grid-template-columns:1fr}.fact+.fact::before{top:0;bottom:auto;inset-inline:24px;width:auto;height:1px}}
+.marq{position:relative;background:rgba(47,37,66,.92);color:#fff;overflow:hidden;overflow:clip;padding:15px 0;margin:56px 0 0}
+.marq-track{display:flex;width:max-content;animation:marq 42s linear infinite;font-family:var(--f-d);font-size:21px;font-weight:500;white-space:nowrap}
+.marq-track>span{display:inline-flex;align-items:center;gap:34px;padding-inline-end:34px}
+.marq-track i{width:7px;height:7px;border-radius:50%;background:var(--butter);display:inline-block}
+.sec{padding:108px 0;position:relative}
+.sec-h{max-width:760px;margin-bottom:46px;display:grid;gap:14px;justify-items:start}
 .sec-h.c{margin-inline:auto;text-align:center;justify-items:center}
-.sec-h p{font-size:20px;color:var(--muted);max-width:56ch}
-.sec.mint .kick,.sec.blush .kick{background:#fff}
-@media (max-width:760px){.sec{padding:76px 0}.sec-h{margin-bottom:34px}.sec-h p{font-size:18px}}
-.rv{opacity:0;transform:translateY(46px)}
+.sec-h p{font-size:19px;color:var(--muted);max-width:58ch}
+@media (max-width:760px){.sec{padding:74px 0}.sec-h{margin-bottom:30px}.sec-h p{font-size:17.5px}}
+.rv{opacity:0;transform:translateY(40px)}
 .rv.in{opacity:1;transform:none;transition:opacity .9s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s)}
-
-/* age finder */
-.finder{background:var(--ink);color:#fff;border-radius:40px;padding:42px clamp(22px,4vw,56px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:36px;align-items:center;position:relative;overflow:hidden;overflow:clip;margin-top:70px}
-.finder::before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:var(--rose);opacity:.16;inset-inline-start:-90px;bottom:-140px;pointer-events:none}
-.finder>*{position:relative;z-index:1}
-.finder h2{font-size:clamp(28px,3.4vw,40px);color:#fff}
-.finder p{color:#D9D1E4;margin-top:10px}
-.years{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
-.years button{border:2px solid rgba(255,255,255,.22);background:transparent;color:#fff;border-radius:999px;padding:8px 18px;font-weight:800;font-size:17px;cursor:pointer;font-variant-numeric:tabular-nums;transition:all .25s var(--spring)}
-.years button:hover{border-color:#fff;transform:translateY(-2px)}
-.years button[aria-pressed="true"]{background:var(--butter);color:var(--ink);border-color:var(--butter);animation:pop .35s}
-.fres{position:relative;background:rgba(255,255,255,.07);border-radius:30px;padding:28px;min-height:190px;display:grid;align-content:center;gap:6px}
-.fres .big{font-family:var(--f-d);font-weight:600;font-size:clamp(32px,4vw,46px);color:var(--butter);line-height:1.1}
-.fres .sm{color:#E5DEEE;font-size:17px}
-.fres .act{margin-top:12px}
-.fres.flip{animation:pop .45s}
-@media (max-width:860px){.finder{grid-template-columns:1fr;border-radius:32px}}
-
-/* frames */
-.frames{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-.fr{border-radius:36px;padding:36px 32px;display:grid;gap:12px;align-content:start;background:var(--cb);position:relative;overflow:hidden;overflow:clip;min-height:360px;transition:transform .5s var(--ease),box-shadow .5s}
-.fr:hover{transform:translateY(-8px);box-shadow:0 30px 60px -36px rgba(58,46,79,.45)}
-.fr .ic{width:66px;height:66px;border-radius:22px;background:#fff;display:grid;place-items:center;color:var(--cc)}
-.fr .ic svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.fr .age{font-weight:800;font-size:17px;color:var(--cc)}
-.fr h3{font-size:34px}
-.fr p{color:var(--ink2)}
-.fr ul{list-style:none;margin:4px 0;padding:0;display:grid;gap:7px}
+.spot{position:relative;isolation:isolate}
+.spot::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;opacity:0;transition:opacity .35s;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.75),transparent 45%)}
+.spot:hover::before{opacity:1}
+.frames{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;perspective:1200px}
+.fr{border-radius:32px;padding:34px 30px;display:grid;gap:12px;align-content:start;min-height:360px;background:linear-gradient(160deg,rgba(255,255,255,.7),var(--cb));border:1px solid var(--gb);box-shadow:var(--sh1);overflow:hidden;overflow:clip}
+.fr.in{transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:opacity .9s var(--ease),transform .5s var(--ease),box-shadow .5s}
+.fr:hover{box-shadow:var(--sh2)}
+.fr .ic{width:62px;height:62px;border-radius:20px;background:rgba(255,255,255,.85);display:grid;place-items:center;color:var(--cc);box-shadow:var(--sh1)}
+.fr .ic svg{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fr .age{font-weight:800;font-size:16px;color:var(--cc)}
+.fr h3{font-size:32px}
+.fr ul{list-style:none;margin:4px 0;padding:0;display:grid;gap:7px;color:var(--ink2)}
 .fr li{display:flex;gap:10px;align-items:baseline}
-.fr li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--cc);flex:none;transform:translateY(-1px)}
-.fr .bub{z-index:0;position:absolute;inset-inline-end:-46px;bottom:-46px;width:160px;height:160px;border-radius:50%;background:#fff;opacity:.5;pointer-events:none;transition:transform .8s var(--ease)}
-.fr:hover .bub{transform:scale(1.25)}
-.fr .go{margin-top:auto;justify-self:start;position:relative;z-index:1}
-.fr .soon{justify-self:start;background:#fff;color:var(--gold-d);font-weight:800;font-size:14px;border-radius:999px;padding:4px 14px}
+.fr li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--cc);flex:none;transform:translateY(-1px)}
+.fr .go{margin-top:auto;justify-self:start}
+.fr .soon{justify-self:start;background:rgba(255,255,255,.85);color:var(--gold-d);font-weight:800;font-size:14px;border-radius:999px;padding:4px 14px}
 @media (max-width:960px){.frames{grid-template-columns:1fr}.fr{min-height:0}}
-
-/* process */
-.procw{position:relative}.proc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;position:relative;list-style:none;padding:0;margin:0}
-.proc-line{position:absolute;top:37px;inset-inline:12%;height:4px;pointer-events:none;background:repeating-linear-gradient(to left,var(--rose2) 0 10px,transparent 10px 22px);border-radius:4px;clip-path:inset(0 0 0 100%);transition:clip-path 1.8s var(--ease)}
+.procw{position:relative}
+.proc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;position:relative;list-style:none;padding:0;margin:0}
+.proc-line{position:absolute;top:37px;inset-inline:12%;height:3px;pointer-events:none;background:repeating-linear-gradient(to left,var(--rose2) 0 10px,transparent 10px 22px);border-radius:3px;clip-path:inset(0 0 0 100%);transition:clip-path 1.8s var(--ease)}
 .procw.in .proc-line{clip-path:inset(0 0 0 0)}
 .proc li{display:grid;justify-items:center;align-content:start;text-align:center;gap:10px;position:relative}
-.proc .dot{width:78px;height:78px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 5px var(--dc),0 16px 28px -16px rgba(58,46,79,.45);font-family:var(--f-d);font-size:30px;color:var(--ink);transform:scale(.4);opacity:0;transition:transform .7s var(--spring),opacity .4s;transition-delay:var(--d,0s)}
+.proc .dot{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-d);font-size:28px;color:var(--ink);box-shadow:0 0 0 5px var(--dc),var(--sh1);transform:scale(.4);opacity:0;transition:transform .7s var(--spring),opacity .4s;transition-delay:var(--d,0s)}
 .procw.in .dot{transform:none;opacity:1}
-.proc h3{font-size:23px}.proc p{color:var(--muted);font-size:17px;max-width:24ch}
-@media (max-width:860px){.proc{grid-template-columns:1fr;gap:18px}.proc-line{display:none}.proc li{grid-template-columns:78px 1fr;text-align:start;justify-items:start;column-gap:18px}.proc .dot{grid-row:span 2}.proc p{max-width:none}}
-
-/* info center */
-.ic-wrap{display:grid;grid-template-columns:300px minmax(0,1fr);gap:28px;align-items:start}
-.ic-wrap>*{min-width:0}
-.ic-tabs{display:grid;gap:6px;position:sticky;top:96px}
-.ic-tabs button{display:flex;align-items:center;gap:12px;background:none;border:0;border-radius:20px;padding:12px 14px;text-align:start;cursor:pointer;font-weight:800;font-size:17px;color:var(--ink);transition:background .25s,transform .3s var(--spring)}
-.ic-tabs button i{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#fff;flex:none;transition:background .25s,color .25s;color:var(--rose-d)}
-.ic-tabs button i svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.ic-tabs button small{display:block;font-weight:600;font-size:14px;color:var(--muted)}
-.ic-tabs button:hover{background:rgba(255,255,255,.6)}
-.ic-tabs button[aria-selected="true"]{background:#fff;box-shadow:0 18px 36px -26px rgba(58,46,79,.5)}
-.ic-tabs button[aria-selected="true"] i{background:var(--rose);color:#fff}
-.ic-search{position:relative;margin-bottom:8px}
-.ic-search input{width:100%;border:2px solid transparent;background:#fff;border-radius:16px;padding:12px 44px 12px 14px;min-height:50px}
-.ic-search input:focus{outline:none;border-color:var(--rose)}
-.ic-search svg{position:absolute;inset-inline-start:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted);fill:none;stroke:currentColor;stroke-width:2}
-.ic-panel{background:#fff;border-radius:36px;padding:clamp(24px,3.4vw,44px);box-shadow:var(--sh);min-height:420px}
-.ic-panel.swap{animation:fadeUp .5s var(--ease)}
-.ic-panel h3{font-size:clamp(26px,3vw,34px)}
-.ic-sum{font-size:19px;color:var(--ink2);margin:12px 0 22px;padding:16px 20px;background:var(--butter-s);border-radius:20px;border-inline-start:6px solid var(--gold)}
-.gsteps{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:12px;counter-reset:g}
-.gsteps li{counter-increment:g;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;background:var(--bg);border-radius:20px;padding:14px 16px}
-.gsteps li::before{content:counter(g);width:44px;height:44px;border-radius:50%;background:var(--mint-s);color:var(--mint-d);display:grid;place-items:center;font-family:var(--f-d);font-size:21px;font-weight:600}
-.gsteps b{display:block;font-size:18px}
-.gsteps span{color:var(--muted);font-size:16.5px}
-.gfacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:0 0 22px}
-.gfact{border-radius:20px;padding:16px 18px;background:var(--mint-s)}
-.gfact:nth-child(3n+2){background:var(--blush)}.gfact:nth-child(3n){background:var(--butter-s)}
-.gfact b{display:block;font-family:var(--f-d);font-weight:600;font-size:20px;margin-bottom:2px}
-.gfact span{font-size:16px;color:var(--ink2)}
-.glinks{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
-.glinks a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:800;font-size:16px;color:var(--ink);background:var(--soft);border-radius:999px;padding:9px 16px;transition:background .2s,transform .3s var(--spring)}
-.glinks a:hover{background:var(--blush);color:var(--rose-d);transform:translateY(-2px)}
-.glinks a svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.gnote{font-size:15px;color:var(--muted);margin-top:16px}
-.agetbl{width:100%;border-collapse:separate;border-spacing:0 8px;margin:0 0 18px}
-.agetbl th{font-size:14px;color:var(--muted);text-align:start;font-weight:700;padding:0 14px}
-.agetbl td{background:var(--bg);padding:14px;font-weight:700}
-.agetbl td:first-child{border-radius:0 16px 16px 0}.agetbl td:last-child{border-radius:16px 0 0 16px}
-.agetbl .tg{display:inline-block;border-radius:999px;padding:2px 12px;font-size:14px;font-weight:800}
-.tg-g{background:var(--blush);color:var(--rose-d)}.tg-m{background:var(--mint-s);color:var(--mint-d)}
-.ic-empty{color:var(--muted);text-align:center;padding:40px 10px}
-.hits{display:grid;gap:10px}
-.hit{display:block;width:100%;text-align:start;background:var(--bg);border:0;border-radius:18px;padding:14px 18px;cursor:pointer}
-.hit:hover{background:var(--blush)}.hit b{display:block}.hit span{color:var(--muted);font-size:15px}
+.proc h3{font-size:22px}.proc p{color:var(--muted);font-size:16.5px;max-width:24ch}
+@media (max-width:860px){.proc{grid-template-columns:1fr;gap:16px}.proc-line{display:none}.proc li{grid-template-columns:76px 1fr;text-align:start;justify-items:start;column-gap:18px}.proc .dot{grid-row:span 2}.proc p{max-width:none}}
+.hub{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tile{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:start;text-align:start;text-decoration:none;color:var(--ink);border-radius:26px;padding:22px 22px 20px;cursor:pointer;transition:opacity .9s var(--ease),transform .4s var(--ease),box-shadow .4s,background .3s}
+.tile:hover{transform:translateY(-4px);box-shadow:var(--sh2);background:var(--g3)}
+.tile.feat{grid-column:1/-1;grid-template-columns:auto 1fr auto;align-items:center;padding:26px 28px;background:linear-gradient(120deg,rgba(255,255,255,.75),rgba(251,225,231,.7))}
+.tile.feat .ti{grid-row:span 2;width:64px;height:64px;border-radius:20px}.tile.feat b{font-size:26px}.tile.feat small{grid-column:3;grid-row:1/span 2;margin:0}
+@media (max-width:620px){.tile.feat{grid-template-columns:auto 1fr}.tile.feat small{grid-column:2;grid-row:auto}}
+.tile .ti{grid-row:span 3;width:52px;height:52px;border-radius:17px;display:grid;place-items:center;background:var(--tc);color:var(--tk)}
+.tile .ti svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tile b{font-family:var(--f-d);font-weight:600;font-size:21px;line-height:1.2}
+.tile span{color:var(--muted);font-size:16px}
+.tile small{display:flex;align-items:center;gap:8px;color:var(--ink2);font-weight:700;font-size:14px;margin-top:6px}
+.tile small em{font-style:normal;color:var(--rose-d);margin-inline-start:auto;transition:transform .3s var(--ease)}
+.tile:hover small em{transform:translateX(-4px)}
+.hub-search{display:flex;align-items:center;gap:10px;border-radius:999px;padding:6px 8px 6px 18px;margin-bottom:18px;max-width:520px}
+.hub-search svg{width:20px;height:20px;color:var(--muted);fill:none;stroke:currentColor;stroke-width:2;flex:none}
+.hub-search input{flex:1;border:0;background:transparent;padding:9px 0;min-width:0}.hub-search input:focus{outline:none}
+.hub-search:focus-within{box-shadow:0 0 0 3px rgba(224,102,142,.25),var(--sh1)}
+.hits{display:grid;gap:10px;margin-bottom:18px}
+.hit{display:block;border-radius:20px;padding:14px 18px;text-decoration:none;color:inherit}
+.hit:hover{background:var(--g3)}.hit b{display:block}.hit span{color:var(--muted);font-size:15.5px}
 mark{background:var(--butter);color:inherit;border-radius:4px;padding:0 2px}
-@media (max-width:900px){.ic-wrap{grid-template-columns:1fr}.ic-tabs{position:static;grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}.ic-tabs::-webkit-scrollbar{display:none}.ic-tabs button small{display:none}.ic-tabs button{padding:8px 14px 8px 8px;background:rgba(255,255,255,.55)}.ic-tabs button i{width:36px;height:36px}.ic-search{grid-column:1/-1}}
-@media (max-width:520px){.agetbl th:nth-child(3),.agetbl td:nth-child(3){display:none}}
-
-/* faq + contact */
+@media (max-width:960px){.hub{grid-template-columns:1fr 1fr}}@media (max-width:620px){.hub{grid-template-columns:1fr}}
+.guide{padding:34px 0 40px}
+.crumbs{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:15px;color:var(--muted);margin-bottom:18px}
+.crumbs a{color:var(--ink2);text-decoration:none;font-weight:700}.crumbs a:hover{color:var(--rose-d)}
+.g-grid{display:grid;grid-template-columns:280px minmax(0,1fr);gap:26px;align-items:start}
+.g-grid>*{min-width:0}
+.g-side{position:sticky;top:100px;border-radius:26px;padding:12px;display:grid;gap:2px}
+.g-side h4{font-size:14px;color:var(--muted);font-family:var(--f-b);font-weight:800;padding:8px 12px 4px}
+.g-side a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;text-decoration:none;color:var(--ink);font-weight:700;font-size:16px;transition:background .2s;white-space:nowrap}
+.g-side a i{width:32px;height:32px;border-radius:11px;display:grid;place-items:center;background:var(--tc);color:var(--tk);flex:none}
+.g-side a i svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.g-side a:hover{background:rgba(255,255,255,.7)}
+.g-side a[aria-current="page"]{background:#fff;box-shadow:var(--sh1)}
+.art{border-radius:34px;padding:clamp(22px,4vw,52px);animation:fadeUp .5s var(--ease)}
+.art h1{font-size:clamp(32px,4.2vw,50px);margin-bottom:12px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--muted);font-size:15px;font-weight:600;margin-bottom:24px}
+.meta span{display:inline-flex;align-items:center;gap:6px}.meta svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+.tldr{border-radius:22px;padding:18px 22px;background:linear-gradient(135deg,rgba(255,244,217,.9),rgba(255,244,217,.55));border:1px solid rgba(233,198,119,.45);margin-bottom:32px}
+.tldr b{display:block;font-family:var(--f-d);font-weight:600;font-size:17px;color:var(--gold-d);margin-bottom:4px}
+.tldr p{font-size:18.5px;color:var(--ink)}
+.tl{list-style:none;margin:0;padding:0;display:grid;counter-reset:s}
+.tl>li{counter-increment:s;display:grid;grid-template-columns:52px 1fr;gap:18px;position:relative;padding-bottom:28px}
+.tl>li::before{content:counter(s);width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-d);font-weight:600;font-size:22px;background:#fff;color:var(--mint-d);box-shadow:0 0 0 2px var(--mint),var(--sh1);position:relative;z-index:1}
+.tl>li::after{content:"";position:absolute;inset-inline-start:25px;top:56px;bottom:4px;width:2px;background:linear-gradient(var(--mint),rgba(168,224,212,.15))}
+.tl>li:last-child{padding-bottom:0}.tl>li:last-child::after{display:none}
+.tl h3{font-size:22px;margin:10px 0 6px}
+.tl p{color:var(--ink2);font-size:17.5px;line-height:1.7}
+.tip{margin-top:12px;border-radius:16px;padding:12px 16px;background:rgba(227,245,241,.75);border:1px solid rgba(168,224,212,.6);font-size:16px;color:var(--ink2)}
+.tip b{color:var(--mint-d)}
+.atable{width:100%;border-collapse:separate;border-spacing:0 8px;margin:-10px 0 22px}
+.atable th{font-size:14px;color:var(--muted);text-align:start;font-weight:700;padding:0 14px}
+.atable td{background:rgba(255,255,255,.75);padding:13px 14px;font-weight:700}
+.atable td:first-child{border-radius:0 14px 14px 0}.atable td:last-child{border-radius:14px 0 0 14px}
+.tg{display:inline-block;border-radius:999px;padding:2px 12px;font-size:14px;font-weight:800}.tg-g{background:var(--blush);color:var(--rose-d)}.tg-m{background:var(--mint-s);color:var(--mint-d)}
+.srcs{margin-top:34px;padding-top:22px;border-top:1px solid var(--hair)}
+.srcs h4{font-size:17px;margin-bottom:10px}
+.srcs ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:16px}
+.srcs .note{color:var(--muted);font-size:14.5px;margin-top:14px}
+.pn{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+.pn a{border-radius:22px;padding:16px 20px;text-decoration:none;color:var(--ink);display:grid;gap:2px;transition:transform .35s var(--ease),box-shadow .3s}
+.pn a:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
+.pn a small{color:var(--muted);font-weight:700}.pn a b{font-family:var(--f-d);font-weight:600;font-size:19px}
+.pn a.next{text-align:end}
+.g-cta{margin-top:30px;border-radius:26px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:linear-gradient(135deg,#E9799E,#C9527C);color:#fff}
+.g-cta b{font-family:var(--f-d);font-weight:600;font-size:22px}.g-cta p{opacity:.92}
+.g-cta .btn{background:#fff;color:var(--rose-d)}
+@media (max-width:900px){.g-grid{grid-template-columns:1fr}.g-side{position:static;grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto;scrollbar-width:none;border-radius:20px}.g-side::-webkit-scrollbar{display:none}.g-side h4{display:none}.pn{grid-template-columns:1fr}.tl>li{grid-template-columns:42px 1fr;gap:14px}.tl>li::before{width:42px;height:42px;font-size:18px}.tl>li::after{inset-inline-start:20px;top:46px}}
 .faq-wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(28px,5vw,72px);align-items:start}
-.faq{display:grid;gap:12px}
-.faq details{background:#fff;border-radius:22px;padding:4px 22px;box-shadow:0 1px 0 var(--line)}
-.faq summary{cursor:pointer;font-weight:800;font-size:19px;padding:18px 0;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq{display:grid;gap:10px}
+.faq details{border-radius:20px;padding:2px 22px}
+.faq summary{cursor:pointer;font-weight:800;font-size:18.5px;padding:17px 0;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";flex:none;width:34px;height:34px;border-radius:50%;background:var(--blush);color:var(--rose-d);display:grid;place-items:center;font-size:24px;transition:transform .3s}
-.faq details[open] summary::after{transform:rotate(45deg);background:var(--mint-s);color:var(--mint-d)}
-.faq details p{padding:0 0 20px;color:var(--muted);white-space:pre-line}
-.cinfo{display:grid;margin-top:18px}
-.cinfo a{display:flex;justify-content:space-between;gap:12px;padding:16px 0;border-bottom:1px solid rgba(58,46,79,.12);text-decoration:none;color:var(--ink);font-weight:800;font-size:20px}
+.faq summary::after{content:"+";flex:none;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.85);color:var(--rose-d);display:grid;place-items:center;font-size:22px;transition:transform .3s var(--ease)}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 0 18px;color:var(--ink2);white-space:pre-line}
+.cinfo{display:grid;margin-top:12px}
+.cinfo a{display:flex;justify-content:space-between;gap:12px;padding:15px 0;border-bottom:1px solid var(--hair);text-decoration:none;color:var(--ink);font-weight:800;font-size:19px}
 .cinfo a small{color:var(--muted);font-weight:700;font-size:15px}
 @media (max-width:860px){.faq-wrap{grid-template-columns:1fr}}
-
-/* registration */
-.reg-sec{background:linear-gradient(180deg,var(--bg) 0%,var(--blush) 100%)}
-.reg-shell{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:28px;align-items:start}
+.reg-shell{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}
 .reg-shell>*{min-width:0}
-.reg-card{background:#fff;border-radius:36px;box-shadow:var(--sh);overflow:hidden;overflow:clip}
+.reg-card{border-radius:34px;overflow:hidden;overflow:clip;background:var(--g3)}
 .prog{padding:24px clamp(20px,3vw,40px) 0}
 .prog ol{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.prog li{display:grid;gap:8px;font-size:15px;font-weight:700;color:var(--muted)}
-.prog li b{display:block;height:7px;border-radius:7px;background:var(--soft);overflow:hidden;overflow:clip;position:relative}
+.prog li{display:grid;gap:8px;font-size:14.5px;font-weight:700;color:var(--muted)}
+.prog li b{display:block;height:6px;border-radius:6px;background:var(--hair2);overflow:hidden;overflow:clip;position:relative}
 .prog li b::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--mint-d),var(--rose));transform:scaleX(0);transform-origin:right;transition:transform .6s var(--ease)}
-.prog li.done b::after,.prog li.cur b::after{transform:scaleX(1)}
-.prog li.cur b::after{transform:scaleX(.55)}
+.prog li.done b::after{transform:scaleX(1)}.prog li.cur b::after{transform:scaleX(.55)}
 .prog li.cur{color:var(--rose-d)}.prog li.done{color:var(--ink)}
-.progm{display:none;margin:10px 0 0;font-weight:800;font-size:15px;color:var(--rose-d)}
 .prog li button{all:unset;cursor:pointer}.prog li button:focus-visible{outline:3px solid var(--mint-d);border-radius:6px}
-.pane{padding:26px clamp(20px,3vw,40px) 30px}
-.pane-in{animation:paneIn .5s var(--ease)}
-.pane-back{animation:paneBack .5s var(--ease)}
-@keyframes paneIn{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
-@keyframes paneBack{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
-.ptitle{display:flex;gap:14px;align-items:center;margin-bottom:6px}
-.ptitle i{width:52px;height:52px;border-radius:18px;background:var(--blush);color:var(--rose-d);display:grid;place-items:center;flex:none}
-.ptitle i svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.ptitle h3{font-size:clamp(26px,3vw,32px)}
-.phint{color:var(--muted);margin:0 0 22px}
+.progm{display:none;margin:10px 0 0;font-weight:800;font-size:15px;color:var(--rose-d)}
+.pane{padding:24px clamp(20px,3vw,40px) 30px}
+.pane-in{animation:paneIn .45s var(--ease)}.pane-back{animation:paneBack .45s var(--ease)}
+@keyframes paneIn{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+@keyframes paneBack{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
+.ptitle h3{font-size:clamp(25px,3vw,31px)}
+.phint{color:var(--muted);margin:4px 0 22px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
 .full{grid-column:1/-1}
 .fld{display:grid;gap:7px;min-width:0;align-content:start}
-.fld>.l{font-weight:800;font-size:16px;display:flex;justify-content:space-between;gap:8px}
-.fld>.l em{font-style:normal;color:var(--muted);font-weight:600;font-size:14px}
-.fld input,.fld select,.fld textarea{width:100%;border:2px solid var(--line);background:var(--bg);border-radius:16px;padding:12px 14px;min-height:54px;font-size:18px;transition:border-color .15s,box-shadow .15s,background .15s}
+.fld>.l{font-weight:800;font-size:15.5px;display:flex;justify-content:space-between;gap:8px}
+.fld>.l em{font-style:normal;color:var(--muted);font-weight:600;font-size:13.5px}
+.fld input,.fld select,.fld textarea{width:100%;border:1.5px solid var(--hair);background-color:rgba(255,255,255,.85);border-radius:15px;padding:12px 14px;min-height:54px;font-size:18px;transition:border-color .15s,box-shadow .15s,background .15s}
+.fld select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E6480' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-size:18px;background-position:left 14px center;padding-left:40px}
 .fld textarea{min-height:92px;resize:vertical}
 .fld input:hover,.fld select:hover,.fld textarea:hover{border-color:var(--rose2)}
-.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--rose);background:#fff;box-shadow:0 0 0 4px rgba(224,102,142,.16)}
-.fld .ok-i{position:absolute;left:14px;top:50%;transform:translateY(-50%) scale(0);width:24px;height:24px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;transition:transform .35s var(--spring);pointer-events:none}
-.fld .ok-i svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--rose);background-color:#fff;box-shadow:0 0 0 4px rgba(224,102,142,.15)}
 .fld .box{position:relative}
 .fld .box:has(.ok-i) input{padding-left:46px}
+.fld .ok-i{position:absolute;left:14px;top:50%;transform:translateY(-50%) scale(0);width:24px;height:24px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;transition:transform .35s var(--spring);pointer-events:none}
+.fld .ok-i svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .fld.good .ok-i{transform:translateY(-50%) scale(1)}
-.fld .msg{font-size:14.5px;color:var(--bad);font-weight:700;min-height:0}
+.fld .msg{font-size:14.5px;color:var(--bad);font-weight:700}
 .fld .help{font-size:14.5px;color:var(--muted)}
-.fld.err input,.fld.err select,.fld.err textarea{border-color:var(--bad);background:#FFF8F8}
+.fld.err input,.fld.err select,.fld.err textarea{border-color:var(--bad);background-color:#FFF8F8}
 .fld.err{animation:shake .35s}
 .dob{display:grid;grid-template-columns:.8fr 1.4fr 1fr;gap:8px}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
 .cards label{position:relative;cursor:pointer;display:block}
 .cards input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;pointer-events:none}
-.cards .opt{display:grid;gap:4px;border:2px solid var(--line);border-radius:24px;padding:18px 20px;background:var(--bg);transition:border-color .2s,background .2s,transform .3s var(--spring),box-shadow .2s;height:100%}
-.cards .opt b{font-family:var(--f-d);font-weight:600;font-size:24px}
-.cards .opt small{color:var(--muted);font-size:15.5px}
-.cards .opt .chk{position:absolute;top:14px;inset-inline-end:14px;width:28px;height:28px;border-radius:50%;border:2px solid var(--line);background:#fff;display:grid;place-items:center;color:#fff;transition:all .25s var(--spring)}
-.cards .opt .chk svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;transform:scale(0);transition:transform .3s var(--spring)}
+.cards .opt{display:grid;gap:4px;border:1.5px solid var(--hair);border-radius:22px;padding:18px 20px;background:rgba(255,255,255,.7);transition:border-color .2s,background .2s,transform .3s var(--spring),box-shadow .2s;height:100%;position:relative}
+.cards .opt b{font-family:var(--f-d);font-weight:600;font-size:23px}
+.cards .opt small{color:var(--muted);font-size:15px}
+.cards .chk{position:absolute;top:14px;inset-inline-end:14px;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--hair);background:#fff;display:grid;place-items:center;color:#fff;transition:all .25s var(--spring)}
+.cards .chk svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;transform:scale(0);transition:transform .3s var(--spring)}
 .cards label:hover .opt{border-color:var(--rose2);transform:translateY(-2px)}
 .cards input:checked+.opt{border-color:var(--rose);background:#fff;box-shadow:0 18px 30px -22px rgba(224,102,142,.9)}
-.cards input:checked+.opt .chk{background:var(--rose);border-color:var(--rose)}
-.cards input:checked+.opt .chk svg{transform:scale(1)}
+.cards input:checked+.opt .chk{background:var(--rose);border-color:var(--rose)}.cards input:checked+.opt .chk svg{transform:scale(1)}
 .cards input:focus-visible+.opt{outline:3px solid var(--mint-d);outline-offset:2px}
-.cards input:disabled+.opt{opacity:.55;cursor:not-allowed;transform:none}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chips label{cursor:pointer;position:relative}
-.chips input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;pointer-events:none}
-.chips span{display:inline-block;border:2px solid var(--line);border-radius:999px;padding:9px 18px;font-weight:700;background:var(--bg);transition:all .2s}
-.chips label:hover span{border-color:var(--rose2)}
-.chips input:checked+span{background:var(--rose);border-color:var(--rose);color:#fff;animation:pop .3s}
-.chips input:focus-visible+span{outline:3px solid var(--mint-d);outline-offset:2px}
-.agechip{display:none;align-items:center;gap:10px;margin-top:14px;padding:12px 16px;border-radius:18px;background:var(--mint-s);color:var(--mint-d);font-weight:800;animation:fadeUp .4s var(--ease)}
-.agechip.on{display:flex;flex-wrap:wrap}
-.agechip.warn{background:var(--warn-s);color:var(--warn)}
-.agechip.bad{background:var(--bad-s);color:var(--bad)}
+.cards input:disabled+.opt{opacity:.5;cursor:not-allowed;transform:none}
+.agechip{display:none;align-items:center;gap:10px;margin-top:14px;padding:12px 16px;border-radius:16px;background:var(--mint-s);color:var(--mint-d);font-weight:800;animation:fadeUp .4s var(--ease)}
+.agechip.on{display:flex;flex-wrap:wrap}.agechip.warn{background:var(--warn-s);color:var(--warn)}.agechip.bad{background:var(--bad-s);color:var(--bad)}
 .agechip button{margin-inline-start:auto}
-.more{border:2px dashed var(--line);border-radius:22px;padding:4px 18px;margin-top:16px}
-.more[open]{border-style:solid;padding-bottom:18px}
+.more{border:1.5px dashed var(--hair);border-radius:20px;padding:2px 18px;margin-top:16px}
+.more[open]{border-style:solid;padding-bottom:18px;background:rgba(255,255,255,.45)}
 .more summary{cursor:pointer;font-weight:800;color:var(--rose-d);padding:12px 0;list-style:none;display:flex;gap:8px;align-items:center}
 .more summary::-webkit-details-marker{display:none}
-.more summary::before{content:"+";width:26px;height:26px;border-radius:50%;background:var(--blush);display:grid;place-items:center;transition:transform .3s}
+.more summary::before{content:"+";width:24px;height:24px;border-radius:50%;background:var(--blush);display:grid;place-items:center;transition:transform .3s}
 .more[open] summary::before{transform:rotate(45deg)}
 .suggest{font-size:15px;color:var(--ink2)}
-.nav2{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:28px;padding-top:20px;border-top:1px solid var(--line)}
+.nav2{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:26px;padding-top:20px;border-top:1px solid var(--hair2)}
 .nav2 .saved{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:6px}
 .nav2 .saved svg{width:16px;height:16px;fill:none;stroke:var(--ok);stroke-width:2.5}
 .review{display:grid;gap:12px;margin-bottom:18px}
-.rsec{background:var(--bg);border-radius:22px;padding:16px 20px}
+.rsec{background:rgba(255,255,255,.7);border:1px solid var(--hair2);border-radius:20px;padding:16px 20px}
 .rsec header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.rsec header b{font-family:var(--f-d);font-weight:600;font-size:19px}
+.rsec header b{font-family:var(--f-d);font-weight:600;font-size:18px}
 .rsec dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 18px;margin:0}
 .rsec dt{color:var(--muted)}.rsec dd{margin:0;font-weight:700;overflow-wrap:anywhere}
-.consent{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border:2px solid var(--line);border-radius:20px;padding:16px 18px;font-size:16.5px;cursor:pointer}
-.consent input{width:24px;height:24px;margin-top:2px;accent-color:var(--rose);flex:none}
+.consent{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.7);border:1.5px solid var(--hair);border-radius:18px;padding:16px 18px;font-size:16.5px;cursor:pointer}
+.consent input{width:22px;height:22px;margin-top:2px;accent-color:var(--rose);flex:none}
 .consent.err{border-color:var(--bad);animation:shake .35s}
-.alert{border-radius:18px;padding:14px 18px;margin-bottom:16px;background:var(--bad-s);color:#7B2020;font-weight:700}
-.restore{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--mint-s);color:var(--mint-d);border-radius:18px;padding:12px 16px;margin-bottom:16px;font-weight:700}
+.alert{border-radius:16px;padding:14px 18px;margin-bottom:16px;background:var(--bad-s);color:#7B2020;font-weight:700}
+.restore{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--mint-s);color:var(--mint-d);border-radius:16px;padding:11px 16px;margin-bottom:16px;font-weight:700}
 .restore .lnk{color:var(--mint-d)}
-.hp{position:absolute;width:1px;height:1px;overflow:hidden;overflow:clip;clip-path:inset(50%);white-space:nowrap}
-.reg-side{display:grid;gap:14px;position:sticky;top:96px}
-.sidecard{background:#fff;border-radius:28px;padding:22px 24px;box-shadow:0 1px 0 var(--line)}
-.sidecard h4{font-size:21px;margin-bottom:10px}
-.sidecard ul{margin:0;padding:0;list-style:none;display:grid;gap:10px;font-size:16.5px}
+.reg-side{display:grid;gap:14px;position:sticky;top:100px}
+.sidecard{border-radius:26px;padding:22px 24px}
+.sidecard h4{font-size:20px;margin-bottom:10px}
+.sidecard ul{margin:0;padding:0;list-style:none;display:grid;gap:10px;font-size:16px;color:var(--ink2)}
 .sidecard li{display:flex;gap:10px;align-items:flex-start}
-.sidecard li svg{width:20px;height:20px;flex:none;margin-top:3px;fill:none;stroke:var(--mint-d);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.sidecard.ink{background:var(--ink);color:#E9E3F1}.sidecard.ink h4{color:#fff}.sidecard.ink li svg{stroke:var(--butter)}
+.sidecard li svg{width:18px;height:18px;flex:none;margin-top:4px;fill:none;stroke:var(--mint-d);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.sidecard.ink{background:rgba(47,37,66,.9);color:#E9E3F1;border-color:rgba(255,255,255,.12)}.sidecard.ink h4{color:#fff}.sidecard.ink ul{color:#E9E3F1}.sidecard.ink li svg{stroke:var(--butter)}
 .fin{text-align:center;display:grid;justify-items:center;gap:14px;padding:20px 0}
-.seal{width:124px;height:124px}
+.seal{width:120px;height:120px}
 .seal circle{fill:var(--mint-s);stroke:var(--mint-d);stroke-width:4;stroke-dasharray:340;stroke-dashoffset:340;animation:draw 1s var(--ease) forwards}
 .seal path{fill:none;stroke:var(--mint-d);stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:80;stroke-dashoffset:80;animation:draw .55s ease .8s forwards}
-.refbox{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-d);font-size:30px;font-weight:600;background:var(--butter-s);border:2px dashed var(--gold);border-radius:20px;padding:6px 10px 6px 20px;direction:ltr}
+.refbox{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-d);font-size:28px;font-weight:600;background:var(--butter-s);border:1.5px dashed var(--gold);border-radius:18px;padding:6px 10px 6px 20px;direction:ltr}
 .refbox button{font-family:var(--f-b);font-size:15px}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:98}
 @media (max-width:980px){.reg-shell{grid-template-columns:1fr}.reg-side{position:static;grid-template-columns:1fr 1fr}}
-@media (max-width:640px){.g2{grid-template-columns:1fr}.reg-side{grid-template-columns:1fr}.prog li span{display:none}.progm{display:block}.prog ol{grid-template-columns:1fr 1fr 1fr 1fr}.reg-card{border-radius:28px}.rsec dl{grid-template-columns:1fr}.rsec dt{margin-top:6px}.nav2 .saved span{display:none}.nav2 .btn{padding:13px 22px}}
-
-/* solo pages (status / completion) */
-.solo{min-height:calc(100vh - 76px);padding:40px 0 80px;background:linear-gradient(180deg,var(--bg),var(--blush))}
-.solo .box{background:#fff;border-radius:36px;box-shadow:var(--sh);padding:clamp(24px,4vw,44px);width:min(820px,100% - 32px);margin:0 auto}
-.track{list-style:none;padding:0;margin:26px 0;display:grid;gap:0}
+@media (max-width:640px){.g2{grid-template-columns:1fr}.reg-side{grid-template-columns:1fr}.prog li span{display:none}.progm{display:block}.reg-card{border-radius:28px}.rsec dl{grid-template-columns:1fr}.rsec dt{margin-top:6px}.nav2 .saved span{display:none}.nav2 .btn{padding:13px 22px}}
+.solo{min-height:calc(100vh - 90px);padding:30px 0 80px}
+.solo .box{border-radius:34px;padding:clamp(24px,4vw,44px);width:min(820px,100% - 32px);margin:0 auto}
+.track{list-style:none;padding:0;margin:26px 0;display:grid}
 .track li{display:grid;grid-template-columns:46px 1fr;gap:16px;padding-bottom:22px;position:relative}
-.track li::before{content:"";position:absolute;inset-inline-start:22px;top:44px;bottom:0;width:3px;background:var(--line);border-radius:3px}
-.track li:last-child::before{display:none}
-.track li.done::before{background:var(--mint-d)}
-.track i{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:3px solid var(--line);background:#fff;font-style:normal;font-weight:800;color:var(--muted);font-family:var(--f-d)}
+.track li::before{content:"";position:absolute;inset-inline-start:22px;top:44px;bottom:0;width:2px;background:var(--hair)}
+.track li:last-child::before{display:none}.track li.done::before{background:var(--mint-d)}
+.track i{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--hair);background:#fff;font-style:normal;font-weight:800;color:var(--muted);font-family:var(--f-d)}
 .track li.done i{background:var(--mint-d);border-color:var(--mint-d);color:#fff}
-.track li.cur i{border-color:var(--rose);color:var(--rose-d);box-shadow:0 0 0 7px rgba(224,102,142,.18)}
+.track li.cur i{border-color:var(--rose);color:var(--rose-d);box-shadow:0 0 0 7px rgba(224,102,142,.16)}
 .track b{display:block;font-size:19px}.track span{color:var(--muted)}
-.okbox{background:var(--mint-s);border-radius:24px;padding:20px 22px;margin-top:6px}
-.okbox h3{color:var(--mint-d);margin-bottom:6px}
-.sub3{font-family:var(--f-d);font-weight:600;font-size:21px;color:var(--mint-d);grid-column:1/-1;margin-top:10px;padding-top:16px;border-top:2px dotted var(--line)}
+.okbox{background:var(--mint-s);border-radius:22px;padding:20px 22px;margin-top:6px}.okbox h3{color:var(--mint-d);margin-bottom:6px}
+.sub3{font-family:var(--f-d);font-weight:600;font-size:20px;color:var(--mint-d);grid-column:1/-1;margin-top:10px;padding-top:16px;border-top:1px solid var(--hair2)}
 .sub3:first-child{margin-top:0;padding-top:0;border-top:0}
-.drop{border:2px dashed var(--mint);background:var(--mint-s);border-radius:22px;padding:22px;text-align:center;cursor:pointer;transition:background .2s,border-color .2s}
+.drop{border:2px dashed var(--mint);background:rgba(227,245,241,.7);border-radius:20px;padding:22px;text-align:center;cursor:pointer;transition:background .2s,border-color .2s}
 .drop.over,.drop:hover{background:var(--blush);border-color:var(--rose)}
 .drop svg{width:34px;height:34px;margin:0 auto 6px;fill:none;stroke:var(--mint-d);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .files{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-wrap:wrap;gap:8px}
-.files li{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 6px 5px 14px;font-size:15px;font-weight:600;max-width:100%}
-.files li span{overflow:hidden;overflow:clip;text-overflow:ellipsis;white-space:nowrap;max-width:240px}
-.files button{border:0;background:var(--soft);border-radius:50%;width:26px;height:26px;cursor:pointer;flex:none}
+.files li{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--hair);border-radius:999px;padding:5px 6px 5px 14px;font-size:15px;font-weight:600;max-width:100%}
+.files li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px}
+.files button{border:0;background:var(--blush);border-radius:50%;width:26px;height:26px;cursor:pointer;flex:none}
 .spin{display:inline-block;width:18px;height:18px;border-radius:50%;border:2.5px solid currentColor;border-inline-end-color:transparent;animation:spinS .7s linear infinite;vertical-align:middle}
-
-/* final + footer */
-.final{margin-top:80px;background:var(--rose);color:#fff;border-radius:48px;padding:68px 60px;display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap;position:relative;overflow:hidden;overflow:clip}
-.final h2{font-size:clamp(32px,4.4vw,54px);max-width:16ch;color:#fff}
-.final p{font-size:20px;opacity:.94;margin-top:12px}
-.final .btn{background:#fff;color:var(--rose-d);position:relative;z-index:1}
-.final .cloud{opacity:.22;filter:none}
-.final .cloud.f1{width:260px;top:-40px;left:6%}.final .cloud.f2{width:160px;bottom:-30px;left:36%}
-@media (max-width:760px){.final{padding:44px 26px;border-radius:36px}}
-footer{background:var(--ink);color:rgba(255,255,255,.82);padding:60px 0 34px;font-size:16px;margin-top:80px}
+.final{margin-top:30px;border-radius:44px;padding:64px 58px;display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap;position:relative;overflow:hidden;overflow:clip;color:#fff;background:linear-gradient(135deg,#E9799E 0%,#C9527C 100%)}
+.final::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:rgba(255,255,255,.12);inset-inline-start:-120px;top:-180px;pointer-events:none}
+.final>*{position:relative}
+.final h2{font-size:clamp(30px,4.2vw,52px);max-width:16ch;color:#fff}
+.final p{font-size:19px;opacity:.94;margin-top:12px}
+.final .btn{background:#fff;color:var(--rose-d)}
+@media (max-width:760px){.final{padding:42px 26px;border-radius:34px}}
+footer{margin-top:80px;background:rgba(47,37,66,.95);color:rgba(255,255,255,.82);padding:56px 0 30px;font-size:16px}
 footer .fg{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;align-items:start}
-footer h4{font-size:21px;color:#fff;margin-bottom:10px}
+footer h4{font-size:20px;color:#fff;margin-bottom:10px}
 footer a{color:#fff}
 footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-footer .fb{margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15);display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:space-between;font-size:14px;color:rgba(255,255,255,.6)}
+footer .fb{margin-top:38px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:space-between;font-size:14px;color:rgba(255,255,255,.6)}
 @media (max-width:760px){footer .fg{grid-template-columns:1fr}}
-.mcta{position:fixed;inset-inline:0;bottom:0;z-index:70;display:none;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.96);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .35s var(--ease)}
-.mcta .btn{flex:1}
-.mcta.show{transform:none}
+.mcta{position:fixed;inset-inline:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:70;display:none;padding:8px;border-radius:999px;transform:translateY(140%);transition:transform .35s var(--ease)}
+.mcta .btn{flex:1}.mcta.show{transform:none}
 @media (max-width:760px){.mcta{display:flex}footer{padding-bottom:110px}}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001s!important}.rv{opacity:1;transform:none}.cr-line{stroke-dashoffset:0}.proc .dot{opacity:1;transform:none}html{scroll-behavior:auto}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001s!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001s!important}.rv{opacity:1;transform:none}.cr-line{stroke-dashoffset:0}.proc .dot{opacity:1;transform:none}.proc-line{clip-path:none}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 <a class="skip" href="#register">דילוג לטופס ההרשמה</a>
+<div class="aura" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="prog-top" id="progTop" aria-hidden="true"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="i-cloud" viewBox="0 0 200 110"><path fill="currentColor" d="M52 102c-26 0-44-16-44-38 0-20 15-36 36-37C52 12 70 2 92 2c26 0 46 16 51 39 3-1 7-1 10-1 22 0 40 15 40 31 0 18-17 31-40 31Z"/></symbol>
-  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
-  <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l2.6 6.6L21 9.3l-5 4.4 1.6 6.8L12 17l-5.6 3.5L8 13.7 3 9.3l6.4-.7Z"/></symbol>
 </svg>
 
-<header class="top" id="top"><div class="wrap">
-  <a class="brand" href="./" aria-label="גני מלכות – דף הבית">
+<header class="top" id="top"><div class="wrap" style="position:relative"><div class="bar glass">
+  <a class="brand" href="#" data-home aria-label="גני מלכות – דף הבית">
     <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="20" fill="#FBE1E7"/><path d="M13 45 L15 23 L24.5 32 L32 17 L39.5 32 L49 23 L51 45 Z" fill="#E0668E"/><rect x="13" y="47" width="38" height="5" rx="2.5" fill="#B83E68"/><circle cx="32" cy="14" r="4.2" fill="#E9C677"/><circle cx="14.5" cy="20.5" r="3" fill="#A8E0D4"/><circle cx="49.5" cy="20.5" r="3" fill="#A8E0D4"/></svg>
     <span>גני מלכות</span></a>
-  <nav id="mainNav" aria-label="ניווט באתר"><a href="#frames">המסגרות</a><a href="#process">איך נרשמים</a><a href="#info">מרכז מידע להורים</a><a href="#faq" id="navFaq">שאלות</a></nav>
+  <nav id="mainNav" aria-label="ניווט באתר"><a href="#frames">המסגרות</a><a href="#process">איך נרשמים</a><a href="#info" id="navInfo">מרכז מידע להורים</a><a href="#faq" id="navFaq">שאלות</a></nav>
   <div class="acts"><a class="btn btn-rose btn-sm" href="#register">להרשמה</a>
     <button class="menu-btn" id="menuBtn" aria-label="תפריט" aria-expanded="false" aria-controls="mainNav"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
-</div></header>
+</div></div></header>
 
 <main id="landing">
   <section class="hero"><div class="wrap">
     <div class="hero-grid">
       <div>
-        <span class="pill" id="pill"><i></i><span id="pillTxt">ההרשמה לשנה הבאה פתוחה</span></span>
-        <h1><span class="ln"><span>כל בת</span></span><span class="ln"><span>גדלה אצלנו</span></span><span class="ln"><span class="hl">כבת מלך</span></span></h1>
-        <p class="lead" id="intro">גני ילדות ומעונות יום לבנות, בחינוך ברוח התורה, עם צוות מסור ואווירה חמה. נרשמים כאן, באתר, בכמה דקות – ומקבלים מאיתנו ליווי עד אישור ההרשמה.</p>
-        <div class="hero-cta"><a class="btn btn-rose" href="#register">להרשמה מקוונת</a><a class="btn btn-soft" href="#info">מרכז מידע להורים</a></div>
-        <ul class="trust">
-          <li><svg><use href="#i-star"/></svg>גני ילדות ומעונות יום</li>
-          <li><svg><use href="#i-star"/></svg>הרשמה בכ־5 דקות</li>
-          <li><svg><use href="#i-star"/></svg>מעקב אחרי הבקשה בכל רגע</li>
-        </ul>
+        <span class="pill glass" id="pill"><i></i><span id="pillTxt">ההרשמה לשנה הבאה פתוחה</span></span>
+        <h1 id="heroTitle"><span class="ln"><span>כל בת</span></span><span class="ln"><span>גדלה אצלנו</span></span><span class="ln"><span>כבת מלך</span></span></h1>
+        <p class="lead" id="intro">גני ילדות ומעונות יום לבנות, בחינוך ברוח התורה, עם צוות מסור ואווירה חמה. נרשמים כאן באתר בכמה דקות, ואנחנו מלווים אתכם עד אישור ההרשמה.</p>
+        <div class="hero-cta"><a class="btn btn-rose btn-lg" href="#register">להרשמה מקוונת <span class="arr">←</span></a><a class="btn btn-glass btn-lg" href="#info">מרכז מידע להורים</a></div>
       </div>
-      <div class="stage" id="stage" aria-hidden="true">
+      <div class="stage" id="stage" aria-hidden="true"><div class="stage-in" id="stageIn">
         <div class="arch">
           <svg viewBox="0 0 400 460" preserveAspectRatio="xMidYMid slice">
             <defs>
@@ -445,8 +421,8 @@ footer .fb{margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,25
               <radialGradient id="sunG"><stop offset="0" stop-color="#FFF4D9"/><stop offset="1" stop-color="#F7E2AE"/></radialGradient>
             </defs>
             <g class="sun"><circle cx="300" cy="96" r="54" fill="url(#sunG)"/><g stroke="#F7E2AE" stroke-width="6" stroke-linecap="round"><path d="M300 22v14M300 156v14M226 96h14M360 96h14M248 44l10 10M342 138l10 10M248 148l10-10M342 54l10-10"/></g></g>
-            <path class="hill" d="M-20 360 C70 300 150 320 220 352 S350 330 430 300 V480 H-20Z" fill="#CDEDE5"/>
-            <path class="hill" d="M-20 400 C90 350 200 380 260 396 S380 380 430 360 V480 H-20Z" fill="#A8E0D4" style="--px:0"/>
+            <path d="M-20 360 C70 300 150 320 220 352 S350 330 430 300 V480 H-20Z" fill="#CDEDE5"/>
+            <path d="M-20 400 C90 350 200 380 260 396 S380 380 430 360 V480 H-20Z" fill="#A8E0D4"/>
             <g transform="translate(0 6)">
               <path class="cr-fill" d="M96 306 L80 172 L148 230 L200 136 L252 230 L320 172 L304 306 Z" fill="url(#crg)"/>
               <path class="cr-line" pathLength="1" d="M96 306 L80 172 L148 230 L200 136 L252 230 L320 172 L304 306 Z M100 330 H300"/>
@@ -461,119 +437,106 @@ footer .fb{margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,25
             <path class="spark" d="M0-14 L3.5-3.5 L14 0 L3.5 3.5 L0 14 L-3.5 3.5 L-14 0 L-3.5-3.5Z" transform="translate(110 104)" style="animation-delay:2.8s"/>
             <path class="spark" d="M0-14 L3.5-3.5 L14 0 L3.5 3.5 L0 14 L-3.5 3.5 L-14 0 L-3.5-3.5Z" transform="translate(350 236) scale(.7)" style="animation-delay:3.5s"/>
             <path class="spark" d="M0-14 L3.5-3.5 L14 0 L3.5 3.5 L0 14 L-3.5 3.5 L-14 0 L-3.5-3.5Z" transform="translate(52 250) scale(.6)" style="animation-delay:4.2s"/>
-            <path class="spark" d="M0-14 L3.5-3.5 L14 0 L3.5 3.5 L0 14 L-3.5 3.5 L-14 0 L-3.5-3.5Z" transform="translate(236 60) scale(.5)" style="animation-delay:4.9s"/>
           </svg>
         </div>
-        <span class="cloud a"><svg><use href="#i-cloud"/></svg></span>
-        <span class="cloud b"><svg><use href="#i-cloud"/></svg></span>
-        <span class="cloud c"><svg><use href="#i-cloud"/></svg></span>
+        <span class="cloud a"><svg><use href="#i-cloud"/></svg></span><span class="cloud b"><svg><use href="#i-cloud"/></svg></span><span class="cloud c"><svg><use href="#i-cloud"/></svg></span>
         <span class="pearl p1"></span><span class="pearl p2"></span><span class="pearl p3"></span>
-        <div class="badge-g"><i>✓</i>הרשמה מקוונת</div>
-        <div class="badge-f"><b>3-6</b><span>גני ילדות · ומעונות מגיל 3 חודשים</span></div>
-      </div>
+        <div class="chip-f a glass"><i>✓</i>הרשמה מקוונת</div>
+        <div class="chip-f b glass"><i>♥</i>ליווי עד האישור</div>
+      </div></div>
+    </div>
+    <div class="facts glass rv">
+      <div class="fact"><b>גני ילדות</b><span>לבנות בגילאי 3 עד 6</span></div>
+      <div class="fact"><b>מעונות יום</b><span>מגיל 3 חודשים ועד 3 שנים</span></div>
+      <div class="fact"><b>הרשמה מקוונת</b><span>מעקב אחרי הבקשה בכל שלב</span></div>
     </div>
   </div>
   <div class="marq" aria-hidden="true"><div class="marq-track" id="marq"></div></div>
   </section>
 
-  <div class="wrap">
-    <section class="finder rv" aria-labelledby="finderH">
-      <div>
-        <h2 id="finderH">לאיזו מסגרת מתאימה הבת שלכם?</h2>
-        <p>בוחרים את שנת הלידה – ורואים מיד את שכבת הגיל בשנת הלימודים <span class="yl"></span>.</p>
-        <div class="years" id="years" role="group" aria-label="שנת לידה"></div>
-      </div>
-      <div class="fres" id="fres" aria-live="polite"><span class="big">בחרו שנת לידה</span><span class="sm">התוצאה תופיע כאן</span></div>
-    </section>
-  </div>
-
   <section class="sec" id="frames"><div class="wrap">
-    <div class="sec-h rv"><span class="kick">המסגרות שלנו</span><h2>מהתינוקייה ועד גן חובה</h2><p>רצף אחד, באותה רוח ובאותה תשומת לב: מעון יום לקטנטנות, וגני ילדות לבנות בגילאי 3 עד 6.</p></div>
+    <div class="sec-h rv"><h2>מהתינוקייה ועד גן חובה</h2><p>רצף אחד, באותה רוח ובאותה תשומת לב: מעון יום לקטנטנות, וגני ילדות לבנות בגילאי 3 עד 6.</p></div>
     <div class="frames">
-      <article class="fr rv" style="--cb:var(--blush);--cc:var(--rose-d)">
+      <article class="fr rv spot tilt" style="--cb:rgba(251,225,231,.85);--cc:var(--rose-d)">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 9.5V20h14V9.5"/><path d="M10 20v-5h4v5"/></svg></div>
         <span class="age">גילאי 3-6</span><h3>גני ילדות</h3>
         <ul><li>טרום טרום חובה, טרום חובה וחובה</li><li>תוכנית לימודים מוכרת וחגי ישראל</li><li>הכנה לכיתה א׳ בגן חובה</li></ul>
-        <a class="btn btn-ink btn-sm go" href="#register" data-pick="גן">להרשמה לגן</a><span class="bub"></span></article>
-      <article class="fr rv" style="--cb:var(--mint-s);--cc:var(--mint-d);--d:.12s">
+        <a class="btn btn-ink btn-sm go" href="#register" data-pick="גן">להרשמה לגן</a></article>
+      <article class="fr rv spot tilt" style="--cb:rgba(227,245,241,.9);--cc:var(--mint-d);--d:.1s">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21c4.5-2.5 7-6 7-10a7 7 0 0 0-14 0c0 4 2.5 7.5 7 10Z"/><path d="M9.5 11.5c.8 1 1.6 1.5 2.5 1.5s1.7-.5 2.5-1.5"/></svg></div>
         <span class="age">3 חודשים עד 3 שנים</span><h3>מעונות יום</h3>
         <ul><li>תינוקייה, פעוטון ובוגרים</li><li>קבוצות קטנות ואווירה ביתית</li><li>מסגרת מוכרת – אפשר לבקש דרגת סבסוד</li></ul>
-        <a class="btn btn-ink btn-sm go" href="#register" data-pick="מעון יום">להרשמה למעון</a><span class="bub"></span></article>
-      <article class="fr rv" id="soonCard" style="--cb:var(--butter-s);--cc:var(--gold-d);--d:.24s">
+        <a class="btn btn-ink btn-sm go" href="#register" data-pick="מעון יום">להרשמה למעון</a></article>
+      <article class="fr rv spot tilt" id="soonCard" style="--cb:rgba(255,244,217,.9);--cc:var(--gold-d);--d:.2s">
         <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></div>
         <span class="soon">בקרוב</span><h3>צהרונים</h3>
-        <ul><li>המשך יום בגן אחרי הצהריים</li><li>ארוחה חמה והפעלות</li><li>ההרשמה תיפתח בהמשך – נעדכן כאן</li></ul><span class="bub"></span></article>
+        <ul><li>המשך יום בגן אחרי הצהריים</li><li>ארוחה חמה והפעלות</li><li>ההרשמה תיפתח בהמשך</li></ul></article>
     </div>
   </div></section>
 
-  <section class="sec white" id="process"><div class="wrap">
-    <div class="sec-h c rv"><span class="kick">איך נרשמים</span><h2>ארבעה צעדים, ואתם בפנים</h2><p>בכל שלב תקבלו עדכון במייל, ותוכלו לבדוק את מצב הבקשה בקישור האישי.</p></div>
+  <section class="sec" id="process"><div class="wrap">
+    <div class="sec-h c rv"><h2>ארבעה צעדים עד אישור ההרשמה</h2><p>בכל שלב תקבלו עדכון במייל, ותוכלו לבדוק את מצב הבקשה בקישור האישי.</p></div>
     <div class="procw" id="procw"><div class="proc-line" aria-hidden="true"></div>
     <ol class="proc">
-      <li style="--dc:var(--rose2)"><span class="dot">1</span><h3>ממלאים בקשה</h3><p>טופס קצר כאן באתר – כחמש דקות.</p></li>
-      <li style="--dc:var(--mint);--d:.25s"><span class="dot">2</span><h3>משלימים פרטים</h3><p>נשלח לכם טופס השלמה, ומעלים צילום ת.ז. עם ספח.</p></li>
-      <li style="--dc:var(--butter);--d:.5s"><span class="dot">3</span><h3>שיבוץ</h3><p>המשרד משבץ לגן המתאים לפי האזור והגיל.</p></li>
-      <li style="--dc:var(--rose);--d:.75s"><span class="dot">4</span><h3>אישור הרשמה</h3><p>מקבלים אישור במייל עם כל פרטי הגן.</p></li>
+      <li style="--dc:var(--rose2)"><span class="dot glass">1</span><h3>ממלאים בקשה</h3><p>טופס קצר כאן באתר, כחמש דקות.</p></li>
+      <li style="--dc:var(--mint);--d:.25s"><span class="dot glass">2</span><h3>משלימים פרטים</h3><p>נשלח לכם טופס השלמה, ומעלים צילום ת.ז. עם ספח.</p></li>
+      <li style="--dc:var(--butter);--d:.5s"><span class="dot glass">3</span><h3>שיבוץ</h3><p>המשרד משבץ לגן המתאים לפי העיר, האזור והגיל.</p></li>
+      <li style="--dc:var(--rose);--d:.75s"><span class="dot glass">4</span><h3>אישור הרשמה</h3><p>מקבלים אישור במייל עם כל פרטי הגן.</p></li>
     </ol></div>
   </div></section>
 
-  <section class="sec mint" id="info"><div class="wrap">
-    <div class="sec-h rv"><span class="kick">מרכז מידע להורים</span><h2>כל מה שצריך לדעת, במקום אחד</h2><p>מדריכים קצרים וברורים: מועדי רישום, איך מבקשים דרגה במעון, גילאים, מסמכים ומה קורה אחרי ההרשמה.</p></div>
-    <div class="ic-wrap rv">
-      <div>
-        <label class="ic-search"><span class="hp">חיפוש במרכז המידע</span><input type="search" id="icQ" placeholder="חיפוש: דרגה, ספח, מועד…" autocomplete="off"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></label>
-        <div class="ic-tabs" id="icTabs" role="tablist" aria-label="קטגוריות מידע"></div>
-      </div>
-      <div class="ic-panel" id="icPanel" role="tabpanel" tabindex="-1"></div>
-    </div>
+  <section class="sec" id="info"><div class="wrap">
+    <div class="sec-h rv"><h2>מרכז מידע להורים</h2><p>מדריכים קצרים, שלב אחר שלב, עם קישורים ישירים לאתרים הרשמיים: מועדי רישום, דרגה במעון, גילאים, מסמכים ומה קורה אחרי ההרשמה.</p></div>
+    <label class="hub-search glass rv"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="vh">חיפוש במרכז המידע</span><input type="search" id="icQ" placeholder="מה תרצו לדעת? למשל: דרגה, ספח, מועד" autocomplete="off"></label>
+    <div class="hits" id="hits" hidden></div>
+    <div class="hub" id="hub"></div>
   </div></section>
 
   <section class="sec" id="faq" hidden><div class="wrap faq-wrap">
-    <div class="sec-h rv"><span class="kick">שאלות נפוצות</span><h2>שאלו אותנו</h2><p>לא מצאתם תשובה? אפשר לפנות למשרד.</p><div class="cinfo" id="contact"></div></div>
+    <div class="sec-h rv"><h2>שאלות נפוצות</h2><p>לא מצאתם תשובה? אפשר לפנות למשרד.</p><div class="cinfo" id="contact"></div></div>
     <div class="faq rv" id="faqList"></div>
   </div></section>
 
-  <section class="sec reg-sec" id="register"><div class="wrap">
-    <div class="sec-h rv"><span class="kick">טופס הרשמה</span><h2 id="regTitle">נרשמים לשנת הלימודים</h2><p id="regSub">ממלאים פעם אחת, ואנחנו מלווים אתכם עד אישור ההרשמה. הטופס נשמר אוטומטית במכשיר שלכם, כך שאפשר להפסיק ולהמשיך.</p></div>
+  <section class="sec" id="register"><div class="wrap">
+    <div class="sec-h rv"><h2 id="regTitle">נרשמים לשנת הלימודים</h2><p id="regSub">ממלאים פעם אחת, ואנחנו מלווים אתכם עד אישור ההרשמה.</p></div>
     <div class="reg-shell">
-      <div class="reg-card">
+      <div class="reg-card glass">
         <nav class="prog" aria-label="שלבי הטופס"><ol id="prog"></ol><p class="progm" id="progm" aria-hidden="true"></p></nav>
         <form class="pane" id="regForm" novalidate autocomplete="on"></form>
       </div>
       <aside class="reg-side">
-        <div class="sidecard"><h4>מה צריך להכין</h4><ul>
+        <div class="sidecard glass"><h4>מה צריך להכין</h4><ul>
           <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>מספר הזהות ותאריך הלידה של הילדה</span></li>
           <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>טלפון נייד ומייל של הורה</span></li>
           <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>צילום ת.ז. עם ספח – רק בשלב ההשלמה</span></li>
-        </ul></div>
-        <div class="sidecard ink"><h4>הפרטים שלכם שמורים</h4><ul>
+        </ul><p style="margin-top:12px;font-size:15px"><a class="xl" href="#guide/register">מדריך למילוי הטופס</a></p></div>
+        <div class="sidecard ink glass"><h4>הפרטים שלכם שמורים</h4><ul>
           <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>נשמרים במערכת המאובטחת של הרשת בלבד</span></li>
           <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>משמשים רק להרשמה ולשיבוץ</span></li>
-          <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>מסמכים נשמרים בתיקייה חסויה</span></li>
+          <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>הטופס נשמר אוטומטית במכשיר שלכם, כך שאפשר להפסיק ולהמשיך</span></li>
         </ul></div>
       </aside>
     </div>
   </div></section>
 
   <div class="wrap"><section class="final rv">
-    <span class="cloud f1"><svg><use href="#i-cloud"/></svg></span><span class="cloud f2"><svg><use href="#i-cloud"/></svg></span>
-    <div><h2>מקום חם מחכה לבת שלכם</h2><p>ההרשמה פתוחה עכשיו. חמש דקות, ואתם בפנים.</p></div>
-    <a class="btn btn-lg" href="#register">להרשמה מקוונת</a>
+    <div><h2>מקום חם מחכה לבת שלכם</h2><p>חמש דקות של הרשמה, ואנחנו ממשיכים מכאן.</p></div>
+    <a class="btn btn-lg" href="#register">להרשמה מקוונת <span class="arr">←</span></a>
   </section></div>
 </main>
 
-<main id="solo" hidden><div class="solo"><div class="box" id="soloBox"></div></div></main>
+<main id="guideView" hidden><div class="wrap guide" id="guideBox"></div></main>
+<main id="solo" hidden><div class="solo"><div class="box glass" id="soloBox"></div></div></main>
 
 <footer><div class="wrap">
   <div class="fg">
     <div><h4>גני מלכות</h4><p>גני ילדות ומעונות יום לבנות.<br>״כל כבודה בת מלך פנימה״</p></div>
-    <div><h4>ניווט מהיר</h4><ul><li><a href="#register">טופס הרשמה</a></li><li><a href="#info">מרכז מידע להורים</a></li><li><a href="#frames">המסגרות</a></li></ul></div>
+    <div><h4>ניווט מהיר</h4><ul><li><a href="#register">טופס הרשמה</a></li><li><a href="#info">מרכז מידע להורים</a></li><li><a href="#guide/subsidy">איך מבקשים דרגה במעון</a></li></ul></div>
     <div><h4>יצירת קשר</h4><ul id="fContact"><li>דרך המשרד</li></ul></div>
   </div>
-  <div class="fb"><span>© <span id="yr"></span> גני מלכות · כל הזכויות שמורות</span><span>המידע במרכז המידע כללי בלבד; יש לבדוק את העדכונים באתרים הרשמיים.</span></div>
+  <div class="fb"><span>© <span id="yr"></span> גני מלכות · כל הזכויות שמורות</span><span>המידע במרכז המידע כללי בלבד ואינו מחליף את הפרסומים הרשמיים.</span></div>
 </div></footer>
-<div class="mcta" id="mcta"><a class="btn btn-rose" href="#register">להרשמה מקוונת</a></div>
+<div class="mcta glass" id="mcta"><a class="btn btn-rose" href="#register">להרשמה מקוונת</a></div>
 <canvas id="confetti" hidden></canvas>
 
 <script>
@@ -582,14 +545,22 @@ footer .fb{margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,25
 const API=window.KG_API||"";
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches,FINE=matchMedia("(pointer:fine)").matches;
 const store={get(k){try{return JSON.parse(localStorage.getItem(k)||"null")}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 const rpc=(fn,...args)=>new Promise((res,rej)=>{if(!API)return rej(new Error("השרת לא הוגדר"));const ac=new AbortController(),t=setTimeout(()=>ac.abort(),90000);
   fetch(API,{method:"POST",redirect:"follow",signal:ac.signal,headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({rpc:fn,args})}).then(r=>r.text()).then(x=>{clearTimeout(t);let o;try{o=JSON.parse(x)}catch(e){return rej(new Error("לא ניתן להתחבר לשרת כרגע. נסו שוב בעוד רגע."))}o.err?rej(new Error(o.err)):res(o.ok)},e=>{clearTimeout(t);rej(new Error(e.name==="AbortError"?"החיבור איטי מדי. נסו שוב.":"לא ניתן להתחבר לשרת. בדקו את החיבור לאינטרנט ונסו שוב."))})});
 
-/* ---------- school year & age rules (same as the server) ---------- */
+/* ---------- configuration (set by the office) ---------- */
 const now=new Date();
-let INFO={year_start:now.getMonth()>=8?now.getFullYear()+1:now.getFullYear(),year_label:"",types:["גן","מעון יום"],soon:["צהרון"],areas:[],open:true,faq:[]};
+let INFO={year_start:now.getMonth()>=8?now.getFullYear()+1:now.getFullYear(),year_label:"",types:["גן","מעון יום"],soon:["צהרון"],areas:[],cities:{},open:true,faq:[],form:{},texts:{}};
+const DEF_L={type:"סוג המסגרת",city:"עיר מגורים",area:"אזור / שכונה",first_name:"שם פרטי",last_name:"שם משפחה",id_number:"מספר זהות של הילדה",birth_date:"תאריך לידה",parent1_first_name:"שם פרטי – הורה",parent1_last_name:"שם משפחה",parent1_phone:"טלפון נייד",email:"מייל לעדכונים",parent2_first_name:"שם פרטי",parent2_last_name:"שם משפחה",parent2_phone:"טלפון",street:"רחוב",house_number:"מספר בית",notes:"משהו שחשוב שנדע?"};
+const DEF_H={id_number:"9 ספרות, כולל ספרת ביקורת",email:"לכאן יישלחו האישורים והעדכונים"};
+const CORE=["type","city","first_name","last_name","id_number","birth_date","parent1_first_name","parent1_phone","email"];
+const FC=k=>(INFO.form||{})[k]||{};
+const LBL=k=>FC(k).label||DEF_L[k]||k,HLP=k=>FC(k).help||DEF_H[k]||"";
+const REQ=k=>CORE.includes(k)||("req" in FC(k)?!!FC(k).req:(k==="area"||k==="parent1_last_name"));
+const HID=k=>!CORE.includes(k)&&!!FC(k).hide;
+const TX=(k,d)=>(INFO.texts||{})[k]||d;
 function hebYear(g){let n=(+g+3761)%1000,s="";const H=[[400,"ת"],[300,"ש"],[200,"ר"],[100,"ק"],[90,"צ"],[80,"פ"],[70,"ע"],[60,"ס"],[50,"נ"],[40,"מ"],[30,"ל"],[20,"כ"],[10,"י"],[9,"ט"],[8,"ח"],[7,"ז"],[6,"ו"],[5,"ה"],[4,"ד"],[3,"ג"],[2,"ב"],[1,"א"]];
   for(const[v,c]of H){while(n>=v){if(n===15||n===16){s+=n===15?"טו":"טז";n=0;break}s+=c;n-=v}}return s.length>1?s.slice(0,-1)+'"'+s.slice(-1):s+"'"}
 const yl=()=>INFO.year_label||hebYear(INFO.year_start);
@@ -606,150 +577,138 @@ const FIX={"gmail.co":"gmail.com","gmail.con":"gmail.com","gmial.com":"gmail.com
 const mailFix=v=>{const m=String(v||"").trim().toLowerCase().split("@");return m.length===2&&FIX[m[1]]?m[0]+"@"+FIX[m[1]]:""};
 const MONTHS=["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
 const fmtDate=b=>b?b.split("-").reverse().join("/"):"";
+const cityList=()=>Object.keys(INFO.cities||{}).length?Object.keys(INFO.cities):(INFO.areas||[]);
+const areasOf=c=>((INFO.cities||{})[c]||[]);
 
-/* ---------- header, menu, mobile CTA ---------- */
+/* ---------- chrome: header, menu, progress bar, mobile CTA ---------- */
 $("#yr").textContent=now.getFullYear();
-const top=$("#top"),mcta=$("#mcta");
-addEventListener("scroll",()=>{top.classList.toggle("scrolled",scrollY>8);const r=$("#register").getBoundingClientRect();mcta.classList.toggle("show",scrollY>520&&!(r.top<innerHeight&&r.bottom>0)&&!$("#landing").hidden)},{passive:true});
-$("#menuBtn").addEventListener("click",e=>{const n=$("#mainNav"),o=n.classList.toggle("open");e.currentTarget.setAttribute("aria-expanded",o)});
+const top=$("#top"),mcta=$("#mcta"),progTop=$("#progTop");
+let ticking=false;
+function onScroll(){ticking=false;const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;top.classList.toggle("scrolled",y>8);progTop.style.transform=`scaleX(${h>0?Math.min(1,y/h).toFixed(4):0})`;
+  if(!$("#landing").hidden){const r=$("#register").getBoundingClientRect();mcta.classList.toggle("show",y>560&&!(r.top<innerHeight&&r.bottom>0));if(!RM&&y<1000)$("#stageIn").style.setProperty("--sy",(y*.12).toFixed(1)+"px")}else mcta.classList.remove("show")}
+addEventListener("scroll",()=>{if(!ticking){ticking=true;requestAnimationFrame(onScroll)}},{passive:true});
+$("#menuBtn").addEventListener("click",e=>{const o=$("#mainNav").classList.toggle("open");e.currentTarget.setAttribute("aria-expanded",o)});
 $("#mainNav").addEventListener("click",e=>{if(e.target.closest("a")){$("#mainNav").classList.remove("open");$("#menuBtn").setAttribute("aria-expanded","false")}});
-
-/* ---------- hero parallax ---------- */
 const stage=$("#stage");
-if(!RM&&matchMedia("(pointer:fine)").matches)addEventListener("pointermove",e=>{stage.style.setProperty("--px",(e.clientX/innerWidth-.5).toFixed(3));stage.style.setProperty("--py",(e.clientY/innerHeight-.5).toFixed(3))},{passive:true});
-
-/* ---------- marquee ---------- */
-function paintMarq(){const it=["גני ילדות לבנות","מעונות יום","הרשמה לשנת הלימודים "+yl(),"צהרונים – בקרוב","״כל כבודה בת מלך פנימה״"];
-  const one=`<span>${it.map(t=>`${esc(t)}<svg><use href="#i-star"/></svg>`).join("")}</span>`;$("#marq").innerHTML=one+one+one+one}
-
-/* ---------- scroll reveals ---------- */
-const hasIO="IntersectionObserver" in window;if(!hasIO)document.documentElement.classList.add("noio");
-const rvIO=!hasIO?{observe:e=>e.classList.add("in"),unobserve(){},disconnect(){}}:new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");rvIO.unobserve(x.target)}}),{threshold:.12,rootMargin:"0px 0px -6% 0px"});
+if(!RM&&FINE)addEventListener("pointermove",e=>{stage.style.setProperty("--px",(e.clientX/innerWidth-.5).toFixed(3));stage.style.setProperty("--py",(e.clientY/innerHeight-.5).toFixed(3))},{passive:true});
+if(FINE&&!RM){document.addEventListener("pointermove",e=>{const el=e.target.closest?.(".spot,.tile");if(!el)return;const r=el.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;el.style.setProperty("--mx",x+"px");el.style.setProperty("--my",y+"px");
+  if(el.classList.contains("tilt")){el.style.setProperty("--ry",((x/r.width-.5)*5).toFixed(2)+"deg");el.style.setProperty("--rx",((.5-y/r.height)*5).toFixed(2)+"deg")}},{passive:true});
+  document.addEventListener("pointerout",e=>{const el=e.target.closest?.(".tilt");if(el&&!el.contains(e.relatedTarget)){el.style.setProperty("--rx","0deg");el.style.setProperty("--ry","0deg")}})}
+function paintMarq(){const it=["גני ילדות לבנות","מעונות יום","הרשמה לשנת הלימודים "+yl(),"צהרונים בקרוב","״כל כבודה בת מלך פנימה״"];
+  const one=`<span>${it.map(t=>`${esc(t)}<i></i>`).join("")}</span>`;$("#marq").innerHTML=one+one+one+one}
+const hasIO="IntersectionObserver" in window;
+const rvIO=!hasIO?{observe:e=>e.classList.add("in"),unobserve(){}}:new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");rvIO.unobserve(x.target)}}),{threshold:.1,rootMargin:"0px 0px -6% 0px"});
 const watch=()=>$$(".rv:not(.in)").forEach(el=>rvIO.observe(el));
 const procIO=!hasIO?{observe:e=>e.classList.add("in"),disconnect(){}}:new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");procIO.disconnect()}}),{threshold:.35});procIO.observe($("#procw"));
+const formLive=()=>!!$("#regForm [name=type],#regForm [name=first_name],#regForm [name=parent1_first_name],#regForm [name=consent]");
+document.addEventListener("click",e=>{const p=e.target.closest("[data-pick]");if(p&&INFO.types.includes(p.dataset.pick)&&!F.busy&&formLive()){collect();F.data.type=p.dataset.pick;F.dir=-1;F.step=0;paint();save()}});
 
-/* ---------- age finder ---------- */
-let fYear=null;
-function paintYears(){const Y=INFO.year_start,ys=[];for(let y=Y;y>=Y-6;y--)ys.push(y);
-  $("#years").innerHTML=ys.map(y=>`<button type="button" aria-pressed="${fYear===y}" data-y="${y}">${y}</button>`).join("");$$(".yl").forEach(e=>e.textContent=yl())}
-$("#years").addEventListener("click",e=>{const b=e.target.closest("[data-y]");if(!b)return;fYear=+b.dataset.y;paintYears();
-  const a=ageOf(fYear,fYear===INFO.year_start?0:null),fr=frameOf(a),box=$("#fres");let h;
-  if(a==="מעל גיל גן")h=`<span class="big">כיתה א׳ ומעלה</span><span class="sm">בשנת הלימודים ${esc(yl())} הילדה כבר לא בגיל הגן.</span>`;
-  else if(a==="מעון")h=`<span class="big">מעון יום</span><span class="sm">${fYear===INFO.year_start?"ילידות השנה מתקבלות מגיל 3 חודשים":"תינוקייה / פעוטון / בוגרים"} · שנת הלימודים ${esc(yl())}</span><a class="btn btn-rose btn-sm act" href="#register" data-pick="מעון יום">להרשמה למעון</a>`;
-  else h=`<span class="big">${esc(a)}</span><span class="sm">גן ילדות · שנת הלימודים ${esc(yl())}</span><a class="btn btn-rose btn-sm act" href="#register" data-pick="גן">להרשמה לגן</a>`;
-  box.innerHTML=h;box.classList.remove("flip");void box.offsetWidth;box.classList.add("flip");
-  if(fr&&!F.data.type&&F.step===0&&$("#regForm [name=type]")){collect();F.data.type=fr;paint()}if(!F.data.dob_y){F.data.dob_y=String(fYear)}});
-document.addEventListener("click",e=>{const p=e.target.closest("[data-pick]");if(p&&INFO.types.includes(p.dataset.pick)&&!F.busy&&$("#regForm [name=type],#regForm [name=first_name],#regForm [name=parent1_first_name],#regForm [name=consent]")){collect();F.data.type=p.dataset.pick;F.dir=-1;F.step=0;paint();save()}});
-
-/* ---------- information center ---------- */
-const L=(href,t)=>`<a href="${href}" target="_blank" rel="noopener">${esc(t)}<svg viewBox="0 0 24 24"><use href="#i-ext"/></svg></a>`;
-const IC=[
- {id:"dates",t:"מועדי רישום",s:"מתי נרשמים ולאן",i:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
-  body:()=>`<h3>מועדי רישום – מה, מתי ואיפה</h3>
-   <p class="ic-sum">יש שני רישומים נפרדים: <b>הרישום אצלנו</b> (שיבוץ לגן או למעון ברשת), ו<b>רישום לגן ברשות המקומית</b> – שבדרך כלל מתקיים בינואר–פברואר. לגיל מעון אין רישום ברשות.</p>
-   <div class="gfacts">
-     <div class="gfact"><b>${INFO.open?"פתוח עכשיו":"סגור כרגע"}</b><span>הרישום לגני מלכות לשנת ${esc(yl())}${INFO.open?" – כאן באתר":""}</span></div>
-     <div class="gfact"><b>ינואר–פברואר</b><span>הרישום לגני ילדים ברשויות. בשנה שעברה: 19.1-8.2.2026. המועד לשנה הבאה יפורסם בהמשך.</span></div>
-     <div class="gfact"><b>1 בספטמבר</b><span>תחילת שנת הלימודים בגנים ובמעונות היום</span></div>
-   </div>
-   <ol class="gsteps">
-     <li><div><b>נרשמים אצלנו</b><span>ממלאים את הטופס באתר. מקבלים מספר בקשה וקישור למעקב.</span></div></li>
-     <li><div><b>לגן ילדות: נרשמים גם ברשות המקומית</b><span>בתקופת הרישום הארצית, באתר העירייה או במחלקת החינוך. אם הרשות מבקשת אישור מהגן – פנו אלינו ונשלח לכם.</span></div></li>
-     <li><div><b>למעון יום: מבקשים דרגה</b><span>אחרי שהמעון קולט את הילדה, מגישים בקשה לסבסוד. ראו המדריך ״דרגה במעון״.</span></div></li>
-   </ol>
-   <div class="glinks">${L("https://www.kolzchut.org.il/he/%D7%A8%D7%99%D7%A9%D7%95%D7%9D_%D7%9C%D7%92%D7%9F_%D7%99%D7%9C%D7%93%D7%99%D7%9D","רישום לגן ילדים – כל זכות")}</div>
-   <p class="gnote">המועדים ברשויות נקבעים בכל שנה מחדש. מומלץ לבדוק באתר הרשות שלכם.</p>`},
- {id:"subsidy",t:"דרגה במעון",s:"סבסוד שכר הלימוד",i:'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
-  body:()=>`<h3>איך מבקשים דרגה (סבסוד) למעון יום</h3>
-   <p class="ic-sum">הדרגה קובעת כמה תשלמו בפועל למעון. היא נקבעת לפי ההכנסה לנפש במשפחה ולפי מספר הילדים במעונות, מדרגה 3 (הנחה גבוהה) עד דרגה 12 (ללא סבסוד). מגישים בקשה מקוונת – בלי לצאת מהבית.</p>
-   <ol class="gsteps">
-     <li><div><b>נרשמים למעון מוכר</b><span>מעונות גני מלכות מוכרים, כך שאפשר לבקש עבורם סבסוד.</span></div></li>
-     <li><div><b>המעון מדווח שהילדה נקלטה</b><span>אחרי אישור ההרשמה אנחנו מדווחים עליה במערכת של משרד העבודה. בלי זה הבקשה לא תתקדם.</span></div></li>
-     <li><div><b>הורה אחד פותח בקשה באתר הממשלתי</b><span>נכנסים עם הזדהות לאומית (קוד בטלפון / תעודה ביומטרית) וממלאים את פרטי המשפחה והעבודה.</span></div></li>
-     <li><div><b>ההורה השני משלים</b><span>למשפחה עם שני הורים: נשלח להורה השני קישור להשלמת הפרטים שלו.</span></div></li>
-     <li><div><b>מצרפים מסמכים, אם מבקשים</b><span>בדרך כלל תלושי שכר אחרונים או אישור לימודים / עבודה.</span></div></li>
-     <li><div><b>בודקים את הדרגה שנקבעה</b><span>במערכת בירור הדרגה. עד שהדרגה נקבעת ייתכן תשלום מלא, וההפרש מוחזר בהמשך.</span></div></li>
-   </ol>
-   <div class="gfacts">
-     <div class="gfact"><b>ילדה נוספת במעון?</b><span>כשיש שני ילדים ויותר במעונות, הדרגה יורדת באחת – כלומר הנחה גדולה יותר.</span></div>
-     <div class="gfact"><b>הדרגה לא נכונה?</b><span>אפשר לבקש תיקון דרגה בכתב עד 31 באוגוסט של אותה שנת לימודים.</span></div>
-     <div class="gfact"><b>השתנתה ההכנסה?</b><span>מדווחים תוך 30 יום. מוקד המידע: <bdi dir="ltr">*2969</bdi>.</span></div>
-   </div>
-   <div class="glinks">${L("https://www.gov.il/he/service/daycare-center-parents-request-degree-of-subsidy","הגשת בקשה לסבסוד – gov.il")}${L("https://daycareeligibilitycheck.labor.gov.il/","בירור הדרגה שנקבעה")}${L("https://www.kolzchut.org.il/he/%D7%93%D7%A8%D7%92%D7%95%D7%AA_%D7%94%D7%A9%D7%AA%D7%AA%D7%A4%D7%95%D7%AA_%D7%91%D7%9E%D7%99%D7%9E%D7%95%D7%9F_%D7%9E%D7%A2%D7%95%D7%A0%D7%95%D7%AA_%D7%99%D7%95%D7%9D_%D7%95%D7%9E%D7%A9%D7%A4%D7%97%D7%AA%D7%95%D7%A0%D7%99%D7%9D","דרגות הסבסוד – כל זכות")}</div>
-   <p class="gnote">התנאים והסכומים נקבעים על ידי משרד העבודה ומתעדכנים מדי שנה. המידע כאן הוא הסבר כללי, ולא תחליף לבדיקה באתר הרשמי.</p>`},
- {id:"ages",t:"גילאים ושכבות",s:"מי הולכת לאן",i:'<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>',
-  body:()=>{const Y=INFO.year_start;const r=(a,cls,yrs,frame)=>`<tr><td><span class="tg ${cls}">${a}</span></td><td>${yrs}</td><td>${frame}</td></tr>`;
-   return `<h3>שכבות הגיל בשנת הלימודים ${esc(yl())}</h3>
-   <p class="ic-sum">בגני הילדים השכבה נקבעת לפי <b>שנת הלידה הלועזית</b> בלבד – בלי קשר לחודש. במעון היום הקבלה היא מגיל 3 חודשים.</p>
-   <table class="agetbl"><thead><tr><th>שכבה</th><th>שנת לידה</th><th>מסגרת</th></tr></thead><tbody>
-    ${r("חובה","tg-g",Y-5,"גן ילדות")}${r("טרום חובה","tg-g",Y-4,"גן ילדות")}${r("טרום טרום חובה","tg-g",Y-3,"גן ילדות")}${r("מעון יום","tg-m",`${Y-2} ואילך`,"מעון יום")}
-   </tbody></table>
-   <p class="gnote">בנות שנולדו ב-${Y-6} ולפני כן עולות בשנה זו לכיתה א׳. אפשר לבדוק מהר במחשבון הגיל למעלה בדף.</p>`}},
- {id:"docs",t:"מסמכים",s:"מה צריך ומתי",i:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
-  body:()=>`<h3>אילו מסמכים צריך, ומתי</h3>
-   <p class="ic-sum">בטופס ההרשמה אין צורך לצרף כלום. את המסמכים מעלים רק בשלב ״השלמת הפרטים״, ואפשר פשוט לצלם בטלפון.</p>
-   <div class="gfacts">
-     <div class="gfact"><b>להרשמה אצלנו</b><span>צילום תעודת זהות של ההורים, כולל הספח שבו רשומה הילדה.</span></div>
-     <div class="gfact"><b>לרשות המקומית (לגן)</b><span>בדרך כלל: ת.ז. עם ספח, וכתובת מגורים מעודכנת (למשל חשבון ארנונה או חוזה שכירות).</span></div>
-     <div class="gfact"><b>לבקשת דרגה (למעון)</b><span>בדרך כלל: תלושי שכר אחרונים, או אישור לימודים / עבודה.</span></div>
-   </div>
-   <ol class="gsteps">
-     <li><div><b>מצלמים בטלפון</b><span>צילום ישר ומואר, שכל הספרות נראות. גם PDF מתקבל.</span></div></li>
-     <li><div><b>מעלים בטופס ההשלמה</b><span>גוררים או בוחרים קבצים – עד 6 קבצים, עד 7MB לכל קובץ. תמונות גדולות מוקטנות אוטומטית.</span></div></li>
-     <li><div><b>זהו</b><span>המסמכים נשמרים בתיקייה חסויה, וזמינים לצוות המשרד בלבד.</span></div></li>
-   </ol>`},
- {id:"after",t:"אחרי ההרשמה",s:"מה קורה עכשיו",i:'<path d="M3 12h4l3 8 4-16 3 8h4"/>',
-  body:()=>`<h3>מה קורה אחרי ששולחים את הבקשה</h3>
-   <p class="ic-sum">בכל שלב יוצא אליכם מייל, ובקישור האישי שקיבלתם תמיד אפשר לראות איפה הבקשה עומדת.</p>
-   <ol class="gsteps">
-     <li><div><b>אישור קבלה במייל</b><span>מספר בקשה וקישור למעקב. שמרו את המייל.</span></div></li>
-     <li><div><b>טופס השלמת פרטים</b><span>נשלח אליכם במייל: פרטי ההורים, כתובת, איש קשר לחירום וצילום ת.ז. עם ספח.</span></div></li>
-     <li><div><b>שיבוץ</b><span>המשרד משבץ לגן המתאים לפי האזור שבחרתם, הגיל והמקום הפנוי.</span></div></li>
-     <li><div><b>אישור הרשמה</b><span>מכתב אישור במייל עם שם הגן, הכתובת והטלפון. אם אין כרגע מקום – הבקשה עוברת לרשימת המתנה, ונעדכן ברגע שמתפנה.</span></div></li>
-   </ol>
-   <p class="gnote">לא מצאתם את המייל? בדקו בתיקיית הספאם או ב״קידומי מכירות״, או פנו למשרד.</p>`},
- {id:"privacy",t:"פרטיות ואבטחה",s:"איך שומרים על המידע",i:'<rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
-  body:()=>`<h3>איך אנחנו שומרים על המידע שלכם</h3>
-   <p class="ic-sum">הפרטים נשמרים במערכת הניהול של הרשת ומשמשים רק לצורך ההרשמה והשיבוץ. הם לא מועברים לגורם חיצוני.</p>
-   <ol class="gsteps">
-     <li><div><b>קישורים אישיים</b><span>הקישור למעקב ולטופס ההשלמה אישי ומוצפן. אל תעבירו אותו לאחרים.</span></div></li>
-     <li><div><b>מסמכים בתיקייה חסויה</b><span>הגישה מוגבלת לצוות המשרד, וכל צפייה נרשמת.</span></div></li>
-     <li><div><b>עיון ותיקון</b><span>אפשר לבקש לעיין בפרטים או לתקן אותם בכל עת, דרך המשרד.</span></div></li>
-   </ol>`}];
-let icCur="dates";
-function paintTabs(){$("#icTabs").innerHTML=IC.map(c=>`<button role="tab" id="tab-${c.id}" aria-selected="${c.id===icCur}" aria-controls="icPanel" data-ic="${c.id}" tabindex="${c.id===icCur?0:-1}"><i><svg viewBox="0 0 24 24">${c.i}</svg></i><span>${c.t}<small>${c.s}</small></span></button>`).join("")}
-function paintIC(anim){const c=IC.find(x=>x.id===icCur),p=$("#icPanel");p.setAttribute("aria-labelledby","tab-"+c.id);p.innerHTML=c.body();if(anim&&!RM){p.classList.remove("swap");void p.offsetWidth;p.classList.add("swap")}}
-$("#icTabs").addEventListener("click",e=>{const b=e.target.closest("[data-ic]");if(!b)return;icCur=b.dataset.ic;$("#icQ").value="";paintTabs();paintIC(true);if(innerWidth<900)$("#icPanel").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"})});
-$("#icTabs").addEventListener("keydown",e=>{if(!["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(e.key))return;e.preventDefault();const i=IC.findIndex(x=>x.id===icCur),d=(e.key==="ArrowLeft"||e.key==="ArrowDown")?1:-1;icCur=IC[(i+d+IC.length)%IC.length].id;paintTabs();paintIC(true);$(`#tab-${icCur}`).focus()});
-$("#icQ").addEventListener("input",e=>{const q=e.target.value.trim();if(!q){paintIC(false);return}
-  const tmp=document.createElement("div"),hits=[];
-  IC.forEach(c=>{tmp.innerHTML=c.body();const txt=tmp.textContent.replace(/\s+/g," ");let i=txt.indexOf(q);if(i<0)return;const s=Math.max(0,i-50);hits.push({c,snip:(s?"…":"")+txt.slice(s,i+q.length+70)+"…"})});
-  (INFO.faq||[]).forEach(f=>{const txt=f.q+" "+f.a,i=txt.indexOf(q);if(i>=0)hits.push({faq:f,snip:txt.slice(Math.max(0,i-40),i+q.length+70)})});
-  const mk=s=>esc(s).split(esc(q)).join(`<mark>${esc(q)}</mark>`);
-  $("#icPanel").innerHTML=`<h3>תוצאות עבור ״${esc(q)}״</h3><p class="phint" style="margin:8px 0 16px">${hits.length?hits.length+" תוצאות":"לא נמצאו תוצאות. נסו מילה אחרת, למשל ״דרגה״ או ״ספח״."}</p><div class="hits">${hits.map((h,k)=>h.c?`<button class="hit" data-go="${h.c.id}"><b>${esc(h.c.t)}</b><span>${mk(h.snip)}</span></button>`:`<button class="hit" data-faq="${k}"><b>${esc(h.faq.q)}</b><span>${mk(h.snip)}</span></button>`).join("")}</div>`});
-$("#icPanel").addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){icCur=g.dataset.go;$("#icQ").value="";paintTabs();paintIC(true);return}
-  if(e.target.closest("[data-faq]")){$("#faq").scrollIntoView({behavior:RM?"auto":"smooth"})}});
+/* ---------- information centre ---------- */
+const X=(href,t)=>`<a class="xl ext" href="${href}" target="_blank" rel="noopener">${t}</a>`,IN=(href,t)=>`<a class="xl" href="${href}">${t}</a>`;
+const U={gov:"https://www.gov.il/he/service/daycare-center-parents-request-degree-of-subsidy",check:"https://daycareeligibilitycheck.labor.gov.il/",dept:"https://www.gov.il/he/departments/Units/day-care-centers",
+  kzReg:"https://www.kolzchut.org.il/he/%D7%A8%D7%99%D7%A9%D7%95%D7%9D_%D7%9C%D7%92%D7%9F_%D7%99%D7%9C%D7%93%D7%99%D7%9D",
+  kzDeg:"https://www.kolzchut.org.il/he/%D7%93%D7%A8%D7%92%D7%95%D7%AA_%D7%94%D7%A9%D7%AA%D7%AA%D7%A4%D7%95%D7%AA_%D7%91%D7%9E%D7%99%D7%9E%D7%95%D7%9F_%D7%9E%D7%A2%D7%95%D7%A0%D7%95%D7%AA_%D7%99%D7%95%D7%9D_%D7%95%D7%9E%D7%A9%D7%A4%D7%97%D7%AA%D7%95%D7%A0%D7%99%D7%9D",
+  kzSub:"https://www.kolzchut.org.il/he/%D7%94%D7%A9%D7%AA%D7%AA%D7%A4%D7%95%D7%AA_%D7%91%D7%A9%D7%9B%D7%A8_%D7%9C%D7%99%D7%9E%D7%95%D7%93_%D7%9C%D7%9E%D7%A2%D7%95%D7%A0%D7%95%D7%AA_%D7%99%D7%95%D7%9D_%D7%95%D7%9E%D7%A9%D7%A4%D7%97%D7%AA%D7%95%D7%A0%D7%99%D7%9D_%28%D7%A1%D7%91%D7%A1%D7%95%D7%93_%D7%A9%D7%9B%D7%A8_%D7%9C%D7%99%D7%9E%D7%95%D7%93%29"};
+const ICN={register:'<path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 12l2 2 4-4"/>',dates:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',subsidy:'<path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H18v4"/><path d="M3 7.5V18a2 2 0 0 0 2 2h15V9H5.5A2.5 2.5 0 0 1 3 7.5Z"/><circle cx="16" cy="14.5" r="1.3"/>',ages:'<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>',docs:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',after:'<path d="M3 12h4l3 8 4-16 3 8h4"/>',privacy:'<rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>'};
+const TC={register:["var(--blush)","var(--rose-d)"],dates:["var(--mint-s)","var(--mint-d)"],subsidy:["var(--butter-s)","var(--gold-d)"],ages:["var(--blush)","var(--rose-d)"],docs:["var(--mint-s)","var(--mint-d)"],after:["var(--butter-s)","var(--gold-d)"],privacy:["rgba(47,37,66,.08)","var(--ink)"]};
+const G=[
+ {id:"register",t:"איך נרשמים אצלנו",s:"מילוי הטופס באתר, צעד אחר צעד",min:2,
+  sum:()=>`ההרשמה לגני מלכות נעשית כאן באתר, בטופס קצר של ארבעה שלבים. לא צריך לצרף מסמכים בשלב הזה, והטופס נשמר אוטומטית במכשיר שלכם.`,
+  steps:()=>[["בוחרים מסגרת, עיר ואזור",`ב${IN("#register","טופס ההרשמה")} בוחרים גן ילדות או מעון יום, ואחר כך את העיר מהרשימה. אם בעיר יש כמה אזורים, נפתחת רשימה נוספת לבחירת האזור.`],
+   ["ממלאים את פרטי הילדה",`שם, מספר זהות ותאריך לידה – כפי שמופיעים בתעודת הזהות. הטופס מחשב לבד את שכבת הגיל לשנת ${esc(yl())}, ואם המסגרת שבחרתם לא מתאימה לגיל, הוא מציע להחליף בלחיצה.`,`<b>טיפ:</b> אם מספר הזהות מסומן באדום, כנראה שחסרה או התחלפה ספרה. כדאי להעתיק אותו מהספח.`],
+   ["ממלאים את פרטי ההורים","טלפון נייד ומייל. לכתובת המייל יישלחו האישור, הקישור למעקב וטופס ההשלמה, ולכן חשוב לוודא שהיא נכונה."],
+   ["בודקים ושולחים","במסך האחרון מוצג סיכום של כל הפרטים, עם אפשרות לערוך כל חלק. אחרי האישור והשליחה מקבלים מספר בקשה ומייל עם קישור אישי."]],
+  src:()=>[]},
+ {id:"dates",t:"מועדי רישום",s:"מתי נרשמים, ולאן",min:3,
+  sum:()=>`יש שני רישומים נפרדים: <b>הרישום אצלנו</b>, לשיבוץ בגן או במעון של הרשת, ו<b>הרישום לגני ילדים ברשות המקומית</b>, שמתקיים בדרך כלל בינואר–פברואר. לגיל מעון אין רישום ברשות.`,
+  steps:()=>[["נרשמים אצלנו",`הרישום לגני מלכות לשנת ${esc(yl())} ${INFO.open?`פתוח עכשיו ב${IN("#register","טופס ההרשמה")}`:"סגור כרגע, ונעדכן כאן כשייפתח"}. כדאי להירשם מוקדם, כי השיבוץ נעשה לפי המקומות הפנויים בכל אזור.`],
+   ["לגן ילדות: נרשמים גם ברשות המקומית",`בתקופת הרישום הארצית נרשמים גם באתר העירייה או במחלקת החינוך. בשנת תשפ"ז הרישום התקיים בין 19.1.2026 ל-8.2.2026; המועד לשנה הבאה יפורסם על ידי משרד החינוך והרשויות. פירוט ב${X(U.kzReg,"מדריך הרישום לגן באתר כל זכות")}.`,`<b>חשוב לדעת:</b> אם הרשות מבקשת אישור קבלה מהגן, פנו למשרד ונשלח לכם.`],
+   ["למעון יום: מבקשים דרגה",`במעון אין רישום ברשות, אבל כדאי לבקש סבסוד של שכר הלימוד. איך עושים את זה – ב${IN("#guide/subsidy","מדריך הדרגה במעון")}.`],
+   ["1 בספטמבר – פותחים שנה","שנת הלימודים בגנים ובמעונות מתחילה ב-1 בספטמבר. פרטים על יום הפתיחה יישלחו במייל לקראת סוף הקיץ."]],
+  src:()=>[[U.kzReg,"כל זכות – רישום לגן ילדים"]]},
+ {id:"subsidy",t:"דרגה במעון יום",s:"סבסוד שכר הלימוד – איך מבקשים",min:4,
+  sum:()=>`הדרגה קובעת כמה תשלמו בפועל למעון. היא נקבעת לפי ההכנסה לנפש במשפחה ולפי מספר הילדים במעונות – מדרגה 3 (השתתפות גבוהה של המדינה) ועד דרגה 12 (ללא סבסוד). מגישים את הבקשה באתר הממשלתי, בלי לצאת מהבית.`,
+  steps:()=>[["נרשמים למעון מוכר","מעונות גני מלכות מוכרים ומפוקחים, ולכן אפשר לבקש עבורם סבסוד."],
+   ["המעון מדווח שהילדה נקלטה","אחרי אישור ההרשמה אנחנו מדווחים על הילדה במערכת של משרד העבודה. בלי הדיווח הזה הבקשה לא מתקדמת, ואם עבר זמן רב כדאי לפנות למשרד."],
+   ["הורה אחד פותח בקשה",`נכנסים ל${X(U.gov,"דף הבקשה לסבסוד באתר gov.il")}, מזדהים בהזדהות הלאומית (קוד לטלפון או תעודה ביומטרית), וממלאים את פרטי המשפחה והעבודה.`],
+   ["ההורה השני משלים","במשפחה עם שני הורים נשלח להורה השני קישור, ובו הוא משלים את הפרטים שלו. הבקשה נבדקת רק אחרי ששני ההורים סיימו."],
+   ["מצרפים מסמכים, אם מבקשים","בדרך כלל: תלושי שכר אחרונים, או אישור לימודים או עבודה. כדאי לבדוק בתיבת המייל ובאתר אם ביקשו השלמות."],
+   ["בודקים את הדרגה שנקבעה",`את הדרגה רואים ב${X(U.check,"מערכת בירור הדרגה של משרד העבודה")}. עד שהדרגה נקבעת ייתכן שתשלמו מחיר מלא, וההפרש יוחזר בהמשך.`,`<b>הדרגה לא נכונה?</b> אפשר להגיש בקשה לתיקון דרגה עד 31 באוגוסט של אותה שנת לימודים. מוקד המידע: <bdi dir="ltr">*2969</bdi>.`]],
+  extra:()=>`<div class="tip" style="margin-top:22px"><b>ילדה נוספת במעון?</b> כשיש במשפחה שני ילדים ויותר במעונות, הדרגה יורדת באחת – כלומר הנחה גדולה יותר. פירוט ב${X(U.kzDeg,"טבלת הדרגות באתר כל זכות")}.</div>`,
+  src:()=>[[U.gov,"gov.il – בקשה לסבסוד שכר לימוד במעונות"],[U.check,"משרד העבודה – בירור דרגת הזכאות"],[U.kzSub,"כל זכות – השתתפות בשכר הלימוד"],[U.dept,"משרד העבודה – אגף מעונות יום"]]},
+ {id:"ages",t:"גילאים ושכבות",s:"לאיזו שכבה הבת שלכם שייכת",min:1,
+  sum:()=>`בגני הילדים השכבה נקבעת לפי <b>שנת הלידה הלועזית</b> בלבד. במעון היום הקבלה היא מגיל 3 חודשים בתחילת שנת הלימודים.`,
+  table:()=>{const Y=INFO.year_start,r=(a,c,y,f)=>`<tr><td><span class="tg ${c}">${a}</span></td><td>${y}</td><td>${f}</td></tr>`;return `<table class="atable"><thead><tr><th>שכבה בשנת ${esc(yl())}</th><th>שנת לידה</th><th>מסגרת</th></tr></thead><tbody>${r("חובה","tg-g",Y-5,"גן ילדות")}${r("טרום חובה","tg-g",Y-4,"גן ילדות")}${r("טרום טרום חובה","tg-g",Y-3,"גן ילדות")}${r("מעון יום","tg-m",`${Y-2} ואילך`,"מעון יום")}</tbody></table>`},
+  steps:()=>[["מוצאים את שנת הלידה בטבלה",`השכבה מופיעה בשורה של שנת הלידה. בנות שנולדו לפני ${INFO.year_start-5} עולות בשנה זו לכיתה א׳.`],
+   ["ממלאים בטופס",`ב${IN("#register","טופס ההרשמה")} השכבה מחושבת אוטומטית לפי תאריך הלידה, ומוצגת לפני השליחה.`]],
+  src:()=>[]},
+ {id:"docs",t:"מסמכים",s:"מה צריך, ומתי",min:2,
+  sum:()=>`בטופס ההרשמה לא צריך לצרף כלום. את המסמכים מעלים רק בשלב "השלמת הפרטים", ואפשר פשוט לצלם בטלפון.`,
+  steps:()=>[["להרשמה אצלנו","צילום תעודת זהות של ההורים, כולל הספח שבו רשומה הילדה."],
+   ["לרישום לגן ברשות המקומית",`בדרך כלל: תעודת זהות עם ספח, ואישור כתובת מגורים (למשל חשבון ארנונה או חוזה שכירות). הרשימה המדויקת באתר הרשות או ב${X(U.kzReg,"כל זכות")}.`],
+   ["לבקשת דרגה במעון",`בדרך כלל: תלושי שכר אחרונים, או אישור לימודים או עבודה. ראו ${IN("#guide/subsidy","מדריך הדרגה")}.`],
+   ["איך מצלמים נכון","צילום ישר ומואר, שכל הספרות נראות. אפשר להעלות תמונה או PDF – עד 6 קבצים, עד 7MB לכל קובץ. תמונות גדולות מוקטנות אוטומטית."]],
+  src:()=>[[U.kzReg,"כל זכות – רישום לגן ילדים"]]},
+ {id:"after",t:"אחרי ההרשמה",s:"מה קורה מרגע השליחה",min:2,
+  sum:()=>`בכל שלב יוצא אליכם מייל, ובקישור האישי שקיבלתם אפשר לראות בכל רגע איפה הבקשה עומדת.`,
+  steps:()=>[["אישור קבלה במייל","מספר בקשה וקישור אישי למעקב. כדאי לשמור את המייל."],
+   ["טופס השלמת פרטים","נשלח אליכם במייל: פרטי ההורים, כתובת, איש קשר לחירום וצילום ת.ז. עם ספח."],
+   ["שיבוץ לגן","המשרד משבץ לגן המתאים לפי העיר והאזור שבחרתם, הגיל והמקומות הפנויים."],
+   ["אישור הרשמה","מכתב אישור במייל עם שם הגן, הכתובת והטלפון. אם אין כרגע מקום, הבקשה עוברת לרשימת המתנה ונעדכן ברגע שמתפנה.",`<b>לא מצאתם את המייל?</b> בדקו בתיקיית הספאם או ב"קידומי מכירות", או פנו למשרד.`]],
+  src:()=>[]},
+ {id:"privacy",t:"פרטיות ואבטחה",s:"איך שומרים על המידע",min:1,
+  sum:()=>`הפרטים נשמרים במערכת הניהול של הרשת ומשמשים רק לצורך ההרשמה והשיבוץ. הם לא מועברים לגורם חיצוני.`,
+  steps:()=>[["קישורים אישיים","הקישור למעקב ולטופס ההשלמה אישי ומוצפן. אל תעבירו אותו לאחרים."],
+   ["מסמכים בתיקייה חסויה","הגישה מוגבלת לצוות המשרד, וכל צפייה נרשמת."],
+   ["עיון ותיקון","אפשר לבקש לעיין בפרטים או לתקן אותם בכל עת, דרך המשרד."]],
+  src:()=>[]}];
+const gIcon=g=>`<svg viewBox="0 0 24 24">${ICN[g.id]}</svg>`,gStyle=g=>`--tc:${TC[g.id][0]};--tk:${TC[g.id][1]}`;
+function paintHub(){$("#hub").innerHTML=G.map((g,i)=>`<a class="tile glass rv${i===0?" feat":""}" href="#guide/${g.id}" style="${gStyle(g)};--d:${(i%3)*.06}s"><span class="ti">${gIcon(g)}</span><b>${g.t}</b><span>${g.s}</span><small>${g.steps().length} שלבים · כ-${g.min} דק׳ קריאה<em>←</em></small></a>`).join("");watch()}
+const gText=g=>{const t=document.createElement("div");t.innerHTML=g.sum()+" "+g.steps().map(s=>s.join(" ")).join(" ")+(g.extra?g.extra():"");return t.textContent.replace(/\s+/g," ")};
+function showGuide(id){const g=G.find(x=>x.id===id)||G[0],i=G.indexOf(g),prev=G[i-1],next=G[i+1];
+  $("#landing").hidden=true;$("#solo").hidden=true;$("#guideView").hidden=false;$("#navInfo").setAttribute("aria-current","page");mcta.classList.remove("show");
+  document.title=`${g.t} – מרכז מידע להורים | גני מלכות`;
+  $("#guideBox").innerHTML=`<nav class="crumbs" aria-label="מיקום"><a href="#" data-home>דף הבית</a><span aria-hidden="true">›</span><a href="#info">מרכז מידע להורים</a><span aria-hidden="true">›</span><span aria-current="page">${g.t}</span></nav>
+   <div class="g-grid"><nav class="g-side glass" aria-label="מדריכים"><h4>מדריכים</h4>${G.map(x=>`<a href="#guide/${x.id}" style="${gStyle(x)}"${x.id===g.id?' aria-current="page"':""}><i>${gIcon(x)}</i>${x.t}</a>`).join("")}</nav>
+    <article class="art glass"><h1>${g.t}</h1><div class="meta"><span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>כ-${g.min} דקות קריאה</span><span><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>${g.steps().length} שלבים</span><span>שנת הלימודים ${esc(yl())}</span></div>
+     <div class="tldr"><b>בקצרה</b><p>${g.sum()}</p></div>${g.table?g.table():""}
+     <ol class="tl">${g.steps().map(([h,p,tip])=>`<li><div><h3>${h}</h3><p>${p}</p>${tip?`<div class="tip">${tip}</div>`:""}</div></li>`).join("")}</ol>${g.extra?g.extra():""}
+     ${g.src().length?`<div class="srcs"><h4>מקורות רשמיים</h4><ul>${g.src().map(([u,t])=>`<li>${X(u,t)}</li>`).join("")}</ul><p class="note">המידע כאן הוא הסבר כללי ומתעדכן לפי הפרסומים הרשמיים. במקרה של סתירה, הקובע הוא האתר הרשמי.</p></div>`:""}
+     <div class="g-cta"><div><b>מוכנים להירשם?</b><p>הטופס לוקח כחמש דקות.</p></div><a class="btn" href="#register">לטופס ההרשמה <span class="arr">←</span></a></div>
+     <div class="pn">${prev?`<a class="glass" href="#guide/${prev.id}"><small>→ המדריך הקודם</small><b>${prev.t}</b></a>`:"<span></span>"}${next?`<a class="glass next" href="#guide/${next.id}"><small>המדריך הבא ←</small><b>${next.t}</b></a>`:""}</div></article></div>`;
+  scrollTo(0,0)}
+function showLanding(anchor){const was=$("#landing").hidden;$("#guideView").hidden=true;$("#solo").hidden=true;$("#landing").hidden=false;$("#navInfo").removeAttribute("aria-current");document.title="גני מלכות – הרשמה לגנים ולמעונות";
+  if(anchor){const el=document.getElementById(anchor);if(el)requestAnimationFrame(()=>el.scrollIntoView({behavior:was||RM?"auto":"smooth"}))}else if(was)scrollTo(0,0)}
+function route(){if(Q.s||Q.f)return;const h=decodeURIComponent(location.hash||"");if(h.startsWith("#guide/"))return showGuide(h.slice(7));showLanding(h.slice(1))}
+document.addEventListener("click",e=>{const a=e.target.closest("[data-home]");if(a){e.preventDefault();history.pushState(null,"",location.pathname+location.search);showLanding("");scrollTo({top:0,behavior:RM?"auto":"smooth"})}});
+$("#icQ").addEventListener("input",e=>{const q=e.target.value.trim(),box=$("#hits");if(!q){box.hidden=true;$("#hub").hidden=false;return}
+  const mk=s=>esc(s).split(esc(q)).join(`<mark>${esc(q)}</mark>`),hits=[];
+  G.forEach(g=>{const txt=g.t+" "+gText(g),i=txt.indexOf(q);if(i>=0){const s=Math.max(0,i-50);hits.push(`<a class="hit glass" href="#guide/${g.id}"><b>${g.t}</b><span>${mk((s?"…":"")+txt.slice(s,i+q.length+80)+"…")}</span></a>`)}});
+  (INFO.faq||[]).forEach(f=>{const txt=f.q+" "+f.a,i=txt.indexOf(q);if(i>=0)hits.push(`<a class="hit glass" href="#faq"><b>${esc(f.q)}</b><span>${mk(txt.slice(Math.max(0,i-40),i+q.length+80))}</span></a>`)});
+  box.innerHTML=hits.length?hits.join(""):`<p class="phint">לא נמצאו תוצאות ל״${esc(q)}״. נסו מילה אחרת, למשל ״דרגה״ או ״ספח״.</p>`;box.hidden=false;$("#hub").hidden=true});
 
 /* ---------- registration wizard ---------- */
-const DKEY="gm_reg_draft_v2";
+const DKEY="gm_reg_draft_v3";
 const F={step:0,dir:1,data:{type:"",area:"",city:""},t0:Date.now(),busy:false,err:"",restored:false,touched:{}};
-const STEPS=[{t:"מסגרת ואזור",h:"באיזו מסגרת ובאיזה אזור?",i:'<path d="M3 10.5 12 4l9 6.5"/><path d="M5 9.5V20h14V9.5"/>'},
-  {t:"פרטי הילדה",h:"כפי שמופיעים בתעודת הזהות",i:'<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>'},
-  {t:"פרטי ההורים",h:"לכאן נשלח את כל העדכונים",i:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/>'},
-  {t:"אישור ושליחה",h:"בודקים שהכול נכון – ושולחים",i:'<path d="M20 6 9 17l-5-5"/>'}];
-function save(){const d=Object.assign({},F.data);delete d.id_number;delete d.consent;store.set(DKEY,{ts:Date.now(),step:F.step,data:d});const s=$("#savedNote");if(s){s.hidden=false}}
+const STEPS=[{t:"מסגרת ומקום",h:"באיזו מסגרת, ובאיזו עיר ואזור?"},{t:"פרטי הילדה",h:"כפי שמופיעים בתעודת הזהות"},{t:"פרטי ההורים",h:"לכאן נשלח את כל העדכונים"},{t:"אישור ושליחה",h:"בודקים שהכול נכון – ושולחים"}];
+function save(){const d=Object.assign({},F.data);delete d.id_number;delete d.consent;store.set(DKEY,{ts:Date.now(),step:F.step,data:d});const s=$("#savedNote");if(s)s.hidden=false}
 (function restore(){const r=store.get(DKEY);if(!r||Date.now()-r.ts>7*864e5){store.del(DKEY);return}if(r.data&&(r.data.first_name||r.data.type||r.data.parent1_first_name)){Object.assign(F.data,r.data);F.step=Math.min(r.step||0,2);F.restored=true}})();
-const ico=p=>`<svg viewBox="0 0 24 24">${p}</svg>`;
 const okI=`<span class="ok-i"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span>`;
-function fld(k,label,o={}){const v=F.data[k]||"";const attrs=[`name="${k}"`,`id="f_${k}"`,`type="${o.type||"text"}"`,o.mode&&`inputmode="${o.mode}"`,o.ac&&`autocomplete="${o.ac}"`,o.dir&&`dir="${o.dir}"`,o.max&&`maxlength="${o.max}"`,o.ph&&`placeholder="${esc(o.ph)}"`,o.list&&`list="${o.list}"`,!o.opt&&'aria-required="true"',`aria-describedby="m_${k}${o.help?" h_"+k:""}"`].filter(Boolean).join(" ");
-  return `<div class="fld${o.full?" full":""}" data-f="${k}"><label class="l" for="f_${k}">${label}${o.opt?"<em>לא חובה</em>":""}</label><div class="box">${o.area?`<textarea ${attrs.replace(/type="[^"]*"/,"")}>${esc(v)}</textarea>`:`<input ${attrs} value="${esc(v)}">`}${o.ok?okI:""}</div>${o.help?`<span class="help" id="h_${k}">${o.help}</span>`:""}<span class="msg" id="m_${k}" role="alert"></span></div>`}
-function dobSel(){const d=F.data,Y=INFO.year_start,ys=[];for(let y=Y;y>=Y-6;y--)ys.push(y);
-  const days=Array.from({length:31},(_,i)=>i+1);
-  return `<div class="fld full" data-f="birth_date"><span class="l" id="l_dob">תאריך לידה</span><div class="dob" role="group" aria-labelledby="l_dob">
+function fld(k,o={}){if(HID(k))return "";const v=F.data[k]||"",help=HLP(k),opt=!REQ(k);const attrs=[`name="${k}"`,`id="f_${k}"`,`type="${o.type||"text"}"`,o.mode&&`inputmode="${o.mode}"`,o.ac&&`autocomplete="${o.ac}"`,o.dir&&`dir="${o.dir}"`,o.max&&`maxlength="${o.max}"`,o.ph&&`placeholder="${esc(o.ph)}"`,!opt&&'aria-required="true"',`aria-describedby="m_${k}${help?" h_"+k:""}"`].filter(Boolean).join(" ");
+  return `<div class="fld${o.full?" full":""}" data-f="${k}"><label class="l" for="f_${k}">${esc(LBL(k))}${opt?"<em>לא חובה</em>":""}</label><div class="box">${o.area?`<textarea ${attrs.replace(/type="[^"]*"/,"")}>${esc(v)}</textarea>`:`<input ${attrs} value="${esc(v)}">`}${o.ok?okI:""}</div>${help?`<span class="help" id="h_${k}">${esc(help)}</span>`:""}<span class="msg" id="m_${k}" role="alert"></span></div>`}
+function placeFields(){const d=F.data,cl=cityList(),other=!!d.city_other;
+  if(!cl.length)return `<div class="g2" style="margin-top:20px">${fld("city",{ac:"address-level2",ok:1})}</div>`;
+  const city=`<div class="fld" data-f="city"><label class="l" for="f_city">${esc(LBL("city"))}</label><select name="city" id="f_city" aria-required="true" aria-describedby="m_city"><option value="">בחירת עיר…</option>${cl.map(c=>`<option${!other&&d.city===c?" selected":""}>${esc(c)}</option>`).join("")}<option value="__other"${other?" selected":""}>עיר אחרת</option></select>${HLP("city")?`<span class="help">${esc(HLP("city"))}</span>`:""}<span class="msg" id="m_city" role="alert"></span></div>`;
+  const cityName=other?`<div class="fld" data-f="city_name"><label class="l" for="f_city_name">שם העיר</label><input name="city_name" id="f_city_name" value="${esc(d.city||"")}" autocomplete="address-level2"><span class="msg" id="m_city_name" role="alert"></span></div>`:"";
+  const ar=other?[]:areasOf(d.city);
+  const area=HID("area")||!ar.length?"":`<div class="fld" data-f="area"><label class="l" for="f_area">${esc(LBL("area"))}${REQ("area")?"":"<em>לא חובה</em>"}</label><select name="area" id="f_area" aria-describedby="m_area"><option value="">בחירת אזור…</option>${ar.map(a=>`<option${d.area===a?" selected":""}>${esc(a)}</option>`).join("")}</select>${HLP("area")?`<span class="help">${esc(HLP("area"))}</span>`:""}<span class="msg" id="m_area" role="alert"></span></div>`;
+  return `<div class="g2" style="margin-top:20px">${city}${cityName}${area}</div>`}
+function dobSel(){const d=F.data,Y=INFO.year_start,ys=[];for(let y=Y;y>=Y-6;y--)ys.push(y);const days=Array.from({length:31},(_,i)=>i+1);
+  return `<div class="fld full" data-f="birth_date"><span class="l" id="l_dob">${esc(LBL("birth_date"))}</span><div class="dob" role="group" aria-labelledby="l_dob">
     <select name="dob_d" aria-label="יום"><option value="">יום</option>${days.map(x=>`<option${+d.dob_d===x?" selected":""}>${x}</option>`).join("")}</select>
     <select name="dob_m" aria-label="חודש"><option value="">חודש</option>${MONTHS.map((m,i)=>`<option value="${i+1}"${+d.dob_m===i+1?" selected":""}>${m}</option>`).join("")}</select>
     <select name="dob_y" aria-label="שנה"><option value="">שנה</option>${ys.map(y=>`<option${+d.dob_y===y?" selected":""}>${y}</option>`).join("")}</select>
-  </div><span class="msg" id="m_birth_date" role="alert"></span><div class="agechip" id="ageChip" aria-live="polite"></div></div>`}
+  </div>${HLP("birth_date")?`<span class="help">${esc(HLP("birth_date"))}</span>`:""}<span class="msg" id="m_birth_date" role="alert"></span><div class="agechip" id="ageChip" aria-live="polite"></div></div>`}
 function buildDob(){const d=F.data;if(!d.dob_d||!d.dob_m||!d.dob_y){d.birth_date="";return}const y=+d.dob_y,m=+d.dob_m,dd=+d.dob_d,dt=new Date(y,m-1,dd);
   d.birth_date=dt.getMonth()===m-1&&dt<=new Date()?`${y}-${String(m).padStart(2,"0")}-${String(dd).padStart(2,"0")}`:"bad"}
 function ageChip(){const el=$("#ageChip");if(!el)return;const d=F.data;buildDob();
@@ -762,109 +721,117 @@ function ageChip(){const el=$("#ageChip");if(!el)return;const d=F.data;buildDob(
   el.className="agechip on";el.innerHTML=`✓ ${esc(a)} · ${esc(frameName(fr))} · שנת הלימודים ${esc(yl())}`}
 function paintProg(){const pm=$("#progm");if(pm)pm.textContent=`שלב ${F.step+1} מתוך 4 · ${STEPS[F.step].t}`;$("#prog").innerHTML=STEPS.map((s,i)=>`<li class="${i<F.step?"done":i===F.step?"cur":""}">${i<F.step?`<button type="button" data-jump="${i}" aria-label="חזרה לשלב ${s.t}">`:""}<b></b><span>${i+1}. ${s.t}</span>${i<F.step?"</button>":""}</li>`).join("")}
 function paint(){const s=F.step,d=F.data;paintProg();
-  if(!INFO.open){$("#regForm").innerHTML=`<div class="pane-in"><div class="ptitle"><i>${ico(STEPS[0].i)}</i><h3>ההרשמה סגורה כרגע</h3></div><p class="phint">${esc(INFO.closed_msg||"נעדכן כאן כשההרשמה תיפתח.")}</p></div>`;return}
-  let h=`<div class="${F.dir>0?"pane-in":"pane-back"}"><div class="ptitle"><i>${ico(STEPS[s].i)}</i><h3>${STEPS[s].t}</h3></div><p class="phint">${STEPS[s].h}</p>`;
-  if(F.restored&&s<3)h+=`<div class="restore">המשכנו מאיפה שעצרתם 👋<button type="button" class="lnk" data-reset>להתחיל מחדש</button></div>`;
+  if(!INFO.open){$("#regForm").innerHTML=`<div class="pane-in"><div class="ptitle"><h3>${esc(TX("closed_title","ההרשמה סגורה כרגע"))}</h3></div><p class="phint">${esc(INFO.closed_msg||"נעדכן כאן כשההרשמה תיפתח.")}</p></div>`;return}
+  let h=`<div class="${F.dir>0?"pane-in":"pane-back"}"><div class="ptitle"><h3>${STEPS[s].t}</h3></div><p class="phint">${STEPS[s].h}</p>`;
+  if(F.restored&&s<3)h+=`<div class="restore">המשכנו מאיפה שעצרתם<button type="button" class="lnk" data-reset>להתחיל מחדש</button></div>`;
   if(F.err)h+=`<div class="alert" role="alert">${esc(F.err)}</div>`;
-  if(s===0){const types=[...INFO.types,...INFO.soon.filter(x=>!INFO.types.includes(x))],sub={"גן":"בנות בגילאי 3-6","מעון יום":"מגיל 3 חודשים עד 3 שנים","צהרון":"ההרשמה תיפתח בקרוב"};
-    const ar=[...INFO.areas,"אחר"];
-    h+=`<div class="fld" data-f="type"><span class="l" id="l_type">סוג המסגרת</span><div class="cards" role="radiogroup" aria-labelledby="l_type">${types.map(t=>{const soon=!INFO.types.includes(t);return `<label><input type="radio" name="type" value="${esc(t)}"${d.type===t?" checked":""}${soon?" disabled":""}><span class="opt"><span class="chk"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span><b>${esc(frameName(t))}</b><small>${esc(soon?"ההרשמה תיפתח בקרוב":sub[t]||"")}</small></span></label>`}).join("")}</div><span class="msg" id="m_type" role="alert"></span></div>
-    <div class="fld" data-f="area" style="margin-top:20px"><span class="l" id="l_area">אזור מבוקש</span>${ar.length<=10?`<div class="chips" role="radiogroup" aria-labelledby="l_area">${ar.map(a=>`<label><input type="radio" name="area" value="${esc(a)}"${d.area===a?" checked":""}><span>${esc(a)}</span></label>`).join("")}</div>`:`<select name="area" aria-labelledby="l_area"><option value="">בחירת אזור…</option>${ar.map(a=>`<option${d.area===a?" selected":""}>${esc(a)}</option>`).join("")}</select>`}<span class="msg" id="m_area" role="alert"></span></div>
-    <div class="g2" style="margin-top:18px">${fld("city","עיר מגורים",{ac:"address-level2",ok:1,list:"cities"})}</div><datalist id="cities">${INFO.areas.map(a=>`<option value="${esc(a)}">`).join("")}</datalist>`}
-  if(s===1){h+=`<div class="g2">${fld("first_name","שם פרטי",{ac:"off",ok:1})}${fld("last_name","שם משפחה",{ac:"family-name",ok:1})}${fld("id_number","מספר זהות של הילדה",{mode:"numeric",max:9,dir:"ltr",ok:1,help:"9 ספרות, כולל ספרת ביקורת",ac:"off"})}</div><div style="margin-top:16px">${dobSel()}</div>`}
-  if(s===2){h+=`<div class="g2">${fld("parent1_first_name","שם פרטי – הורה",{ac:"given-name",ok:1})}${fld("parent1_last_name","שם משפחה",{ac:"family-name",ok:1})}${fld("parent1_phone","טלפון נייד",{type:"tel",mode:"tel",dir:"ltr",ac:"tel",ok:1,ph:"050-0000000"})}${fld("email","מייל לעדכונים",{type:"email",dir:"ltr",ac:"email",ok:1,ph:"name@gmail.com"})}</div>
-     <details class="more"${d.parent2_first_name||d.parent2_phone?" open":""}><summary>הורה נוסף</summary><div class="g2">${fld("parent2_first_name","שם פרטי",{opt:1})}${fld("parent2_last_name","שם משפחה",{opt:1})}${fld("parent2_phone","טלפון",{opt:1,type:"tel",mode:"tel",dir:"ltr",ph:"050-0000000"})}</div></details>
-     <details class="more"${d.street||d.notes?" open":""}><summary>כתובת והערות</summary><div class="g2">${fld("street","רחוב",{opt:1,ac:"address-line1"})}${fld("house_number","מספר בית",{opt:1,mode:"numeric",max:6})}${fld("notes","משהו שחשוב שנדע?",{opt:1,area:1,full:1})}</div></details>`}
-  if(s===3){const a=ageGroup(d.birth_date),miss=`<span style="color:var(--bad)">חסר – לחצו ״עריכה״ להשלמה</span>`,row=(k,v,req)=>v?`<dt>${k}</dt><dd>${esc(v)}</dd>`:req?`<dt>${k}</dt><dd>${miss}</dd>`:"",ed=i=>`<button type="button" class="lnk" data-jump="${i}">עריכה</button>`;
+  if(s===0){const types=[...INFO.types,...INFO.soon.filter(x=>!INFO.types.includes(x))],sub={"גן":"בנות בגילאי 3–6","מעון יום":"מגיל 3 חודשים עד 3 שנים","צהרון":"ההרשמה תיפתח בקרוב"};
+    h+=`<div class="fld" data-f="type"><span class="l" id="l_type">${esc(LBL("type"))}</span><div class="cards" role="radiogroup" aria-labelledby="l_type">${types.map(t=>{const soon=!INFO.types.includes(t);return `<label><input type="radio" name="type" value="${esc(t)}"${d.type===t?" checked":""}${soon?" disabled":""}><span class="opt"><span class="chk"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span><b>${esc(frameName(t))}</b><small>${esc(soon?"ההרשמה תיפתח בקרוב":sub[t]||"")}</small></span></label>`}).join("")}</div><span class="msg" id="m_type" role="alert"></span></div>
+    <div id="placeBox">${placeFields()}</div>`}
+  if(s===1){h+=`<div class="g2">${fld("first_name",{ac:"off",ok:1})}${fld("last_name",{ac:"family-name",ok:1})}${fld("id_number",{mode:"numeric",max:9,dir:"ltr",ok:1,ac:"off"})}</div><div style="margin-top:16px">${dobSel()}</div>`}
+  if(s===2){const p2=["parent2_first_name","parent2_last_name","parent2_phone"].filter(k=>!HID(k)),ad=["street","house_number","notes"].filter(k=>!HID(k));
+    h+=`<div class="g2">${fld("parent1_first_name",{ac:"given-name",ok:1})}${fld("parent1_last_name",{ac:"family-name",ok:1})}${fld("parent1_phone",{type:"tel",mode:"tel",dir:"ltr",ac:"tel",ok:1,ph:"050-0000000"})}${fld("email",{type:"email",dir:"ltr",ac:"email",ok:1,ph:"name@gmail.com"})}</div>
+     ${p2.length?`<details class="more"${p2.some(REQ)||d.parent2_first_name||d.parent2_phone?" open":""}><summary>הורה נוסף</summary><div class="g2">${fld("parent2_first_name")}${fld("parent2_last_name")}${fld("parent2_phone",{type:"tel",mode:"tel",dir:"ltr",ph:"050-0000000"})}</div></details>`:""}
+     ${ad.length?`<details class="more"${ad.some(REQ)||d.street||d.notes?" open":""}><summary>כתובת והערות</summary><div class="g2">${fld("street",{ac:"address-line1"})}${fld("house_number",{mode:"numeric",max:6})}${fld("notes",{area:1,full:1})}</div></details>`:""}`}
+  if(s===3){const a=ageGroup(d.birth_date),miss=`<span style="color:var(--bad)">חסר – לחצו ״עריכה״ להשלמה</span>`,row=(k,v,req)=>v?`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`:req?`<dt>${esc(k)}</dt><dd>${miss}</dd>`:"",ed=i=>`<button type="button" class="lnk" data-jump="${i}">עריכה</button>`;
     h+=`<div class="review">
-      <section class="rsec"><header><b>מסגרת ואזור</b>${ed(0)}</header><dl>${row("מסגרת",frameName(d.type))}${row("אזור",d.area)}${row("עיר",d.city)}</dl></section>
-      <section class="rsec"><header><b>הילדה</b>${ed(1)}</header><dl>${row("שם",[d.first_name,d.last_name].join(" "))}${row("מספר זהות",d.id_number,1)}${row("תאריך לידה",fmtDate(d.birth_date))}${row("שכבת גיל",a)}${row("שנת לימודים",yl())}</dl></section>
-      <section class="rsec"><header><b>ההורים</b>${ed(2)}</header><dl>${row("הורה",[d.parent1_first_name,d.parent1_last_name].join(" "))}${row("טלפון",fmtPh(d.parent1_phone))}${row("מייל",d.email)}${row("הורה נוסף",[[d.parent2_first_name,d.parent2_last_name].filter(Boolean).join(" "),d.parent2_phone&&fmtPh(d.parent2_phone)].filter(Boolean).join(" · "))}${row("כתובת",[d.street,d.house_number].filter(Boolean).join(" "))}${row("הערות",d.notes)}</dl></section></div>
+      <section class="rsec"><header><b>מסגרת ומקום</b>${ed(0)}</header><dl>${row(LBL("type"),frameName(d.type))}${row(LBL("city"),d.city)}${row(LBL("area"),d.area)}</dl></section>
+      <section class="rsec"><header><b>הילדה</b>${ed(1)}</header><dl>${row("שם",[d.first_name,d.last_name].join(" "))}${row(LBL("id_number"),d.id_number,1)}${row(LBL("birth_date"),fmtDate(d.birth_date))}${row("שכבת גיל",a)}${row("שנת לימודים",yl())}</dl></section>
+      <section class="rsec"><header><b>ההורים</b>${ed(2)}</header><dl>${row("הורה",[d.parent1_first_name,d.parent1_last_name].join(" "))}${row(LBL("parent1_phone"),fmtPh(d.parent1_phone))}${row(LBL("email"),d.email)}${row("הורה נוסף",[[d.parent2_first_name,d.parent2_last_name].filter(Boolean).join(" "),d.parent2_phone&&fmtPh(d.parent2_phone)].filter(Boolean).join(" · "))}${row("כתובת",[d.street,d.house_number].filter(Boolean).join(" "))}${row(LBL("notes"),d.notes)}</dl></section></div>
      <label class="consent" data-f="consent"><input type="checkbox" name="consent"${d.consent?" checked":""}><span>אני מאשר/ת שהפרטים נכונים, ושיישמרו במערכת הרשת לצורך הטיפול בהרשמה ובשיבוץ. הפרטים לא יועברו לגורם חיצוני.</span></label><span class="msg" id="m_consent" role="alert" style="color:var(--bad);font-weight:700;font-size:14.5px"></span>`}
-  h+=`<div class="hp" aria-hidden="true"><label>אתר<input name="website" tabindex="-1" autocomplete="off"></label></div>
-    <div class="nav2">${s?`<button type="button" class="btn btn-soft" data-back>→ חזרה</button>`:`<span class="saved" id="savedNote"${F.restored||F.data.type?"":" hidden"}><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>הטופס נשמר אוטומטית</span></span>`}
-    <button class="btn btn-rose" ${F.busy?"disabled":""}>${F.busy?'<span class="spin"></span> שולחים…':s<3?"המשך ←":"שליחת הבקשה"}</button></div></div>`;
+  h+=`<div class="vh" aria-hidden="true"><label>אתר<input name="website" tabindex="-1" autocomplete="off"></label></div>
+    <div class="nav2">${s?`<button type="button" class="btn btn-glass" data-back>→ חזרה</button>`:`<span class="saved" id="savedNote"${F.restored||F.data.type?"":" hidden"}><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>הטופס נשמר אוטומטית</span></span>`}
+    <button class="btn btn-rose" ${F.busy?"disabled":""}>${F.busy?'<span class="spin"></span> שולחים…':s<3?'המשך <span class="arr">←</span>':"שליחת הבקשה"}</button></div></div>`;
   $("#regForm").innerHTML=h;
   if(s===1){ageChip();liveId()}
   $$("#regForm [data-f]").forEach(x=>{const k=x.dataset.f;if(F.touched[k])validateOne(k)})}
-function collect(){$$("#regForm input,#regForm select,#regForm textarea").forEach(el=>{if(el.name==="website"){F.hp=el.value;return}if(!el.name)return;if(el.type==="radio"){if(el.checked)F.data[el.name]=el.value}else if(el.type==="checkbox")F.data[el.name]=el.checked;else F.data[el.name]=el.value.trim()});if(F.step===1)buildDob()}
-function errsOf(step){const d=F.data,e={};
-  if(step===0){if(!d.type)e.type="נא לבחור מסגרת";if(!d.area)e.area="נא לבחור אזור";if(!d.city)e.city="נא לכתוב עיר מגורים"}
+function collect(){const fm=$("#regForm");
+  fm.querySelectorAll("input,select,textarea").forEach(el=>{if(el.name==="website"){F.hp=el.value;return}if(!el.name||el.name==="city"||el.name==="city_name")return;if(el.type==="radio"){if(el.checked)F.data[el.name]=el.value}else if(el.type==="checkbox")F.data[el.name]=el.checked;else F.data[el.name]=el.value.trim()});
+  const cs=fm.querySelector("[name=city]");if(cs){if(cs.tagName==="SELECT"){if(cs.value==="__other"){F.data.city_other=true;const n=fm.querySelector("[name=city_name]");F.data.city=n?n.value.trim():(F.data.city_other_prev?F.data.city:"");}else{F.data.city_other=false;F.data.city=cs.value}}else{F.data.city=cs.value.trim();F.data.city_other=false}}
+  if(F.step===1)buildDob()}
+function errsOf(step){const d=F.data,e={},need=k=>REQ(k)&&!HID(k);
+  if(step===0){if(!d.type)e.type="נא לבחור מסגרת";if(!d.city)e[d.city_other?"city_name":"city"]=d.city_other?"נא לכתוב את שם העיר":"נא לבחור עיר";
+    if(!d.city_other&&areasOf(d.city).length&&need("area")&&!d.area)e.area="נא לבחור אזור"}
   if(step===1){if(!d.first_name)e.first_name="נא למלא שם פרטי";if(!d.last_name)e.last_name="נא למלא שם משפחה";
     const idd=String(d.id_number||"").replace(/\D/g,"");if(!idd)e.id_number="נא למלא מספר זהות";else if(!tzOk(idd))e.id_number="מספר הזהות אינו תקין – בדקו את הספרות";
     if(!d.dob_d||!d.dob_m||!d.dob_y)e.birth_date="נא לבחור יום, חודש ושנה";else if(d.birth_date==="bad")e.birth_date="התאריך אינו תקין";
     else{const a=ageGroup(d.birth_date);if(a==="מעל גיל גן")e.birth_date="לפי תאריך הלידה הילדה מעל גיל הגן לשנה זו";else if(a==="צעירה מדי")e.birth_date="הילדה צעירה מדי לשנה זו";else if(frameOf(a)!==d.type)e.birth_date="המסגרת שבחרתם לא מתאימה לגיל – אפשר להחליף בלחיצה למטה"}}
-  if(step===2){if(!d.parent1_first_name)e.parent1_first_name="נא למלא שם";if(!d.parent1_last_name)e.parent1_last_name="נא למלא שם משפחה";if(!phoneOk(d.parent1_phone))e.parent1_phone=d.parent1_phone?"מספר הטלפון אינו תקין":"נא למלא טלפון נייד";
-    if(!mailOk(d.email))e.email=d.email?"כתובת המייל אינה תקינה":"נא למלא מייל";if(d.parent2_phone&&!phoneOk(d.parent2_phone))e.parent2_phone="מספר הטלפון אינו תקין"}
+  if(step===2){if(!d.parent1_first_name)e.parent1_first_name="נא למלא שם";if(need("parent1_last_name")&&!d.parent1_last_name)e.parent1_last_name="נא למלא שם משפחה";if(!phoneOk(d.parent1_phone))e.parent1_phone=d.parent1_phone?"מספר הטלפון אינו תקין":"נא למלא טלפון נייד";
+    if(!mailOk(d.email))e.email=d.email?"כתובת המייל אינה תקינה":"נא למלא מייל";if(d.parent2_phone&&!phoneOk(d.parent2_phone))e.parent2_phone="מספר הטלפון אינו תקין";
+    ["parent2_first_name","parent2_last_name","parent2_phone","street","house_number","notes"].forEach(k=>{if(need(k)&&!d[k]&&!e[k])e[k]="נא למלא"})}
   if(step===3&&!d.consent)e.consent="יש לסמן אישור כדי לשלוח";
   return e}
 function validateOne(k){collect();const e=errsOf(F.step),x=$(`#regForm [data-f="${k}"]`);if(!x)return;const bad=!!e[k];
   x.classList.toggle("err",bad);const inp=x.querySelector("input,select,textarea");if(inp)inp.setAttribute("aria-invalid",bad);
   const m=$("#m_"+k);if(m)m.textContent=e[k]||"";
-  const v=F.data[k];x.classList.toggle("good",!bad&&!!v&&!!x.querySelector(".ok-i"));
-  if(k==="email"&&!bad){const fx=mailFix(v);if(fx&&m){m.innerHTML=`<span class="suggest">התכוונתם ל-<b dir="ltr">${esc(fx)}</b>? <button type="button" class="lnk" data-mfix="${esc(fx)}">לתקן</button></span>`}}}
+  x.classList.toggle("good",!bad&&!!F.data[k]&&!!x.querySelector(".ok-i"));
+  if(k==="email"&&!bad){const fx=mailFix(F.data.email);if(fx&&m)m.innerHTML=`<span class="suggest">התכוונתם ל-<b dir="ltr">${esc(fx)}</b>? <button type="button" class="lnk" data-mfix="${esc(fx)}">לתקן</button></span>`}}
 function check(){collect();const e=errsOf(F.step);Object.keys(e).forEach(k=>F.touched[k]=1);
   $$("#regForm [data-f]").forEach(x=>{const k=x.dataset.f;x.classList.remove("err");void x.offsetWidth;x.classList.toggle("err",!!e[k]);const m=$("#m_"+k);if(m)m.textContent=e[k]||""});
-  const first=Object.keys(e)[0];if(first){const el=$(`#regForm [name="${first}"]`)||$(`#regForm [name="dob_d"]`);el?.focus({preventScroll:false});return false}return true}
-function liveId(){const i=$("#f_id_number");if(!i)return;const d=i.value.replace(/\D/g,""),h=$("#h_id_number");if(h)h.textContent=d.length?`${d.length}/9 ספרות${d.length>=5&&tzOk(d)?" · תקין ✓":""}`:"9 ספרות, כולל ספרת ביקורת";$('#regForm [data-f="id_number"]').classList.toggle("good",d.length>=5&&tzOk(d))}
+  const first=Object.keys(e)[0];if(first){const el=$(`#regForm [name="${first}"]`)||$(`#regForm [name="dob_d"]`);el?.focus();return false}return true}
+function liveId(){const i=$("#f_id_number");if(!i)return;const d=i.value.replace(/\D/g,""),h=$("#h_id_number");if(h)h.textContent=d.length?`${d.length}/9 ספרות${d.length>=5&&tzOk(d)?" · תקין ✓":""}`:HLP("id_number");$('#regForm [data-f="id_number"]').classList.toggle("good",d.length>=5&&tzOk(d))}
 const form=$("#regForm");
 function go(n){F.dir=n>F.step?1:-1;F.step=n;F.err="";paint();save();const r=$("#register .reg-card").getBoundingClientRect();if(r.top<0||r.top>innerHeight*.4)$("#register .reg-card").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"})}
-form.addEventListener("input",e=>{const t=e.target;if(t.name==="website")return;collect();
-  if(t.name==="id_number"){t.value=t.value.replace(/\D/g,"").slice(0,9);F.data.id_number=t.value;liveId()}
+form.addEventListener("input",e=>{const t=e.target;if(t.name==="website")return;
+  if(t.name==="id_number")t.value=t.value.replace(/\D/g,"").slice(0,9);
+  collect();if(t.name==="id_number")liveId();
   if(/^dob_/.test(t.name))ageChip();
-  if(t.name==="type"||t.name==="area"){F.touched[t.name]=1;validateOne(t.name)}
+  if(t.name==="type"){F.touched.type=1;validateOne("type")}
   const k=t.closest("[data-f]")?.dataset.f;if(k&&F.touched[k])validateOne(k);
   clearTimeout(F.st);F.st=setTimeout(save,500)});
-form.addEventListener("change",e=>{const t=e.target;if(/^dob_/.test(t.name)){collect();ageChip();if(F.data.dob_d&&F.data.dob_m&&F.data.dob_y){F.touched.birth_date=1;validateOne("birth_date")}}});
-form.addEventListener("focusout",e=>{const t=e.target,k=t.closest("[data-f]")?.dataset.f;if(!k||/^dob_/.test(t.name))return;
-  if((t.name==="parent1_phone"||t.name==="parent2_phone")&&phoneOk(t.value)){t.value=fmtPh(t.value)}
+form.addEventListener("change",e=>{const t=e.target;
+  if(t.name==="city"&&t.tagName==="SELECT"){collect();F.data.area="";if(F.data.city_other)F.data.city="";$("#placeBox").innerHTML=placeFields();F.touched.city=1;if(!F.data.city_other&&t.value)validateOne("city");const n=$("#f_city_name");if(n)n.focus();save()}
+  if(t.name==="area"){collect();F.touched.area=1;validateOne("area");save()}
+  if(/^dob_/.test(t.name)){collect();ageChip();if(F.data.dob_d&&F.data.dob_m&&F.data.dob_y){F.touched.birth_date=1;validateOne("birth_date")}}});
+form.addEventListener("focusout",e=>{const t=e.target,k=t.closest("[data-f]")?.dataset.f;if(!k||t.tagName==="SELECT")return;
+  if((t.name==="parent1_phone"||t.name==="parent2_phone")&&phoneOk(t.value))t.value=fmtPh(t.value);
   if(t.value){F.touched[k]=1;validateOne(k)}save()});
 form.addEventListener("click",e=>{
   if(e.target.closest("[data-back]")){collect();go(F.step-1);return}
   const j=e.target.closest("[data-jump]");if(j){collect();go(+j.dataset.jump);return}
-  const sw=e.target.closest("[data-swap]");if(sw){F.data.type=sw.dataset.swap;ageChip();F.touched.birth_date&&validateOne("birth_date");save();return}
+  const sw=e.target.closest("[data-swap]");if(sw){F.data.type=sw.dataset.swap;ageChip();if(F.touched.birth_date)validateOne("birth_date");save();return}
   const mf=e.target.closest("[data-mfix]");if(mf){F.data.email=mf.dataset.mfix;$("#f_email").value=F.data.email;validateOne("email");save();return}
   if(e.target.closest("[data-reset]")){store.del(DKEY);F.data={type:"",area:"",city:""};F.touched={};F.restored=false;F.step=0;paint();return}});
 $("#prog").addEventListener("click",e=>{const j=e.target.closest("[data-jump]");if(j){collect();go(+j.dataset.jump)}});
 form.addEventListener("submit",async e=>{e.preventDefault();if(F.busy)return;if(!check())return;
   if(F.step<3){go(F.step+1);return}
-  for(let i=0;i<3;i++){const er=errsOf(i);if(Object.keys(er).length){go(i);setTimeout(check,50);return}}
+  for(let i=0;i<3;i++){if(Object.keys(errsOf(i)).length){go(i);setTimeout(check,50);return}}
   F.busy=true;F.err="";paint();
-  const d=F.data,payload={type:d.type,area:d.area,city:d.city,first_name:d.first_name,last_name:d.last_name,id_number:String(d.id_number).replace(/\D/g,""),birth_date:d.birth_date,parent1_first_name:d.parent1_first_name,parent1_last_name:d.parent1_last_name,parent1_phone:normPh(d.parent1_phone),email:d.email.trim(),parent2_first_name:d.parent2_first_name||"",parent2_last_name:d.parent2_last_name||"",parent2_phone:d.parent2_phone?normPh(d.parent2_phone):"",street:d.street||"",house_number:d.house_number||"",notes:d.notes||"",consent:d.consent===true,t0:F.t0,website:F.hp||""};
+  const d=F.data,payload={type:d.type,area:d.area||"",city:d.city,first_name:d.first_name,last_name:d.last_name,id_number:String(d.id_number).replace(/\D/g,""),birth_date:d.birth_date,parent1_first_name:d.parent1_first_name,parent1_last_name:d.parent1_last_name||"",parent1_phone:normPh(d.parent1_phone),email:d.email.trim(),parent2_first_name:d.parent2_first_name||"",parent2_last_name:d.parent2_last_name||"",parent2_phone:d.parent2_phone?normPh(d.parent2_phone):"",street:d.street||"",house_number:d.house_number||"",notes:d.notes||"",consent:d.consent===true,t0:F.t0,website:F.hp||""};
   try{const r=await rpc("regSubmit",payload);store.del(DKEY);showDone(r)}catch(err){F.err=err.message;F.busy=false;paint();$("#regForm .alert")?.scrollIntoView({behavior:RM?"auto":"smooth",block:"center"})}});
-function showDone(r){$("#prog").innerHTML=STEPS.map(s=>`<li class="done"><b></b><span>${s.t}</span></li>`).join("");
+function showDone(r){$("#prog").innerHTML=STEPS.map(s=>`<li class="done"><b></b><span>${s.t}</span></li>`).join("");const pm=$("#progm");if(pm)pm.textContent="הבקשה נשלחה";
   $("#regForm").innerHTML=`<div class="pane-in fin"><svg class="seal" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/><path d="M38 62 54 77 84 45"/></svg>
-   <h3 style="font-size:34px">הבקשה התקבלה!</h3><p class="phint" style="margin:0">מספר הבקשה שלכם:</p>
-   <span class="refbox"><span id="refTxt">${esc(r.ref)}</span><button type="button" class="btn btn-soft btn-sm" id="copyRef">העתקה</button></span>
-   <p style="max-width:46ch">שלחנו אישור ל-<b dir="ltr">${esc(F.data.email)}</b> עם קישור אישי למעקב. בשלב הבא נשלח אליכם טופס השלמת פרטים קצר.</p>
-   <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><a class="btn btn-rose" href="${esc(r.status_url)}">מעקב אחרי הבקשה</a><button type="button" class="btn btn-soft" id="another">הרשמה של ילדה נוספת</button></div></div>`;
+   <h3 style="font-size:32px">הבקשה התקבלה</h3><p class="phint" style="margin:0">מספר הבקשה שלכם:</p>
+   <span class="refbox"><span>${esc(r.ref)}</span><button type="button" class="btn btn-glass btn-sm" id="copyRef">העתקה</button></span>
+   <p style="max-width:48ch">${esc(TX("done_text","שלחנו אישור עם קישור אישי למעקב. בשלב הבא נשלח אליכם טופס השלמת פרטים קצר."))}<br><span class="phint">המייל נשלח ל-<b dir="ltr">${esc(F.data.email)}</b></span></p>
+   <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><a class="btn btn-rose" href="${esc(r.status_url)}">מעקב אחרי הבקשה</a><button type="button" class="btn btn-glass" id="another">הרשמה של ילדה נוספת</button></div></div>`;
   $("#copyRef").onclick=e=>{navigator.clipboard?.writeText(r.ref).then(()=>e.target.textContent="הועתק ✓",()=>{})};
-  $("#another").onclick=()=>{const keep={type:F.data.type,area:F.data.area,city:F.data.city,parent1_first_name:F.data.parent1_first_name,parent1_last_name:F.data.parent1_last_name,parent1_phone:F.data.parent1_phone,email:F.data.email,parent2_first_name:F.data.parent2_first_name,parent2_last_name:F.data.parent2_last_name,parent2_phone:F.data.parent2_phone,street:F.data.street,house_number:F.data.house_number,last_name:F.data.last_name};
+  $("#another").onclick=()=>{const keep={};["type","area","city","city_other","parent1_first_name","parent1_last_name","parent1_phone","email","parent2_first_name","parent2_last_name","parent2_phone","street","house_number","last_name"].forEach(x=>keep[x]=F.data[x]);
     F.data=keep;F.touched={};F.busy=false;F.restored=false;F.t0=Date.now();F.step=1;F.dir=1;paint();save()};
   F.busy=false;confetti()}
 function confetti(){if(RM)return;const c=$("#confetti"),x=c.getContext("2d");c.hidden=false;c.width=innerWidth;c.height=innerHeight;const col=["#E0668E","#A8E0D4","#F7E2AE","#F3A3BF","#1F7C80","#E9C677"];
-  const P=Array.from({length:150},()=>({x:innerWidth/2+(Math.random()-.5)*160,y:innerHeight*.45,vx:(Math.random()-.5)*15,vy:-Math.random()*15-5,r:Math.random()*7+4,c:col[Math.random()*col.length|0],a:Math.random()*6,s:Math.random()*.3-.15,round:Math.random()<.4}));let t=0;
+  const P=Array.from({length:140},()=>({x:innerWidth/2+(Math.random()-.5)*160,y:innerHeight*.45,vx:(Math.random()-.5)*15,vy:-Math.random()*15-5,r:Math.random()*7+4,c:col[Math.random()*col.length|0],a:Math.random()*6,s:Math.random()*.3-.15,round:Math.random()<.4}));let t=0;
   (function f(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.vy+=.38;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.a+=p.s;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;if(p.round){x.beginPath();x.arc(0,0,p.r/2,0,7);x.fill()}else x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore()});if(++t<190)requestAnimationFrame(f);else c.hidden=true})()}
 
 /* ---------- status page (?s=) ---------- */
 const TRACK=[["הבקשה התקבלה","קיבלנו את פרטי ההרשמה"],["השלמת פרטים","טופס קצר וצילום ת.ז. עם ספח"],["בבדיקה ושיבוץ","המשרד משבץ לגן המתאים"],["אישור הרשמה","האישור נשלח במייל"]];
 async function statusPage(tok){solo(`<p><span class="spin"></span> טוענים את מצב הבקשה…</p>`);
   try{const r=await rpc("regStatus",tok),closed=["נדחתה","בוטלה"].includes(r.status);
-    solo(`<span class="kick">מעקב אחרי הבקשה</span><h2 style="margin-top:12px">ההרשמה של ${esc(r.child)}</h2><p class="phint" style="margin-top:8px">מספר בקשה <b dir="ltr">${esc(r.ref)}</b> · ${esc(frameName(r.type))}${r.year?` · ${esc(r.year)}`:""}</p>
+    solo(`<p class="phint" style="margin:0 0 6px">מעקב אחרי הבקשה</p><h2>ההרשמה של ${esc(r.child)}</h2><p class="phint" style="margin-top:8px">מספר בקשה <b dir="ltr">${esc(r.ref)}</b> · ${esc(frameName(r.type))}${r.year?` · ${esc(r.year)}`:""}</p>
      <ol class="track">${TRACK.map(([t,s],i)=>{const n=i+1,st=closed?"":n<r.step||(r.status==="אושרה"&&n<=4)?"done":n===r.step?"cur":"";return `<li class="${st}"><i>${st==="done"?"✓":n}</i><div><b>${t}</b><span>${s}</span></div></li>`}).join("")}</ol>
      ${r.need_form&&r.form_url?`<div class="restore" style="background:var(--blush);color:var(--rose-d)">מחכה לכם טופס השלמת פרטים <a class="btn btn-rose btn-sm" href="${esc(r.form_url)}">למילוי הטופס</a></div>`:""}
-     ${r.status==="אושרה"&&r.garden?`<div class="okbox"><h3>ההרשמה אושרה 🎉</h3><p><b>${esc(r.garden.name)}</b></p>${r.garden.address?`<p>${esc(r.garden.address)}</p>`:""}${r.garden.phone?`<p><a href="tel:${esc(r.garden.phone)}" dir="ltr">${esc(r.garden.phone)}</a></p>`:""}</div>`:""}
+     ${r.status==="אושרה"&&r.garden?`<div class="okbox"><h3>ההרשמה אושרה</h3><p><b>${esc(r.garden.name)}</b></p>${r.garden.address?`<p>${esc(r.garden.address)}</p>`:""}${r.garden.phone?`<p><a href="tel:${esc(r.garden.phone)}" dir="ltr">${esc(r.garden.phone)}</a></p>`:""}</div>`:""}
      ${r.status==="רשימת המתנה"?`<div class="restore" style="background:var(--butter-s);color:var(--gold-d)">הבקשה ברשימת ההמתנה. נעדכן ברגע שיתפנה מקום.${r.note?"<br>"+esc(r.note):""}</div>`:""}
      ${closed?`<div class="alert">הבקשה ${esc(r.status)}.${r.note?"<br>"+esc(r.note):""}</div>`:""}
-     <p style="margin-top:18px"><a class="lnk" href="./">לאתר ההרשמה ומרכז המידע</a></p>`);if(r.status==="אושרה")confetti()}
-  catch(e){solo(`<h2>לא הצלחנו לטעון את הבקשה</h2><p class="phint" style="margin-top:10px">${esc(e.message)}</p><a class="btn btn-soft" href="./">לאתר ההרשמה</a>`)}}
+     <p style="margin-top:18px"><a class="xl" href="./">לאתר ההרשמה ומרכז המידע</a></p>`);if(r.status==="אושרה")confetti()}
+  catch(e){solo(`<h2>לא הצלחנו לטעון את הבקשה</h2><p class="phint" style="margin-top:10px">${esc(e.message)}</p><a class="btn btn-glass" href="./">לאתר ההרשמה</a>`)}}
 
 /* ---------- completion form (?f=) ---------- */
 const C={files:[],tok:"",data:{}};
 async function completePage(tok){C.tok=tok;solo(`<p><span class="spin"></span> טוענים את הטופס…</p>`);
-  try{const r=await rpc("regFormLoad",tok);C.data=r.fields;C.ref=r.ref;paintComplete()}catch(e){solo(`<h2>הטופס לא זמין</h2><p class="phint" style="margin-top:10px">${esc(e.message)}</p><a class="btn btn-soft" href="./">לאתר ההרשמה</a>`)}}
+  try{const r=await rpc("regFormLoad",tok);C.data=r.fields;C.ref=r.ref;paintComplete()}catch(e){solo(`<h2>הטופס לא זמין</h2><p class="phint" style="margin-top:10px">${esc(e.message)}</p><a class="btn btn-glass" href="./">לאתר ההרשמה</a>`)}}
 function paintComplete(err){const d=C.data,f=(k,l,o={})=>`<div class="fld${o.full?" full":""}" data-f="${k}"><label class="l" for="c_${k}">${l}${o.opt?"<em>לא חובה</em>":""}</label>${o.area?`<textarea id="c_${k}" name="${k}" rows="3">${esc(d[k]||"")}</textarea>`:`<input id="c_${k}" name="${k}" value="${esc(d[k]||"")}"${o.mode?` inputmode="${o.mode}"`:""}${o.dir?` dir="${o.dir}"`:""}${o.type?` type="${o.type}"`:""}${o.max?` maxlength="${o.max}"`:""}>`}<span class="msg" role="alert"></span></div>`;
-  solo(`<span class="kick">השלמת פרטים</span><h2 style="margin-top:12px">${esc(d.first_name)} ${esc(d.last_name)}</h2><p class="phint" style="margin-top:8px">בקשה <b dir="ltr">${esc(C.ref)}</b> · עוד כמה פרטים, ומעבירים לשיבוץ</p>${err?`<div class="alert" role="alert">${esc(err)}</div>`:""}
+  solo(`<p class="phint" style="margin:0 0 6px">השלמת פרטים</p><h2>${esc(d.first_name)} ${esc(d.last_name)}</h2><p class="phint" style="margin-top:8px">בקשה <b dir="ltr">${esc(C.ref)}</b> · עוד כמה פרטים, ומעבירים לשיבוץ</p>${err?`<div class="alert" role="alert">${esc(err)}</div>`:""}
    <form id="cForm" novalidate><div class="g2">
     <h3 class="sub3">הורים</h3>${f("parent1_first_name","שם פרטי – הורה 1")}${f("parent1_last_name","שם משפחה")}${f("parent1_id","מספר זהות – הורה 1",{mode:"numeric",dir:"ltr",max:9})}${f("parent1_phone","טלפון",{dir:"ltr",type:"tel"})}
     ${f("parent2_first_name","שם פרטי – הורה 2",{opt:1})}${f("parent2_last_name","שם משפחה",{opt:1})}${f("parent2_id","מספר זהות – הורה 2",{opt:1,mode:"numeric",dir:"ltr",max:9})}${f("parent2_phone","טלפון",{opt:1,dir:"ltr",type:"tel"})}${f("email","מייל",{dir:"ltr",type:"email",full:1})}
@@ -889,23 +856,29 @@ async function submitComplete(e){e.preventDefault();const fm=$("#cForm"),d={};fm
   const go=$("#cGo");go.disabled=true;go.innerHTML='<span class="spin"></span> שולחים…';
   try{const files=[];for(const f of C.files)files.push({name:f.name,mime:f.type,b64:await b64(f)});d.parent1_phone=normPh(d.parent1_phone);d.emergency_phone=normPh(d.emergency_phone);if(d.parent2_phone)d.parent2_phone=normPh(d.parent2_phone);
     await rpc("regFormSubmit",C.tok,Object.assign({},d,{files}));
-    solo(`<div class="fin"><svg class="seal" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/><path d="M38 62 54 77 84 45"/></svg><h2>תודה! הטופס התקבל</h2><p class="phint">הצוות יבדוק את הפרטים ויעדכן אתכם במייל על השיבוץ.</p><a class="btn btn-soft" href="./">לאתר ההרשמה</a></div>`);confetti()}
+    solo(`<div class="fin"><svg class="seal" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/><path d="M38 62 54 77 84 45"/></svg><h2>תודה! הטופס התקבל</h2><p class="phint">הצוות יבדוק את הפרטים ויעדכן אתכם במייל על השיבוץ.</p><a class="btn btn-glass" href="./">לאתר ההרשמה</a></div>`);confetti()}
   catch(err){paintComplete(err.message)}}
-function solo(h){$("#landing").hidden=true;$("#solo").hidden=false;mcta.classList.remove("show");$("#soloBox").innerHTML=h;scrollTo(0,0)}
+function solo(h){$("#landing").hidden=true;$("#guideView").hidden=true;$("#solo").hidden=false;mcta.classList.remove("show");$("#soloBox").innerHTML=h;scrollTo(0,0)}
 
 /* ---------- boot ---------- */
-function applyInfo(){$("#pillTxt").textContent=INFO.open?`ההרשמה לשנת ${yl()} פתוחה`:"ההרשמה סגורה כרגע";$("#pill").classList.toggle("closed",!INFO.open);
-  $("#regTitle").textContent=`נרשמים לשנת הלימודים ${yl()}`;paintMarq();paintYears();paintTabs();paintIC(false)}
-const q=new URLSearchParams(location.search);
-if(q.get("s"))statusPage(q.get("s"));else if(q.get("f"))completePage(q.get("f"));
-applyInfo();paint();watch();
-rpc("regInfo").then(i=>{INFO=Object.assign(INFO,i);INFO.areas=INFO.areas||[];
+function applyInfo(){$("#pillTxt").textContent=INFO.open?(INFO.texts?.hero_badge||`ההרשמה לשנת ${yl()} פתוחה`):TX("closed_title","ההרשמה סגורה כרגע");$("#pill").classList.toggle("closed",!INFO.open);
+  const ht=(INFO.texts||{}).hero_title;if(ht)$("#heroTitle").innerHTML=ht.split(/\n+/).map(l=>l.trim()).filter(Boolean).slice(0,4).map(l=>`<span class="ln"><span>${esc(l)}</span></span>`).join("");
+  $("#regTitle").textContent=`${TX("reg_title","נרשמים לשנת הלימודים")} ${yl()}`;if((INFO.texts||{}).reg_sub)$("#regSub").textContent=INFO.texts.reg_sub;
+  paintMarq();paintHub()}
+const sp=new URLSearchParams(location.search),Q={s:sp.get("s"),f:sp.get("f")};
+if(Q.s)statusPage(Q.s);else if(Q.f)completePage(Q.f);
+applyInfo();paint();watch();route();
+addEventListener("hashchange",route);
+addEventListener("pagehide",()=>{if(!F.busy&&formLive()&&$("#regForm .nav2")){collect();save()}});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"&&!F.busy&&formLive()){collect();save()}});
+rpc("regInfo").then(i=>{INFO=Object.assign(INFO,i);INFO.areas=INFO.areas||[];INFO.cities=INFO.cities||{};INFO.form=INFO.form||{};INFO.texts=INFO.texts||{};
   if(i.intro)$("#intro").textContent=i.intro;
   if(!INFO.soon.includes("צהרון")&&INFO.types.includes("צהרון"))$("#soonCard").hidden=true;
-  if((i.faq||[]).length){$("#faq").hidden=false;$("#faqList").innerHTML=i.faq.map(f=>`<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("");watch()}else $("#navFaq").hidden=true;
+  if((i.faq||[]).length){$("#faq").hidden=false;$("#faqList").innerHTML=i.faq.map(f=>`<details class="glass"><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("");watch()}else $("#navFaq").hidden=true;
   const ct=[i.phone&&`<a href="tel:${esc(i.phone)}"><small>טלפון</small><span dir="ltr">${esc(i.phone)}</span></a>`,i.email&&`<a href="mailto:${esc(i.email)}"><small>מייל</small><span dir="ltr">${esc(i.email)}</span></a>`].filter(Boolean);
   $("#contact").innerHTML=ct.join("");if(ct.length)$("#fContact").innerHTML=[i.phone&&`<li><a href="tel:${esc(i.phone)}" dir="ltr">${esc(i.phone)}</a></li>`,i.email&&`<li><a href="mailto:${esc(i.email)}" dir="ltr">${esc(i.email)}</a></li>`].filter(Boolean).join("");
-  applyInfo();if(!F.busy&&$("#regForm [name=type],#regForm [name=first_name],#regForm [name=parent1_first_name],#regForm [name=consent]")){collect();paint()}}).catch(e=>{F.err=e.message;paint()});
+  applyInfo();if(!$("#guideView").hidden)route();
+  if(!F.busy&&formLive()){collect();paint()}}).catch(e=>{F.err=e.message;paint()});
 })();
 </script>
 </body>
