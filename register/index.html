@@ -228,6 +228,15 @@ mark{background:var(--butter);color:inherit;border-radius:4px;padding:0 2px}
 .g-cta .btn{background:#fff;color:var(--rose-d)}
 @media (max-width:900px){.g-grid{grid-template-columns:1fr}.g-side{position:static;grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto;scrollbar-width:none;border-radius:20px}.g-side::-webkit-scrollbar{display:none}.g-side h4{display:none}.pn{grid-template-columns:1fr}.tl>li{grid-template-columns:42px 1fr;gap:14px}.tl>li::before{width:42px;height:42px;font-size:18px}.tl>li::after{inset-inline-start:20px;top:46px}}
 
+
+#process{background:linear-gradient(180deg,rgba(47,37,66,.96),rgba(58,46,79,.96));color:#EDE8F3;border-radius:48px;margin:0 clamp(8px,2vw,24px)}
+#process h2{color:#fff}#process .sec-h p{color:rgba(237,232,243,.75)}
+#process .proc h3{color:#fff}#process .proc p{color:rgba(237,232,243,.72)}
+#process .dot{background:#3E3454;border-color:rgba(255,255,255,.18);color:#fff;backdrop-filter:none;box-shadow:0 0 0 5px var(--dc)}
+#process .proc-line{background:repeating-linear-gradient(to left,rgba(243,163,191,.7) 0 10px,transparent 10px 22px)}
+@media (max-width:760px){#process{border-radius:32px}}
+.sec-h h2{max-width:20ch}
+.hero .lead{max-width:44ch}
 /* programs by age */
 .prg{display:grid;grid-template-columns:300px minmax(0,1fr);gap:28px;align-items:stretch}
 .prg-tabs{display:grid;gap:4px;align-content:start}
@@ -264,7 +273,7 @@ mark{background:var(--butter);color:inherit;border-radius:4px;padding:0 2px}
 @media (max-width:760px){.day{grid-auto-flow:row;grid-auto-columns:auto}.day li{border-top:0;border-inline-start:2px solid var(--hair);padding:0 22px 22px;margin-inline-start:6px}.day li::before{top:2px;inset-inline-start:-8px}.day time{position:static;display:block;margin-bottom:2px}}
 /* values – editorial, no cards */
 .vals{display:grid;grid-template-columns:1fr 1fr;gap:0 64px}
-.val{padding:26px 0;border-top:1px solid var(--hair);display:grid;grid-template-columns:auto 1fr;gap:4px 18px}
+.val{padding:26px 0;border-top:1px solid var(--hair);display:grid;align-content:start;grid-template-columns:auto 1fr;gap:4px 18px}
 .val i{grid-row:span 2;width:12px;height:12px;border-radius:50%;margin-top:12px;background:var(--rose)}
 .val:nth-child(2) i{background:var(--mint-d)}.val:nth-child(3) i{background:var(--gold)}.val:nth-child(4) i{background:var(--ink)}
 .val h3{font-size:25px}.val p{color:var(--ink2);font-size:17.5px;max-width:46ch}
@@ -454,7 +463,7 @@ footer .fb{margin-top:38px;padding-top:18px;border-top:1px solid rgba(255,255,25
   <a class="brand" href="#" data-home aria-label="גני מלכות – דף הבית">
     <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="20" fill="#FBE1E7"/><path d="M13 45 L15 23 L24.5 32 L32 17 L39.5 32 L49 23 L51 45 Z" fill="#E0668E"/><rect x="13" y="47" width="38" height="5" rx="2.5" fill="#B83E68"/><circle cx="32" cy="14" r="4.2" fill="#E9C677"/><circle cx="14.5" cy="20.5" r="3" fill="#A8E0D4"/><circle cx="49.5" cy="20.5" r="3" fill="#A8E0D4"/></svg>
     <span>גני מלכות</span></a>
-  <nav id="mainNav" aria-label="ניווט באתר"><a href="#frames">לפי גיל</a><a href="#day">יום אצלנו</a><a href="#process">איך נרשמים</a><a href="#info" id="navInfo">מרכז מידע להורים</a><a href="#faq" id="navFaq">שאלות</a></nav>
+  <nav id="mainNav" aria-label="ניווט באתר"><a href="#frames">המסגרות</a><a href="#process">איך נרשמים</a><a href="#locs" id="navLocs" hidden>הגנים שלנו</a><a href="#info" id="navInfo">מידע להורים</a><a href="#faq" id="navFaq">שאלות</a></nav>
   <div class="acts"><a class="btn btn-rose btn-sm" href="#register">להרשמה</a>
     <button class="menu-btn" id="menuBtn" aria-label="תפריט" aria-expanded="false" aria-controls="mainNav"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
 </div></div></header>
@@ -465,8 +474,8 @@ footer .fb{margin-top:38px;padding-top:18px;border-top:1px solid rgba(255,255,25
       <div>
         <span class="pill glass" id="pill"><i></i><span id="pillTxt">ההרשמה לשנה הבאה פתוחה</span></span>
         <h1 id="heroTitle"><span class="ln"><span>כל בת</span></span><span class="ln"><span>גדלה אצלנו</span></span><span class="ln"><span>כבת מלך</span></span></h1>
-        <p class="lead" id="intro">גני ילדות ומעונות יום לבנות, בחינוך ברוח התורה, עם צוות מסור ואווירה חמה. נרשמים כאן באתר בכמה דקות, ואנחנו מלווים אתכם עד אישור ההרשמה.</p>
-        <div class="hero-cta"><a class="btn btn-rose btn-lg" href="#register">להרשמה מקוונת <span class="arr">←</span></a><a class="btn btn-glass btn-lg" href="#info">מרכז מידע להורים</a></div>
+        <p class="lead" id="intro">גני ילדות ומעונות יום לבנות – חינוך תורני חם, בידיים מקצועיות ואוהבות. ההרשמה נעשית כאן, בכמה דקות, ואנחנו מלווים אתכם עד שהבת שלכם מתחילה את השנה.</p>
+        <div class="hero-cta"><a class="btn btn-rose btn-lg" href="#register">להתחלת ההרשמה <span class="arr">←</span></a><a class="btn btn-glass btn-lg" href="#frames">להכיר את המסגרות</a></div>
       </div>
       <div class="stage" id="stage" aria-hidden="true"><div class="stage-in" id="stageIn">
         <div class="arch">
@@ -501,72 +510,65 @@ footer .fb{margin-top:38px;padding-top:18px;border-top:1px solid rgba(255,255,25
       </div></div>
     </div>
     <div class="facts glass rv">
-      <div class="fact"><b>גני ילדות</b><span>לבנות בגילאי 3 עד 6</span></div>
-      <div class="fact"><b>מעונות יום</b><span>מגיל 3 חודשים ועד 3 שנים</span></div>
-      <div class="fact"><b>הרשמה מקוונת</b><span>מעקב אחרי הבקשה בכל שלב</span></div>
+      <div class="fact"><b>גני ילדות</b><span>טרום טרום חובה, טרום חובה וחובה</span></div>
+      <div class="fact"><b>מעונות יום</b><span>תינוקייה, פעוטון ובוגרים</span></div>
+      <div class="fact"><b>ליווי אישי</b><span>מהבקשה ועד היום הראשון</span></div>
     </div>
   </div>
-  <div class="marq" aria-hidden="true"><div class="marq-track" id="marq"></div></div>
   </section>
 
   <section class="sec" id="frames"><div class="wrap">
-    <div class="sec-h rv"><h2>מסגרת לכל גיל</h2><p>מהתינוקייה ועד גן חובה – באותה רוח ובאותה תשומת לב. בחרו שכבה כדי לראות במה מתמקדים בה.</p></div>
+    <div class="sec-h rv"><h2>מהתינוקייה ועד גן חובה</h2><p>רצף חינוכי אחד, באותה רוח ובאותה תשומת לב. בחרו שכבה וגלו מה מחכה לבת שלכם.</p></div>
     <div class="prg rv"><div class="prg-tabs" id="prgTabs" role="tablist" aria-label="שכבות גיל"></div><div class="prg-panel" id="prgPanel" role="tabpanel" aria-live="polite"></div></div>
   </div></section>
 
-  <section class="sec" id="day"><div class="wrap">
-    <div class="sec-h rv"><h2>יום אצלנו</h2><p>שגרה קבועה ורגועה נותנת לבנות ביטחון. כך נראה יום טיפוסי.</p></div>
-    <div class="rv"><div class="day-sw glass" role="group" aria-label="סדר יום"><button type="button" data-day="gan" aria-pressed="true">בגן</button><button type="button" data-day="maon" aria-pressed="false">במעון</button></div>
-    <ol class="day" id="dayList"></ol><p class="day-note" id="dayNote"></p></div>
-  </div></section>
-
   <section class="sec" id="values"><div class="wrap">
-    <div class="sec-h rv"><h2>על מה אנחנו מקפידים</h2></div>
+    <div class="sec-h rv"><h2>מה מנחה אותנו</h2><p>ארבעה עקרונות שמלווים כל גן וכל מעון ברשת, בכל יום.</p></div>
     <div class="vals rv" id="vals"></div>
   </div></section>
 
   <section class="sec" id="process"><div class="wrap">
-    <div class="sec-h c rv"><h2>ארבעה צעדים עד אישור ההרשמה</h2><p>בכל שלב תקבלו עדכון במייל, ותוכלו לבדוק את מצב הבקשה בקישור האישי.</p></div>
+    <div class="sec-h c rv"><h2>כך נרשמים</h2><p>ארבעה שלבים פשוטים. בכל שלב תקבלו עדכון במייל, ובקישור האישי תמיד תדעו איפה הבקשה עומדת.</p></div>
     <div class="procw" id="procw"><div class="proc-line" aria-hidden="true"></div>
     <ol class="proc">
-      <li style="--dc:var(--rose2)"><span class="dot glass">1</span><h3>ממלאים בקשה</h3><p>טופס קצר כאן באתר, כחמש דקות.</p></li>
-      <li style="--dc:var(--mint);--d:.25s"><span class="dot glass">2</span><h3>משלימים פרטים</h3><p>נשלח לכם טופס השלמה, ומעלים צילום ת.ז. עם ספח.</p></li>
-      <li style="--dc:var(--butter);--d:.5s"><span class="dot glass">3</span><h3>שיבוץ</h3><p>המשרד משבץ לגן המתאים לפי העיר, האזור והגיל.</p></li>
-      <li style="--dc:var(--rose);--d:.75s"><span class="dot glass">4</span><h3>אישור הרשמה</h3><p>מקבלים אישור במייל עם כל פרטי הגן.</p></li>
+      <li style="--dc:var(--rose2)"><span class="dot glass">1</span><h3>ממלאים בקשה</h3><p>טופס קצר באתר. בלי מסמכים ובלי להמתין בתור.</p></li>
+      <li style="--dc:var(--mint);--d:.25s"><span class="dot glass">2</span><h3>משלימים פרטים</h3><p>שולחים לכם טופס השלמה, ומצרפים צילום ת.ז. עם ספח.</p></li>
+      <li style="--dc:var(--butter);--d:.5s"><span class="dot glass">3</span><h3>משבצים</h3><p>אנחנו בוחרים את הגן המתאים לפי העיר, האזור והגיל.</p></li>
+      <li style="--dc:var(--rose);--d:.75s"><span class="dot glass">4</span><h3>מאשרים</h3><p>אישור הרשמה במייל, עם כל הפרטים על הגן.</p></li>
     </ol></div>
   </div></section>
 
   <section class="sec" id="locs" hidden><div class="wrap">
-    <div class="sec-h rv"><h2>הגנים שלנו</h2><p>הערים והאזורים שבהם פועלות המסגרות של הרשת. בוחרים עיר – וממשיכים ישר להרשמה.</p></div>
+    <div class="sec-h rv"><h2>הגנים שלנו</h2><p>הערים והאזורים שבהם הרשת פועלת. בחרו עיר והמשיכו ישר להרשמה.</p></div>
     <div class="locs rv" id="locList"></div>
   </div></section>
 
   <section class="sec" id="info"><div class="wrap">
-    <div class="sec-h rv"><h2>מרכז מידע להורים</h2><p>מדריכים קצרים, שלב אחר שלב, עם קישורים ישירים לאתרים הרשמיים: מועדי רישום, דרגה במעון, גילאים, מסמכים ומה קורה אחרי ההרשמה.</p></div>
-    <label class="hub-search glass rv"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="vh">חיפוש במרכז המידע</span><input type="search" id="icQ" placeholder="מה תרצו לדעת? למשל: דרגה, ספח, מועד" autocomplete="off"></label>
+    <div class="sec-h rv"><h2>מידע להורים</h2><p>מדריכים מעשיים, שלב אחר שלב, עם קישורים ישירים לאתרים הרשמיים – כדי שכל מה שצריך יהיה במקום אחד.</p></div>
+    <label class="hub-search glass rv"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="vh">חיפוש במרכז המידע</span><input type="search" id="icQ" placeholder="חיפוש במדריכים – למשל: דרגה, ספח, מועד רישום" autocomplete="off"></label>
     <div class="hits" id="hits" hidden></div>
     <div class="hub rv" id="hub"></div>
   </div></section>
 
   <section class="sec" id="faq" hidden><div class="wrap faq-wrap">
-    <div class="sec-h rv"><h2>שאלות נפוצות</h2><p>לא מצאתם תשובה? אפשר לפנות למשרד.</p><div class="cinfo" id="contact"></div><div class="visit glass" id="visit" hidden><b>רוצים להכיר מקרוב?</b><p id="visitTxt">אפשר לתאם ביקור בגן או במעון.</p><a class="btn btn-ink btn-sm" id="visitBtn" href="#">תיאום ביקור</a></div></div>
+    <div class="sec-h rv"><h2>שאלות נפוצות</h2><p>לא מצאתם את מה שחיפשתם? המשרד שלנו ישמח לעזור.</p><div class="cinfo" id="contact"></div><div class="visit glass" id="visit" hidden><b>רוצים להכיר מקרוב?</b><p id="visitTxt">אפשר לתאם ביקור בגן או במעון.</p><a class="btn btn-ink btn-sm" id="visitBtn" href="#">תיאום ביקור</a></div></div>
     <div class="faq rv" id="faqList"></div>
   </div></section>
 
   <section class="sec" id="register"><div class="wrap">
-    <div class="sec-h rv"><h2 id="regTitle">נרשמים לשנת הלימודים</h2><p id="regSub">ממלאים פעם אחת, ואנחנו מלווים אתכם עד אישור ההרשמה.</p></div>
+    <div class="sec-h rv"><h2 id="regTitle">נרשמים לשנת הלימודים</h2><p id="regSub">ארבעה שלבים קצרים. אפשר לעצור ולהמשיך מאוחר יותר – הטופס נשמר במכשיר שלכם.</p></div>
     <div class="reg-shell">
       <div class="reg-card glass">
         <nav class="prog" aria-label="שלבי הטופס"><ol id="prog"></ol><p class="progm" id="progm" aria-hidden="true"></p></nav>
         <form class="pane" id="regForm" novalidate autocomplete="on"></form>
       </div>
       <aside class="reg-side">
-        <div class="sidecard glass"><h4>מה צריך להכין</h4><ul>
+        <div class="sidecard glass"><h4>כדאי שיהיה לפניכם</h4><ul>
           <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>מספר הזהות ותאריך הלידה של הילדה</span></li>
           <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>טלפון נייד ומייל של הורה</span></li>
           <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>צילום ת.ז. עם ספח – רק בשלב ההשלמה</span></li>
         </ul><p style="margin-top:12px;font-size:15px"><a class="xl" href="#guide/register">מדריך למילוי הטופס</a></p></div>
-        <div class="sidecard ink glass"><h4>הפרטים שלכם שמורים</h4><ul>
+        <div class="sidecard ink glass"><h4>הפרטים שלכם בידיים טובות</h4><ul>
           <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>נשמרים במערכת המאובטחת של הרשת בלבד</span></li>
           <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>משמשים רק להרשמה ולשיבוץ</span></li>
           <li><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>הטופס נשמר אוטומטית במכשיר שלכם, כך שאפשר להפסיק ולהמשיך</span></li>
@@ -576,8 +578,8 @@ footer .fb{margin-top:38px;padding-top:18px;border-top:1px solid rgba(255,255,25
   </div></section>
 
   <div class="wrap"><section class="final rv">
-    <div><h2>מקום חם מחכה לבת שלכם</h2><p>חמש דקות של הרשמה, ואנחנו ממשיכים מכאן.</p></div>
-    <a class="btn btn-lg" href="#register">להרשמה מקוונת <span class="arr">←</span></a>
+    <div><h2>מקום חם מחכה לבת שלכם</h2><p id="finalTxt">ההרשמה פתוחה עכשיו. מתחילים כאן, ואנחנו ממשיכים מכאן.</p></div>
+    <a class="btn btn-lg" href="#register">להתחלת ההרשמה <span class="arr">←</span></a>
   </section></div>
 </main>
 
@@ -592,7 +594,7 @@ footer .fb{margin-top:38px;padding-top:18px;border-top:1px solid rgba(255,255,25
   </div>
   <div class="fb"><span>© <span id="yr"></span> גני מלכות · כל הזכויות שמורות</span><span>המידע במרכז המידע כללי בלבד ואינו מחליף את הפרסומים הרשמיים.</span></div>
 </div></footer>
-<div class="mcta glass" id="mcta"><a class="btn btn-rose" href="#register">להרשמה מקוונת</a></div>
+<div class="mcta glass" id="mcta"><a class="btn btn-rose" href="#register">להתחלת ההרשמה</a></div>
 <canvas id="confetti" hidden></canvas>
 
 <script>
@@ -650,8 +652,6 @@ if(!RM&&FINE)addEventListener("pointermove",e=>{stage.style.setProperty("--px",(
 if(FINE&&!RM){document.addEventListener("pointermove",e=>{const el=e.target.closest?.(".spot,.tile");if(!el)return;const r=el.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;el.style.setProperty("--mx",x+"px");el.style.setProperty("--my",y+"px");
   if(el.classList.contains("tilt")){el.style.setProperty("--ry",((x/r.width-.5)*5).toFixed(2)+"deg");el.style.setProperty("--rx",((.5-y/r.height)*5).toFixed(2)+"deg")}},{passive:true});
   document.addEventListener("pointerout",e=>{const el=e.target.closest?.(".tilt");if(el&&!el.contains(e.relatedTarget)){el.style.setProperty("--rx","0deg");el.style.setProperty("--ry","0deg")}})}
-function paintMarq(){const it=["גני ילדות לבנות","מעונות יום","הרשמה לשנת הלימודים "+yl(),"צהרונים בקרוב","״כל כבודה בת מלך פנימה״"];
-  const one=`<span>${it.map(t=>`${esc(t)}<i></i>`).join("")}</span>`;$("#marq").innerHTML=one+one+one+one}
 const hasIO="IntersectionObserver" in window;
 const rvIO=!hasIO?{observe:e=>e.classList.add("in"),unobserve(){}}:new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");rvIO.unobserve(x.target)}}),{threshold:.1,rootMargin:"0px 0px -6% 0px"});
 const watch=()=>$$(".rv:not(.in)").forEach(el=>rvIO.observe(el));
@@ -679,25 +679,14 @@ function paintPrg(anim){const tabs=$("#prgTabs");let lastG="";
 $("#prgTabs").addEventListener("click",e=>{const b=e.target.closest("[data-prg]");if(!b)return;prgCur=b.dataset.prg;paintPrg(true)});
 $("#prgTabs").addEventListener("keydown",e=>{if(!["ArrowDown","ArrowUp","ArrowLeft","ArrowRight"].includes(e.key))return;e.preventDefault();const i=PRG.findIndex(x=>x.id===prgCur),d=(e.key==="ArrowDown"||e.key==="ArrowLeft")?1:-1;prgCur=PRG[(i+d+PRG.length)%PRG.length].id;paintPrg(true);$(`[data-prg="${prgCur}"]`).focus()});
 
-/* ---------- a day with us ---------- */
-const DAY_DEF={gan:["קבלת הבנות ושיחת בוקר","תפילה ושירה","פעילות במליאה: נושא השבוע","ארוחת עשר","משחק בחצר","עבודה בקבוצות ובפינות","ארוחת צהריים וסיום"],
-  maon:["קבלת הפעוטות","ארוחת בוקר","משחק ופעילות לפי גיל","חצר ואוויר צח","ארוחת צהריים","מנוחת צהריים","ארוחת מנחה ואיסוף"]};
-let dayCur="gan";
-function dayItems(k){const t=(INFO.texts||{})["day_"+k];if(t){return t.split(/\n+/).map(l=>l.split("|").map(x=>x.trim())).filter(x=>x[0]).map(x=>x.length>1?{tm:x[0],t:x[1]}:{tm:"",t:x[0]})}return DAY_DEF[k].map(t=>({tm:"",t}))}
-function paintDay(anim){$$("[data-day]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.day===dayCur));const L=dayItems(dayCur),el=$("#dayList");
-  el.innerHTML=L.map((x,i)=>`<li style="animation-delay:${i*.05}s">${x.tm?`<time>${esc(x.tm)}</time>`:""}<b>${esc(x.t)}</b></li>`).join("");
-  $("#dayNote").textContent=(INFO.texts||{})["day_"+dayCur]?"":"סדר היום המדויק ושעות הפעילות נמסרים על ידי הצוות של כל גן ומעון.";
-  if(anim&&!RM){el.classList.remove("swap");void el.offsetWidth;el.classList.add("swap")}}
-document.addEventListener("click",e=>{const b=e.target.closest("[data-day]");if(b){dayCur=b.dataset.day;paintDay(true)}});
-
 /* ---------- values ---------- */
-const VAL_DEF=[["יראת שמים ושמחה","חינוך לתורה, למידות טובות ולאהבת מצוות – מתוך שמחה, פשטות וחום."],["כל ילדה בפני עצמה","תשומת לב לקצב, לאופי ולצרכים של כל ילדה, ושגרה שנותנת ביטחון."],["שותפות עם ההורים","עדכונים שוטפים, צוות זמין ודלת פתוחה לשאלות – לאורך כל השנה."],["סביבה בטוחה ומסודרת","מבנים מותאמים לגיל, נהלים ברורים וצוות שמכיר כל ילדה בשמה."]];
+const VAL_DEF=[["יראת שמים מתוך שמחה","אהבת תורה, מידות טובות ותפילה – בשפה של ילדות, בחום ובפשטות."],["כל ילדה בפני עצמה","רואים את הקצב, האופי והצרכים של כל ילדה, ובונים לה שגרה שנותנת ביטחון."],["שותפות אמיתית עם ההורים","עדכונים שוטפים, צוות זמין ודלת פתוחה לכל שאלה – לאורך כל השנה."],["סביבה בטוחה ומסודרת","מבנים מותאמים לגיל, נהלים ברורים, וצוות שמכיר כל ילדה בשמה."]];
 function paintVals(){const t=(INFO.texts||{}).values,L=t?t.split(/\n+/).map(l=>l.split("|").map(x=>x.trim())).filter(x=>x[0]).slice(0,6):VAL_DEF;
   $("#vals").innerHTML=L.map(([h,p])=>`<div class="val"><i></i><h3>${esc(h)}</h3><p>${esc(p||"")}</p></div>`).join("")}
 
 /* ---------- where we are ---------- */
 function paintLocs(){const L=INFO.locs||{},C=Object.keys(L).sort((a,b)=>(L[b].gan+L[b].maon+L[b].other)-(L[a].gan+L[a].maon+L[a].other)||a.localeCompare(b,"he"));
-  $("#locs").hidden=!C.length;if(!C.length)return;
+  $("#locs").hidden=!C.length;$("#navLocs").hidden=!C.length;if(!C.length)return;
   $("#locList").innerHTML=C.map(c=>{const x=L[c],ar=areasOf(c),parts=[x.gan&&`${x.gan} ${x.gan>1?"גני ילדות":"גן ילדות"}`,x.maon&&`${x.maon} ${x.maon>1?"מעונות יום":"מעון יום"}`,x.other&&`${x.other} מסגרות`].filter(Boolean);
     return `<div class="loc"><div><h3>${esc(c)}</h3><div class="cnt">${parts.join(" · ")}</div></div><div class="ars">${ar.map(a=>`<span>${esc(a)}</span>`).join("")}</div>${INFO.open?`<a class="btn btn-glass btn-sm" href="#register" data-city="${esc(c)}">להרשמה ב${esc(c)} <span class="arr">←</span></a>`:""}</div>`}).join("");watch()}
 document.addEventListener("click",e=>{const a=e.target.closest("[data-city]");if(a&&!F.busy&&formLive()){collect();if(cityList().includes(a.dataset.city)){F.data.city=a.dataset.city;F.data.city_other=false;F.data.area=""}F.dir=-1;F.step=0;paint();save()}});
@@ -784,18 +773,18 @@ const G=[
    ["עיון ותיקון","אפשר לבקש לעיין בפרטים או לתקן אותם בכל עת, דרך המשרד."]],
   src:()=>[]}];
 const gIcon=g=>`<svg viewBox="0 0 24 24">${ICN[g.id]}</svg>`,gStyle=g=>`--tc:${TC[g.id][0]};--tk:${TC[g.id][1]}`;
-function paintHub(){$("#hub").innerHTML=G.map((g,i)=>`<a class="tile" href="#guide/${g.id}" style="${gStyle(g)}"><span class="ti">${gIcon(g)}</span><b>${g.t}</b><span>${g.s}</span><small><span>כ-${g.min} דק׳</span><em>←</em></small></a>`).join("");watch()}
+function paintHub(){$("#hub").innerHTML=G.map((g,i)=>`<a class="tile" href="#guide/${g.id}" style="${gStyle(g)}"><span class="ti">${gIcon(g)}</span><b>${g.t}</b><span>${g.s}</span><small><em>←</em></small></a>`).join("");watch()}
 const gText=g=>{const t=document.createElement("div");t.innerHTML=g.sum()+" "+g.steps().map(s=>s.join(" ")).join(" ")+(g.extra?g.extra():"");return t.textContent.replace(/\s+/g," ")};
 function showGuide(id){const g=G.find(x=>x.id===id)||G[0],i=G.indexOf(g),prev=G[i-1],next=G[i+1];
   $("#landing").hidden=true;$("#solo").hidden=true;$("#guideView").hidden=false;$("#navInfo").setAttribute("aria-current","page");mcta.classList.remove("show");
   document.title=`${g.t} – מרכז מידע להורים | גני מלכות`;
   $("#guideBox").innerHTML=`<nav class="crumbs" aria-label="מיקום"><a href="#" data-home>דף הבית</a><span aria-hidden="true">›</span><a href="#info">מרכז מידע להורים</a><span aria-hidden="true">›</span><span aria-current="page">${g.t}</span></nav>
    <div class="g-grid"><nav class="g-side glass" aria-label="מדריכים"><h4>מדריכים</h4>${G.map(x=>`<a href="#guide/${x.id}" style="${gStyle(x)}"${x.id===g.id?' aria-current="page"':""}><i>${gIcon(x)}</i>${x.t}</a>`).join("")}</nav>
-    <article class="art glass"><h1>${g.t}</h1><div class="meta"><span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>כ-${g.min} דקות קריאה</span><span><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>${g.steps().length} שלבים</span><span>שנת הלימודים ${esc(yl())}</span></div>
+    <article class="art glass"><h1>${g.t}</h1><div class="meta"><span><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>${g.steps().length} שלבים</span><span>שנת הלימודים ${esc(yl())}</span></div>
      <div class="tldr"><b>בקצרה</b><p>${g.sum()}</p></div>${g.table?g.table():""}
      <ol class="tl">${g.steps().map(([h,p,tip])=>`<li><div><h3>${h}</h3><p>${p}</p>${tip?`<div class="tip">${tip}</div>`:""}</div></li>`).join("")}</ol>${g.extra?g.extra():""}
      ${g.src().length?`<div class="srcs"><h4>מקורות רשמיים</h4><ul>${g.src().map(([u,t])=>`<li>${X(u,t)}</li>`).join("")}</ul><p class="note">המידע כאן הוא הסבר כללי ומתעדכן לפי הפרסומים הרשמיים. במקרה של סתירה, הקובע הוא האתר הרשמי.</p></div>`:""}
-     <div class="g-cta"><div><b>מוכנים להירשם?</b><p>הטופס לוקח כחמש דקות.</p></div><a class="btn" href="#register">לטופס ההרשמה <span class="arr">←</span></a></div>
+     <div class="g-cta"><div><b>מוכנים להירשם?</b><p>ארבעה שלבים קצרים, ואנחנו ממשיכים מכאן.</p></div><a class="btn" href="#register">להתחלת ההרשמה <span class="arr">←</span></a></div>
      <div class="pn">${prev?`<a class="glass" href="#guide/${prev.id}"><small>→ המדריך הקודם</small><b>${prev.t}</b></a>`:"<span></span>"}${next?`<a class="glass next" href="#guide/${next.id}"><small>המדריך הבא ←</small><b>${next.t}</b></a>`:""}</div></article></div>`;
   scrollTo(0,0)}
 function showLanding(anchor){const was=$("#landing").hidden;$("#guideView").hidden=true;$("#solo").hidden=true;$("#landing").hidden=false;$("#navInfo").removeAttribute("aria-current");document.title="גני מלכות – הרשמה לגנים ולמעונות";
@@ -985,7 +974,7 @@ function solo(h){$("#landing").hidden=true;$("#guideView").hidden=true;$("#solo"
 function applyInfo(){$("#pillTxt").textContent=INFO.open?(INFO.texts?.hero_badge||`ההרשמה לשנת ${yl()} פתוחה`):TX("closed_title","ההרשמה סגורה כרגע");$("#pill").classList.toggle("closed",!INFO.open);
   const ht=(INFO.texts||{}).hero_title;if(ht)$("#heroTitle").innerHTML=ht.split(/\n+/).map(l=>l.trim()).filter(Boolean).slice(0,4).map(l=>`<span class="ln"><span>${esc(l)}</span></span>`).join("");
   $("#regTitle").textContent=`${TX("reg_title","נרשמים לשנת הלימודים")} ${yl()}`;if((INFO.texts||{}).reg_sub)$("#regSub").textContent=INFO.texts.reg_sub;
-  paintMarq();paintHub();paintPrg();paintDay();paintVals();paintLocs();paintFaq();paintVisit()}
+  paintHub();paintPrg();paintVals();paintLocs();paintFaq();paintVisit()}
 const sp=new URLSearchParams(location.search),Q={s:sp.get("s"),f:sp.get("f")};
 if(Q.s)statusPage(Q.s);else if(Q.f)completePage(Q.f);
 applyInfo();paint();watch();route();
