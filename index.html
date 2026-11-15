@@ -904,9 +904,9 @@ const E={
    {k:"parent1_first_name",l:"שם פרטי הורה 1",sec:"הורה 1",al:["שםהאב","שםאב","אב","שםפרטיאב"]},{k:"parent1_last_name",l:"שם משפחה הורה 1",sec:"הורה 1",al:["משפחהאב"]},{k:"parent1_id",l:"ת.ז. הורה 1",t:"id",sec:"הורה 1",al:["תזאב","תזהאב","זהותאב"]},{k:"parent1_phone",l:"טלפון הורה 1",t:"tel",sec:"הורה 1",al:["טלפוןאב","ניידאב","טלאב","פלאפוןאב","נייד1","טלפון1"]},
    {k:"parent2_first_name",l:"שם פרטי הורה 2",sec:"הורה 2",al:["שםהאם","שםאם","אם","שםאמא","שםפרטיאם"]},{k:"parent2_last_name",l:"שם משפחה הורה 2",sec:"הורה 2",al:["משפחהאם"]},{k:"parent2_id",l:"ת.ז. הורה 2",t:"id",sec:"הורה 2",al:["תזאם","תזהאם","זהותאם"]},{k:"parent2_phone",l:"טלפון הורה 2",t:"tel",sec:"הורה 2",al:["טלפוןאם","ניידאם","טלאם","פלאפוןאם","ניידאמא","נייד2","טלפון2"]},
    {k:"mobile_from_registration",l:"נייד מהרישום",t:"tel",sec:"יצירת קשר",al:["נייד","טלפון"]},{k:"email",l:"אימייל",t:"email",sec:"יצירת קשר",al:["מייל"]},{k:"notes",l:"הערות",t:"area",sec:"יצירת קשר",al:["הערות","הערה","הערותנוספות"]}],
-  cols:["_name","id_number","birth_date","teacher_name","symbol","city","neighborhood","_addr","_p1","parent1_phone","mobile_from_registration","is_active","_note"],
-  virt:{_name:{l:"שם מלא",v:r=>fullName(r),bold:1},_addr:{l:"כתובת",v:r=>[r.street,r.house_number].filter(Boolean).join(" ")+(r.apartment?" / "+r.apartment:"")},_p1:{l:"הורה 1",v:r=>[r.parent1_first_name,r.parent1_last_name].filter(Boolean).join(" ")},_p2:{l:"הורה 2",v:r=>[r.parent2_first_name,r.parent2_last_name].filter(Boolean).join(" ")}},
-  filters:["city","is_active"],groups:[["teacher_name","לפי גן"],["neighborhood","לפי אזור"]],sort:"_name"},
+  cols:["_name","id_number","birth_date","_garden","teacher_name","symbol","city","neighborhood","_addr","_p1","parent1_phone","mobile_from_registration","is_active","_note"],
+  virt:{_name:{l:"שם מלא",v:r=>fullName(r),bold:1},_addr:{l:"כתובת",v:r=>[r.street,r.house_number].filter(Boolean).join(" ")+(r.apartment?" / "+r.apartment:"")},_p1:{l:"הורה 1",v:r=>[r.parent1_first_name,r.parent1_last_name].filter(Boolean).join(" ")},_p2:{l:"הורה 2",v:r=>[r.parent2_first_name,r.parent2_last_name].filter(Boolean).join(" ")},_garden:{l:"גן",v:r=>(r.garden_id&&S.gardens?.get(r.garden_id)?.name)||r.garden_name||""},_sym:{l:"סמל",v:r=>r.symbol?"סמל "+r.symbol:""}},
+  filters:["city","is_active"],groups:[["_garden","לפי גן"],["_sym","לפי סמל"],["teacher_name","לפי גננת"],["neighborhood","לפי אזור"]],sort:"_name"},
  staff:{col:"staff",title:"אנשי צוות",one:"איש/אשת צוות",buckets:1,idField:"id_number",
   fields:[{k:"full_name",l:"שם מלא",req:1,al:["שם"]},{k:"id_number",l:"ת.ז.",t:"id",al:["תז","תעודתזהות"]},{k:"phone",l:"טלפון",t:"tel"},{k:"email",l:"אימייל",t:"email"},
    {k:"roles",l:"תפקידים",t:"multi",opts:roleOpts},{k:"garden_id",l:"גן",...ref("gardens")},{k:"program_id",l:"צהרון",...ref("programs")},
@@ -2626,18 +2626,20 @@ async function downloadBook(name,sheets){try{await ensureXLSX()}catch(e){toast(e
   sheets.forEach(([n,aoa])=>{const ws=XLSX.utils.aoa_to_sheet(aoa);ws["!views"]=[{RTL:true}];XLSX.utils.book_append_sheet(wb,ws,String(n).slice(0,30))});XLSX.writeFile(wb,`${name}-${today()}.xlsx`)}
 
 function propagate(col,before,after){const S2=[];const g=after.garden_id&&S.gardens?.get(after.garden_id);
-  if(col==="children"&&g&&after.garden_id!==(before?.garden_id||"")){const ch={};if(g.name&&after.garden_name!==g.name)ch.garden_name=g.name;if(g.symbol&&String(after.symbol||"")!==String(g.symbol))ch.symbol=g.symbol;if(g.manager_name&&after.teacher_name!==g.manager_name)ch.teacher_name=g.manager_name;
-    if(Object.keys(ch).length)S2.push({l:`לעדכן אצל ${fullName(after)} את פרטי הגן החדש (${Object.entries(ch).map(([k,v])=>colLabelOf(defOf("children"),k)+": "+v).join(", ")})`,run:()=>save(E.children,after._id,ch)})}
+  if(col==="children"&&g&&after.garden_id!==(before?.garden_id||"")){
+    if(g.name&&after.garden_name!==g.name)S2.push({l:`לעדכן אצל ${fullName(after)} את שם הגן ל"${g.name}"`,run:()=>save(E.children,after._id,{garden_name:g.name})});
+    if(g.symbol&&String(after.symbol||"")!==String(g.symbol))S2.push({off:1,l:`לעדכן אצל ${fullName(after)} גם את הסמל ל-${g.symbol} (הגננת לא תשתנה)`,run:()=>save(E.children,after._id,{symbol:g.symbol})});
+    if(g.manager_name&&after.teacher_name!==g.manager_name)S2.push({off:1,l:`לעדכן אצל ${fullName(after)} גם את הגננת ל${g.manager_name} (הסמל לא ישתנה)`,run:()=>save(E.children,after._id,{teacher_name:g.manager_name})})}
   if(col==="gardens"&&before){const kids=vals("children").filter(c=>c.garden_id===after._id||(!c.garden_id&&((before.symbol&&String(c.symbol)===String(before.symbol))||(before.name&&c.garden_name===before.name))));
     const map=[["name","garden_name"],["symbol","symbol"],["manager_name","teacher_name"]].filter(([a])=>(before[a]||"")!==(after[a]||""));
-    if(map.length&&kids.length)S2.push({l:`לעדכן ${kids.length} ילדים בגן (${map.map(([a])=>colLabelOf(defOf("gardens"),a)).join(", ")})`,run:()=>pool(kids.map(c=>()=>save(E.children,c._id,Object.fromEntries(map.map(([a,b])=>[b,after[a]||""])))),()=>{})});
+    if(kids.length)map.forEach(([a,b])=>S2.push({l:`לעדכן ${kids.length} ילדים בגן: ${colLabelOf(defOf("gardens"),a)} ← ${after[a]||"(ריק)"}`,run:()=>pool(kids.filter(c=>String(c[b]||"")!==String(after[a]||"")).map(c=>()=>save(E.children,c._id,{[b]:after[a]||""})),()=>{})}));
     if(after.manager_name&&after.manager_name!==before.manager_name){const sm=vals("staff").find(x=>x.full_name===after.manager_name);if(sm&&sm.garden_id!==after._id)S2.push({l:`לשייך את ${sm.full_name} לגן ${after.name} ברשימת הצוות`,run:()=>save(E.staff,sm._id,{garden_id:after._id})})}}
   if(col==="staff"&&before){if(before.full_name&&after.full_name&&before.full_name!==after.full_name){const gs=vals("gardens").filter(x=>x.manager_name===before.full_name),ks=vals("children").filter(c=>c.teacher_name===before.full_name);
       if(gs.length||ks.length)S2.push({l:`להחליף את השם "${before.full_name}" ב"${after.full_name}" ב-${gs.length} גנים וב-${ks.length} ילדים`,run:()=>pool([...gs.map(x=>()=>save(E.gardens,x._id,{manager_name:after.full_name})),...ks.map(c=>()=>save(E.children,c._id,{teacher_name:after.full_name}))],()=>{})})}
     const isT=(after.roles||[]).some(r=>/גננת/.test(r));
     if(g&&isT&&after.garden_id!==before.garden_id&&g.manager_name!==after.full_name){const ks=kidsOf(g);S2.push({l:`לרשום את ${after.full_name} כגננת של ${g.name}${ks.length?` ולעדכן ${ks.length} ילדים`:""}`,run:()=>pool([()=>save(E.gardens,g._id,{manager_name:after.full_name}),...ks.map(c=>()=>save(E.children,c._id,{teacher_name:after.full_name}))],()=>{})})}}
   if(!S2.length)return;
-  setTimeout(()=>{modal(`<h2>לעדכן גם במקומות אחרים?</h2><p class="sub">השינוי ששמרת קשור לנתונים במסכים נוספים. סמנו מה לעדכן:</p><div class="list prop">${S2.map((x,i)=>`<label class="li"><input type="checkbox" data-pi="${i}" checked><span class="t">${esc(x.l)}</span></label>`).join("")}</div>
+  setTimeout(()=>{modal(`<h2>לעדכן גם במקומות אחרים?</h2><p class="sub">השינוי ששמרת קשור לנתונים במסכים נוספים. סמנו מה לעדכן:</p><div class="list prop">${S2.map((x,i)=>`<label class="li"><input type="checkbox" data-pi="${i}"${x.off?"":" checked"}><span class="t">${esc(x.l)}</span></label>`).join("")}</div>
     <div class="row"><button class="btn primary" id="propGo">עדכון</button><button class="btn" data-close>לא, תודה</button></div>`);
     $("#propGo").onclick=e=>busy(e.currentTarget,async()=>{const on=[...document.querySelectorAll("[data-pi]")].filter(x=>x.checked).map(x=>S2[+x.dataset.pi]);for(const x of on)await x.run();closeModal();toast(on.length?"העדכונים בוצעו":"לא בוצעו עדכונים")})},60)}
 
@@ -2900,7 +2902,7 @@ function siblingsOf(c){const ids=[c.parent1_id,c.parent2_id].map(normId).filter(
   if(!ids.length&&!ph.length)return[];return vals("children").filter(x=>x._id!==c._id&&([x.parent1_id,x.parent2_id].some(v=>v&&ids.includes(normId(v)))||[x.parent1_phone,x.parent2_phone,x.mobile_from_registration].some(v=>{const d=digits(v);return d.length>=9&&ph.includes(d)}))).slice(0,12)}
 async function crmMove(c,gid){const g=S.gardens.get(gid);const h=[...(c.garden_history||[]),{ts:new Date().toISOString(),by:uid,from:c.garden_id||"",from_name:gName(c.garden_id)||c.garden_name||"",to:gid,to_name:g.name}].slice(-30);
   const log=[...(c.log||[]),{ts:new Date().toISOString(),by:uid,kind:"sys",text:`${c.garden_id?"הועבר/ה":"שויך/ה"} לגן ${g.name}`}].slice(-80);
-  await save(E.children,c._id,{garden_id:gid,garden_name:g.name,symbol:g.symbol||c.symbol||"",teacher_name:g.manager_name||c.teacher_name||"",garden_history:h,log})}
+  await save(E.children,c._id,{garden_id:gid,garden_name:g.name,symbol:c.symbol||g.symbol||"",teacher_name:c.teacher_name||g.manager_name||"",garden_history:h,log})}
 
 document.addEventListener("scroll",e=>{if(e.target&&e.target.id==="crmVirt")requestAnimationFrame(crmPaintRows)},true);
 (()=>{const or=render;render=function(){const keep=CRM.scroll;or();if(route==="crm"){const v=$("#crmVirt");if(v){v.scrollTop=keep;crmPaintRows()}}}})();
