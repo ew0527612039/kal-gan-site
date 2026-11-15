@@ -768,6 +768,15 @@ body:has(#modal .modal) .asfab{display:none}
 .plc-head h2{margin:0;font-size:1.25rem}
 .plc table td small{display:block;color:var(--muted)}
 .plc tr.on{background:color-mix(in srgb,var(--accent,#0f9aa8) 8%,transparent)}
+.plc-g small.w{color:var(--warn);font-weight:600}
+.plc-alert{display:flex;gap:8px;align-items:center;padding:10px 14px;margin:0 0 12px;border-radius:12px;background:var(--warn-soft);color:var(--warn)}
+.plc-alert svg,.plc-sub .note svg{width:16px;height:16px;flex:none}
+.plc tr.plc-sub td{background:var(--raise);padding:8px 10px;border-top:2px solid var(--line)}
+.plc tr.plc-sub.warn td{background:var(--warn-soft);border-top-color:var(--warn)}
+.plc-subin{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.plc-subin .n{color:var(--muted);font-variant-numeric:tabular-nums}
+.plc-subin .note{display:inline-flex;gap:4px;align-items:center;font-size:.85rem;color:var(--muted)}
+.plc-sub.warn .note{color:var(--warn);font-weight:600}
 @media (max-width:900px){.plc{grid-template-columns:1fr}.plc-side{position:static;max-height:260px}}
 </style>
 
@@ -3426,7 +3435,7 @@ async function regSaveSet(el){const v=id=>$(id)?.value||"";const faq=[...documen
 
 
 /* ---------- two independent placements: garden/teacher and symbol ---------- */
-const PLC={kplace:{sel:"",q:"",gq:"",pick:new Set(),status:"active"},ksym:{sel:"",q:"",gq:"",pick:new Set(),status:"active"}};
+const PLC={kplace:{sel:"",q:"",gq:"",pick:new Set(),status:"active",only:false},ksym:{sel:"",q:"",gq:"",pick:new Set(),status:"active",only:false}};
 const plcKids=st=>vals("children").filter(c=>st==="all"||(st==="active"?isOn(c.is_active):!isOn(c.is_active)));
 const plcNorm=v=>String(v||"").replace(/\s+/g,"").trim();
 function plcGroups(kind,K){const m=new Map();
@@ -3438,23 +3447,58 @@ function plcGroups(kind,K){const m=new Map();
   const none={id:"__none",t:"ללא סמל",s:"ילדים בלי סמל מוסד",k:[],none:1};
   K.forEach(c=>{const v=plcNorm(c.symbol);if(!v){none.k.push(c);return}if(!m.has(v))m.set(v,{id:v,t:"סמל "+v,s:"סמל שלא מוגדר באף גן",k:[]});m.get(v).k.push(c)});
   return [none,...[...m.values()].sort((a,b)=>a.id.localeCompare(b.id,"he",{numeric:true}))]}
+const plcQ=(c,q)=>!q||[fullName(c),c.id_number,c.teacher_name,c.garden_name,c.symbol,c.city].join(" ").toLowerCase().includes(q);
+const plcDate=d=>d?String(d).slice(0,10).split("-").reverse().join("/"):"";
+/* sub-groups inside the selected group: by garden screen → split by the child's symbol; by symbol screen → split by garden */
+function plcSubs(kind,cur){const m=new Map();
+  if(kind==="kplace"){const g=S.gardens?.get(cur.id),gs=plcNorm(g?.symbol);
+    cur.k.forEach(c=>{const v=plcNorm(c.symbol)||"__none";if(!m.has(v))m.set(v,{key:v,k:[],t:v==="__none"?"ללא סמל":"סמל "+v,home:gs&&v===gs,warn:!cur.none&&!!gs&&v!==gs});m.get(v).k.push(c)});
+    m.forEach(x=>{x.note=cur.none?"":!gs?"לגן לא מוגדר סמל":x.home?"סמל הגן":"שונה מסמל הגן ("+gs+")"});
+    return [...m.values()].sort((a,b)=>(b.home-a.home)||(a.key==="__none")-(b.key==="__none")||a.key.localeCompare(b.key,"he",{numeric:true}))}
+  cur.k.forEach(c=>{const g=c.garden_id&&S.gardens?.get(c.garden_id),v=g?g._id:"__none";if(!m.has(v)){const gs=plcNorm(g?.symbol);m.set(v,{key:v,k:[],t:g?g.name:"ללא שיבוץ לגן",note:g?[g.manager_name&&"גננת: "+g.manager_name,gs&&gs!==cur.id&&!cur.none?"סמל הגן: "+gs:""].filter(Boolean).join(" · "):"",warn:!cur.none&&!!g&&!!gs&&gs!==cur.id})}m.get(v).k.push(c)});
+  return [...m.values()].sort((a,b)=>(a.key==="__none")-(b.key==="__none")||a.t.localeCompare(b.t,"he"))}
+const plcMis=(kind,g)=>g.none?0:plcSubs(kind,g).filter(x=>x.warn).reduce((n,x)=>n+x.k.length,0);
 function plcPage(kind){const P=PLC[kind],isG=kind==="kplace";
   if(!ready.has("children")||!ready.has("gardens"))return `<div class="ph"><div><h1>${isG?"שיבוץ לפי גן / גננת":"שיבוץ לפי סמל"}</h1></div></div><div class="tbox">${SKEL}</div>`;
-  const K=plcKids(P.status),G=plcGroups(kind,K);if(!P.sel||!G.some(g=>g.id===P.sel))P.sel=(G.find(g=>g.k.length&&!g.none)||G[0]).id;
-  const cur=G.find(g=>g.id===P.sel)||G[0],gq=P.gq.trim().toLowerCase(),q=P.q.trim().toLowerCase();
-  const list=cur.k.filter(c=>!q||[fullName(c),c.id_number,c.teacher_name,c.garden_name,c.symbol,c.city].join(" ").toLowerCase().includes(q)).sort((a,b)=>fullName(a).localeCompare(fullName(b),"he"));
+  const K=plcKids(P.status),G=plcGroups(kind,K);G.forEach(g=>g.w=plcMis(kind,g));if(!P.sel||!G.some(g=>g.id===P.sel))P.sel=(G.find(g=>g.k.length&&!g.none)||G[0]).id;
+  const cur=G.find(g=>g.id===P.sel)||G[0],gq=P.gq.trim().toLowerCase(),q=P.q.trim().toLowerCase(),totW=G.reduce((n,g)=>n+g.w,0);
+  const subs=plcSubs(kind,cur).map(x=>({...x,k:x.k.filter(c=>plcQ(c,q)).sort((a,b)=>fullName(a).localeCompare(fullName(b),"he"))})).filter(x=>x.k.length&&(!P.only||x.warn));
+  const list=subs.flatMap(x=>x.k);P._ids=list.map(c=>c._id);P._subs=Object.fromEntries(subs.map(x=>[x.key,x.k.map(c=>c._id)]));
   [...P.pick].forEach(id=>{if(!S.children?.has(id))P.pick.delete(id)});const allOn=list.length&&list.every(c=>P.pick.has(c._id));
+  const gCur=isG&&S.gardens?.get(cur.id),gSym=plcNorm(gCur?.symbol);
   const target=isG?`<select id="plcTo" aria-label="גן יעד"><option value="">העברה לגן…</option>${G.filter(g=>!g.none).map(g=>`<option value="${g.id}">${esc(g.t)}${g.s?" – "+esc(g.s):""}</option>`).join("")}<option value="__none">הסרת השיבוץ לגן</option></select>`
     :`<input id="plcTo" list="plcSyms" class="mono" inputmode="numeric" placeholder="סמל יעד" aria-label="סמל יעד"><datalist id="plcSyms">${G.filter(g=>!g.none).map(g=>`<option value="${esc(g.id)}">${esc(g.s||"")}</option>`).join("")}</datalist>`;
-  return `<div class="ph"><div><h1>${isG?"שיבוץ לפי גן / גננת":"שיבוץ לפי סמל"}</h1><p class="sub">${isG?"שיבוץ הילדים לגנים במערכת. העברה לגן מעדכנת את הגן ואת הגננת – <b>הסמל של הילד/ה לא משתנה</b>.":"שיבוץ סמל מוסד לכל ילד/ה. שינוי סמל מעדכן רק את הסמל – <b>הגן והגננת לא משתנים</b>."}</p></div>
-    <div class="bar"><div class="seg">${[["active","פעילים"],["inactive","לא פעילים"],["all","הכל"]].map(([k,l])=>`<button data-plcst="${kind}|${k}" aria-pressed="${P.status===k}">${l}</button>`).join("")}</div><a class="btn" href="#${isG?"ksym":"kplace"}">${isG?"לשיבוץ לפי סמל":"לשיבוץ לפי גן / גננת"}</a></div></div>
-   <div class="plc"><aside class="plc-side"><input class="search" type="search" data-plcgq="${kind}" value="${esc(P.gq)}" placeholder="${isG?"חיפוש גן או גננת…":"חיפוש סמל…"}" aria-label="חיפוש">
-     ${G.filter(g=>g.none||!gq||(g.t+" "+g.s).toLowerCase().includes(gq)).map(g=>`<button class="plc-g${g.none?" none":""}" data-plcg="${kind}|${esc(g.id)}" aria-pressed="${g.id===cur.id}"><b>${esc(g.t)}</b><span class="n">${g.k.length}</span>${g.s?`<small>${esc(g.s)}</small>`:""}</button>`).join("")}</aside>
-    <section class="plc-main"><div class="plc-head"><div><h2>${esc(cur.t)} <span class="sub">(${cur.k.length})</span></h2>${cur.s?`<p class="sub" style="margin:2px 0 0">${esc(cur.s)}</p>`:""}</div><input class="search" type="search" data-plcq="${kind}" value="${esc(P.q)}" placeholder="חיפוש ילד/ה…" aria-label="חיפוש ילד/ה" style="max-width:260px"></div>
-     ${canWrite?`<div class="plc-bar"><label class="row" style="gap:6px"><input type="checkbox" data-plcall="${kind}"${allOn?" checked":""}> בחירת הכל (${list.length})</label><span class="spacer"></span>${P.pick.size?`<b>${P.pick.size} נבחרו</b>`:'<span class="sub">סמנו ילדים כדי לשבץ</span>'}${target}<button class="btn primary" data-plcgo="${kind}"${P.pick.size?"":" disabled"}>${isG?"העברה":"עדכון סמל"}</button></div>`:""}
-     <div class="tbox"><table><thead><tr>${canWrite?"<th style=\"width:34px\"></th>":""}<th>שם</th><th>ת.ז.</th><th>תאריך לידה</th>${isG?"<th>גננת</th><th>סמל</th>":"<th>סמל</th><th>גן</th><th>גננת</th>"}<th>עיר</th></tr></thead><tbody>
-      ${list.map(c=>`<tr${P.pick.has(c._id)?' class="on"':""}>${canWrite?`<td><input type="checkbox" data-plcpick="${kind}|${c._id}"${P.pick.has(c._id)?" checked":""} aria-label="בחירת ${esc(fullName(c))}"></td>`:""}<td><button class="linkish" data-plcopen="${c._id}"><b>${esc(fullName(c))}</b></button></td><td class="mono">${esc(c.id_number||"")}</td><td>${esc(c.birth_date?String(c.birth_date).split("-").reverse().join("/"):"")}</td>${isG?`<td>${esc(c.teacher_name||"")}</td><td class="mono">${esc(c.symbol||"")}</td>`:`<td class="mono">${esc(c.symbol||"")}</td><td>${esc(gName(c.garden_id)||c.garden_name||"")}</td><td>${esc(c.teacher_name||"")}</td>`}<td>${esc(c.city||"")}</td></tr>`).join("")||`<tr><td colspan="8"><div class="empty"><b>אין ילדים כאן</b>${q?"נסו חיפוש אחר.":""}</div></td></tr>`}
+  const nc=canWrite?9:8;
+  const row=c=>`<tr${P.pick.has(c._id)?' class="on"':""}>${canWrite?`<td><input type="checkbox" data-plcpick="${kind}|${c._id}"${P.pick.has(c._id)?" checked":""} aria-label="בחירת ${esc(fullName(c))}"></td>`:""}<td><button class="linkish" data-plcopen="${c._id}"><b>${esc(fullName(c))}</b></button></td><td class="mono">${esc(c.id_number||"")}</td><td>${esc(plcDate(c.birth_date))}</td>${isG?`<td>${esc(c.teacher_name||"")}</td><td class="mono">${esc(c.symbol||"")}</td>`:`<td>${esc(gName(c.garden_id)||c.garden_name||"")}</td><td>${esc(c.teacher_name||"")}</td>`}<td>${esc(c.city||"")}</td><td>${isOn(c.is_active)?"":'<span class="sub">לא פעיל/ה</span>'}</td></tr>`;
+  const body=subs.map(x=>{const on=x.k.every(c=>P.pick.has(c._id));return `<tr class="plc-sub${x.warn?" warn":""}"><td colspan="${nc}"><div class="plc-subin">${canWrite?`<input type="checkbox" data-plcsub="${kind}|${esc(x.key)}"${on?" checked":""} aria-label="בחירת כל ${esc(x.t)}">`:""}<b>${esc(x.t)}</b><span class="n">${x.k.length} ילדים</span>${x.note?`<span class="note">${x.warn?ico("alert")+" ":""}${esc(x.note)}</span>`:""}</div></td></tr>${x.k.map(row).join("")}`}).join("");
+  return `<div class="ph"><div><h1>${isG?"שיבוץ לפי גן / גננת":"שיבוץ לפי סמל"}</h1><p class="sub">${isG?"איזה ילד/ה נמצא/ת באיזה גן. בכל גן הילדים מחולקים לפי הסמל שלהם – ילדים שהסמל שלהם שונה מסמל הגן מסומנים. העברה לגן מעדכנת גן וגננת, <b>הסמל לא משתנה</b>.":"איזה ילד/ה משויך/ת לאיזה סמל. בכל סמל הילדים מחולקים לפי הגן – גן שהסמל שלו שונה מסומן. עדכון סמל משנה רק את הסמל, <b>הגן והגננת לא משתנים</b>."}</p></div>
+    <div class="bar"><div class="seg">${[["active","פעילים"],["inactive","לא פעילים"],["all","הכל"]].map(([k,l])=>`<button data-plcst="${kind}|${k}" aria-pressed="${P.status===k}">${l}</button>`).join("")}</div>
+    <div class="menu-wrap"><button class="btn" data-plcx="${kind}|all">${ico("download")} ייצוא לאקסל – ${isG?"כל הגנים":"כל הסמלים"}</button></div>
+    <a class="btn" href="#${isG?"ksym":"kplace"}">${isG?"לשיבוץ לפי סמל":"לשיבוץ לפי גן / גננת"}</a></div></div>
+   ${totW?`<div class="plc-alert">${ico("alert")} <span><b>${totW} ילדים</b> ${isG?"משובצים בגן שהסמל שלו שונה מהסמל שלהם":"משויכים לסמל ששונה מסמל הגן שלהם"}. הגנים המסומנים ברשימה מימין.</span></div>`:""}
+   <div class="plc"><aside class="plc-side"><input class="search" type="search" data-plcgq="${kind}" value="${esc(P.gq)}" placeholder="${isG?"חיפוש גן או גננת…":"חיפוש סמל או גן…"}" aria-label="חיפוש">
+     ${G.filter(g=>g.none||!gq||(g.t+" "+g.s).toLowerCase().includes(gq)).map(g=>`<button class="plc-g${g.none?" none":""}" data-plcg="${kind}|${esc(g.id)}" aria-pressed="${g.id===cur.id}"><b>${esc(g.t)}</b><span class="n">${g.k.length}</span>${g.s?`<small>${esc(g.s)}</small>`:""}${g.w?`<small class="w">${g.w} ${isG?"בסמל אחר":"בגן עם סמל אחר"}</small>`:""}</button>`).join("")}</aside>
+    <section class="plc-main"><div class="plc-head"><div><h2>${esc(cur.t)} <span class="sub">(${cur.k.length})</span></h2>${cur.s?`<p class="sub" style="margin:2px 0 0">${esc(cur.s)}${isG&&!cur.none?` · סמל הגן: ${gSym?`<span class="mono">${esc(gSym)}</span>`:"לא מוגדר"}`:""}</p>`:""}</div>
+      <div class="row" style="gap:8px;flex-wrap:wrap">${cur.w?`<label class="row" style="gap:6px"><input type="checkbox" data-plconly="${kind}"${P.only?" checked":""}> רק ${isG?"בסמל אחר":"גנים עם סמל אחר"} (${cur.w})</label>`:""}<input class="search" type="search" data-plcq="${kind}" value="${esc(P.q)}" placeholder="חיפוש ילד/ה…" aria-label="חיפוש ילד/ה" style="max-width:220px"><button class="btn" data-plcx="${kind}|cur">${ico("download")} ייצוא ${isG?"הגן":"הסמל"}</button></div></div>
+     ${canWrite?`<div class="plc-bar"><label class="row" style="gap:6px"><input type="checkbox" data-plcall="${kind}"${allOn?" checked":""}> בחירת הכל (${list.length})</label><span class="spacer"></span>${P.pick.size?`<b>${P.pick.size} נבחרו</b>`:'<span class="sub">סמנו ילדים כדי לשבץ</span>'}${target}<button class="btn primary" data-plcgo="${kind}"${P.pick.size?"":" disabled"}>${isG?"העברה":"עדכון סמל"}</button>${isG&&gSym&&cur.w?`<button class="btn" data-plcalign="${cur.id}"${P.pick.size?"":" disabled"} title="מעדכן רק את הסמל של הילדים שנבחרו">עדכון לסמל הגן (${esc(gSym)})</button>`:""}</div>`:""}
+     <div class="tbox"><table><thead><tr>${canWrite?"<th style=\"width:34px\"></th>":""}<th>שם</th><th>ת.ז.</th><th>תאריך לידה</th>${isG?"<th>גננת</th><th>סמל</th>":"<th>גן</th><th>גננת</th>"}<th>עיר</th><th></th></tr></thead><tbody>
+      ${body||`<tr><td colspan="${nc}"><div class="empty"><b>אין ילדים כאן</b>${q?"נסו חיפוש אחר.":""}</div></td></tr>`}
      </tbody></table></div></section></div>`}
+/* Excel: summary sheet + all-children sheet + sheet per garden / symbol */
+async function plcExport(kind,scope){const P=PLC[kind],isG=kind==="kplace";try{await ensureXLSX()}catch(e){return toast(e.message)}
+  const K=plcKids(P.status),G=plcGroups(kind,K).filter(g=>g.k.length&&(scope==="all"||g.id===P.sel));if(!G.length)return toast("אין מה לייצא");
+  const hd=["שם","ת.ז.","תאריך לידה","גן","גננת","סמל הילד/ה","סמל הגן","תואם לסמל הגן","עיר","סטטוס"];
+  const line=c=>{const g=c.garden_id&&S.gardens.get(c.garden_id),gs=plcNorm(g?.symbol),cs=plcNorm(c.symbol);return [fullName(c),c.id_number||"",plcDate(c.birth_date),g?g.name:(c.garden_name||""),c.teacher_name||"",cs,gs,!g||!gs?"":cs===gs?"כן":"לא",c.city||"",isOn(c.is_active)?"פעיל/ה":"לא פעיל/ה"]};
+  const wb=XLSX.utils.book_new();wb.Workbook={Views:[{RTL:true}]};const used=new Set();
+  const add=(name,aoa,w)=>{let n=String(name).replace(/[\[\]:*?\/\\]/g," ").trim().slice(0,28)||"גיליון",b=n,i=2;while(used.has(n))n=b.slice(0,25)+" "+i++;used.add(n);const ws=XLSX.utils.aoa_to_sheet(aoa);ws["!views"]=[{RTL:true}];ws["!cols"]=(w||aoa[0].map(()=>14)).map(x=>({wch:x}));ws["!autofilter"]={ref:XLSX.utils.encode_range({s:{r:0,c:0},e:{r:Math.max(0,aoa.length-1),c:aoa[0].length-1}})};XLSX.utils.book_append_sheet(wb,ws,n)};
+  const W=[22,12,12,20,16,12,12,10,12,10];
+  add("סיכום",[isG?["גן","גננת","סמל הגן","מספר ילדים","מתוכם בסמל אחר"]:["סמל","גנים","מספר ילדים","מתוכם בגן עם סמל אחר"],...G.map(g=>{const gg=S.gardens?.get(g.id);return isG?[g.t,gg?.manager_name||"",plcNorm(gg?.symbol),g.k.length,g.w||0]:[g.none?"ללא סמל":g.id,g.s||"",g.k.length,g.w||0]})],isG?[24,18,12,12,14]:[12,40,12,18]);
+  const all=[];G.forEach(g=>plcSubs(kind,g).forEach(x=>x.k.slice().sort((a,b)=>fullName(a).localeCompare(fullName(b),"he")).forEach(c=>all.push([isG?g.t:(g.none?"ללא סמל":g.id),...line(c)]))));
+  add("כל הילדים",[[isG?"קבוצה (גן)":"קבוצה (סמל)",...hd],...all],[16,...W]);
+  G.forEach(g=>{const rows=[];plcSubs(kind,g).forEach(x=>x.k.slice().sort((a,b)=>fullName(a).localeCompare(fullName(b),"he")).forEach(c=>rows.push(line(c))));add(isG?g.t:(g.none?"ללא סמל":"סמל "+g.id),[hd,...rows],W)});
+  const fn=`${isG?"שיבוץ-לפי-גן":"שיבוץ-לפי-סמל"}${scope==="all"?"":"-"+(G[0].none?"ללא":G[0].t)}-${today()}.xlsx`.replace(/[\\\/:*?"<>|]/g,"-");
+  try{XLSX.writeFile(wb,fn)}catch(e){const buf=XLSX.write(wb,{type:"array",bookType:"xlsx"});const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));a.download=fn;a.click()}
+  audit("ייצוא לאקסל","ילדים",isG?"שיבוץ לפי גן":"שיבוץ לפי סמל",all.length+" ילדים")}
 PAGES.kplace=()=>plcPage("kplace");PAGES.ksym=()=>plcPage("ksym");
 async function plcGo(kind,el){const P=PLC[kind],ids=[...P.pick].filter(id=>S.children?.has(id));if(!ids.length)return;const to=($("#plcTo")?.value||"").trim();
   if(kind==="kplace"){if(!to)return toast("בחרו גן יעד");
@@ -3465,14 +3509,18 @@ async function plcGo(kind,el){const P=PLC[kind],ids=[...P.pick].filter(id=>S.chi
   const sym=to.replace(/[^\d]/g,"");if(!sym)return toast("כתבו או בחרו סמל (ספרות בלבד)");
   if(!confirm(`לעדכן את הסמל ל-${sym} אצל ${ids.length} ילדים?\nהגן והגננת לא ישתנו.`))return;
   busy(el,async()=>{const f=await pool(ids.map(id=>()=>save(E.children,id,{symbol:sym})),()=>{},10);audit("שיבוץ לפי סמל","ילדים","סמל "+sym,ids.length+" ילדים");toast(`הסמל עודכן אצל ${ids.length-f} ילדים`);P.pick.clear();P.sel=sym;render()})}
-document.addEventListener("click",e=>{const el=e.target.closest("[data-plcg],[data-plcst],[data-plcgo],[data-plcopen]");if(!el)return;
-  if(el.dataset.plcg){const[k,id]=el.dataset.plcg.split("|");PLC[k].sel=id;PLC[k].pick.clear();PLC[k].q="";render();scrollTo({top:0});return}
+document.addEventListener("click",e=>{const el=e.target.closest("[data-plcg],[data-plcst],[data-plcgo],[data-plcopen],[data-plcx],[data-plcalign]");if(!el)return;
+  if(el.dataset.plcx){const[k,sc]=el.dataset.plcx.split("|");return busy(el,()=>plcExport(k,sc))}
+  if(el.dataset.plcalign){const g=S.gardens.get(el.dataset.plcalign),sym=plcNorm(g?.symbol),P=PLC.kplace,ids=[...P.pick].filter(id=>S.children?.has(id)&&plcNorm(S.children.get(id).symbol)!==sym);if(!sym||!ids.length)return toast("לא נבחרו ילדים שהסמל שלהם שונה מסמל הגן");if(!confirm(`לעדכן את הסמל ל-${sym} (סמל הגן) אצל ${ids.length} ילדים?\nהגן והגננת לא ישתנו.`))return;return busy(el,async()=>{const f=await pool(ids.map(id=>()=>save(E.children,id,{symbol:sym})),()=>{},10);audit("יישור לסמל הגן","ילדים",g.name,ids.length+" ילדים, סמל "+sym);toast(`הסמל עודכן אצל ${ids.length-f} ילדים`);P.pick.clear();render()})}
+  if(el.dataset.plcg){const[k,id]=el.dataset.plcg.split("|");PLC[k].sel=id;PLC[k].pick.clear();PLC[k].q="";PLC[k].only=false;render();scrollTo({top:0});return}
   if(el.dataset.plcst){const[k,v]=el.dataset.plcst.split("|");PLC[k].status=v;PLC[k].pick.clear();return render()}
   if(el.dataset.plcgo)return plcGo(el.dataset.plcgo,el);
   if(el.dataset.plcopen)return openForm("children",el.dataset.plcopen)});
 document.addEventListener("change",e=>{const t=e.target;
   if(t.dataset.plcpick){const[k,id]=t.dataset.plcpick.split("|");t.checked?PLC[k].pick.add(id):PLC[k].pick.delete(id);return render()}
-  if(t.dataset.plcall){const k=t.dataset.plcall,P=PLC[k],K=plcKids(P.status),cur=plcGroups(k,K).find(g=>g.id===P.sel);const q=P.q.trim().toLowerCase();(cur?cur.k:[]).filter(c=>!q||[fullName(c),c.id_number,c.teacher_name,c.garden_name,c.symbol,c.city].join(" ").toLowerCase().includes(q)).forEach(c=>t.checked?P.pick.add(c._id):P.pick.delete(c._id));return render()}});
+  if(t.dataset.plcall){const P=PLC[t.dataset.plcall];(P._ids||[]).forEach(id=>t.checked?P.pick.add(id):P.pick.delete(id));return render()}
+  if(t.dataset.plcsub){const[k,key]=t.dataset.plcsub.split("|"),P=PLC[k];(P._subs?.[key]||[]).forEach(id=>t.checked?P.pick.add(id):P.pick.delete(id));return render()}
+  if(t.dataset.plconly){const P=PLC[t.dataset.plconly];P.only=t.checked;P.pick.clear();return render()}});
 document.addEventListener("input",e=>{const t=e.target,k=t.dataset.plcq||t.dataset.plcgq;if(!k)return;const f=t.dataset.plcq?"q":"gq";PLC[k][f]=t.value;clearTimeout(PLC._t);PLC._t=setTimeout(()=>{const pos=t.selectionStart;render();const i=document.querySelector(`[data-plc${f}="${k}"]`);if(i){i.focus();try{i.setSelectionRange(pos,pos)}catch(_){}}},250)});
 (async()=>{
   let lk=window.KG_LOGIN||"";try{const u=new URL(location.href);if(!lk)lk=u.searchParams.get("login")||"";if(u.searchParams.get("login")){u.searchParams.delete("login");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
