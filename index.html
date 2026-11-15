@@ -751,6 +751,24 @@ details.menu[open]{z-index:60}.ph:has(details.menu[open]),.bar:has(details.menu[
 .assug{display:flex;gap:6px;flex-wrap:wrap;padding:6px 14px 0}.assug:empty{display:none}.assug .chip .ico{width:14px;height:14px}
 .asmic{padding:8px 12px;font-size:1.1rem}.asmic.on{background:#fee2e2;animation:micp 1s ease-in-out infinite}@keyframes micp{50%{box-shadow:0 0 0 6px rgba(220,38,38,.15)}}
 body:has(#modal .modal) .asfab{display:none}
+
+.plc{display:grid;grid-template-columns:300px minmax(0,1fr);gap:14px;align-items:start}
+.plc-side{position:sticky;top:70px;display:flex;flex-direction:column;gap:6px;max-height:calc(100vh - 90px);overflow:auto;padding:2px}
+.plc-side .search{width:100%}
+.plc-g{display:grid;grid-template-columns:1fr auto;gap:2px 8px;text-align:start;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font:inherit;color:inherit}
+.plc-g:hover{border-color:var(--accent,#0f9aa8)}
+.plc-g[aria-pressed="true"]{border-color:var(--accent,#0f9aa8);box-shadow:inset 3px 0 0 var(--accent,#0f9aa8);background:color-mix(in srgb,var(--accent,#0f9aa8) 7%,var(--surface))}
+.plc-g b{font-size:.95rem}.plc-g small{grid-column:1;color:var(--muted);font-size:.8rem}.plc-g .n{grid-row:1/span 2;grid-column:2;align-self:center;font-weight:700;font-variant-numeric:tabular-nums}
+.plc-g.none{border-style:dashed}
+.plc-main{display:flex;flex-direction:column;gap:10px;min-width:0}
+.plc-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);position:sticky;top:60px;z-index:3}
+.plc-bar .spacer{flex:1}
+.plc-bar select,.plc-bar input{min-width:180px}
+.plc-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.plc-head h2{margin:0;font-size:1.25rem}
+.plc table td small{display:block;color:var(--muted)}
+.plc tr.on{background:color-mix(in srgb,var(--accent,#0f9aa8) 8%,transparent)}
+@media (max-width:900px){.plc{grid-template-columns:1fr}.plc-side{position:static;max-height:260px}}
 </style>
 
 <button class="skip" data-act="skip">דילוג לתוכן הראשי</button>
@@ -2629,7 +2647,7 @@ function propagate(col,before,after){const S2=[];const g=after.garden_id&&S.gard
   if(col==="children"&&g&&after.garden_id!==(before?.garden_id||"")){
     if(g.name&&after.garden_name!==g.name)S2.push({l:`לעדכן אצל ${fullName(after)} את שם הגן ל"${g.name}"`,run:()=>save(E.children,after._id,{garden_name:g.name})});
     if(g.symbol&&String(after.symbol||"")!==String(g.symbol))S2.push({off:1,l:`לעדכן אצל ${fullName(after)} גם את הסמל ל-${g.symbol} (הגננת לא תשתנה)`,run:()=>save(E.children,after._id,{symbol:g.symbol})});
-    if(g.manager_name&&after.teacher_name!==g.manager_name)S2.push({off:1,l:`לעדכן אצל ${fullName(after)} גם את הגננת ל${g.manager_name} (הסמל לא ישתנה)`,run:()=>save(E.children,after._id,{teacher_name:g.manager_name})})}
+    if(g.manager_name&&after.teacher_name!==g.manager_name)S2.push({l:`לעדכן אצל ${fullName(after)} גם את הגננת ל${g.manager_name} (הסמל לא ישתנה)`,run:()=>save(E.children,after._id,{teacher_name:g.manager_name})})}
   if(col==="gardens"&&before){const kids=vals("children").filter(c=>c.garden_id===after._id||(!c.garden_id&&((before.symbol&&String(c.symbol)===String(before.symbol))||(before.name&&c.garden_name===before.name))));
     const map=[["name","garden_name"],["symbol","symbol"],["manager_name","teacher_name"]].filter(([a])=>(before[a]||"")!==(after[a]||""));
     if(kids.length)map.forEach(([a,b])=>S2.push({l:`לעדכן ${kids.length} ילדים בגן: ${colLabelOf(defOf("gardens"),a)} ← ${after[a]||"(ריק)"}`,run:()=>pool(kids.filter(c=>String(c[b]||"")!==String(after[a]||"")).map(c=>()=>save(E.children,c._id,{[b]:after[a]||""})),()=>{})}));
@@ -2827,8 +2845,8 @@ const avatar=(name,col,cls="")=>`<span class="av ${cls}" style="--k:${col}" aria
 
 (()=>{const d=MODS.find(m=>m.k==="data");const ot=d.tabs;d.tabs=()=>ot().filter(t=>!["gardens","moe"].includes(t[0])).map(t=>t[0]==="children"?["children","ילדים (טבלה)",t[2]]:t);
   const i=MODS.findIndex(m=>m.k==="data");
-  if(!MODS.some(m=>m.k==="kids"))MODS.splice(i,0,{k:"kids",l:"ילדים וגנים",i:"child",tabs:()=>[["crm","ילדים",count("children",c=>isOn(c.is_active))],["teachers","גננות וצוות חינוכי",vals("staff").filter(x=>isEdu(x)&&isOn(x.is_active)&&!x.garden_id).length?"!":""],["gardens","גנים ומוסדות",vals("gardens").length],["health","איכות נתונים"],["moe","השוואת משרד החינוך"]]});
-  MOD_C.kids="#0f9aa8";NEEDS.crm=["children","gardens","staff","programs"];NEEDS.teachers=["staff","gardens","children"];NEEDS.health=["children","gardens","staff"];})();
+  if(!MODS.some(m=>m.k==="kids"))MODS.splice(i,0,{k:"kids",l:"ילדים וגנים",i:"child",tabs:()=>[["crm","ילדים",count("children",c=>isOn(c.is_active))],["kplace","שיבוץ לפי גן / גננת"],["ksym","שיבוץ לפי סמל"],["teachers","גננות וצוות חינוכי",vals("staff").filter(x=>isEdu(x)&&isOn(x.is_active)&&!x.garden_id).length?"!":""],["gardens","גנים ומוסדות",vals("gardens").length],["health","איכות נתונים"],["moe","השוואת משרד החינוך"]]});
+  MOD_C.kids="#0f9aa8";NEEDS.crm=["children","gardens","staff","programs"];NEEDS.kplace=["children","gardens","staff"];NEEDS.ksym=["children","gardens"];NEEDS.teachers=["staff","gardens","children"];NEEDS.health=["children","gardens","staff"];})();
 
 let CRM=Object.assign({q:"",f:{garden:"",inst:"",city:"",year:"",status:"active",issue:""},sort:"name",sel:null,tab:"overview",bulk:new Set(),scroll:0},(()=>{const s=store("crm")||{};return{f:{garden:"",inst:"",city:"",year:"",status:"active",issue:"",...(s.f||{})},sort:s.sort||"name"}})());
 const crmSave=()=>store("crm",{f:CRM.f,sort:CRM.sort});
@@ -2902,7 +2920,7 @@ function siblingsOf(c){const ids=[c.parent1_id,c.parent2_id].map(normId).filter(
   if(!ids.length&&!ph.length)return[];return vals("children").filter(x=>x._id!==c._id&&([x.parent1_id,x.parent2_id].some(v=>v&&ids.includes(normId(v)))||[x.parent1_phone,x.parent2_phone,x.mobile_from_registration].some(v=>{const d=digits(v);return d.length>=9&&ph.includes(d)}))).slice(0,12)}
 async function crmMove(c,gid){const g=S.gardens.get(gid);const h=[...(c.garden_history||[]),{ts:new Date().toISOString(),by:uid,from:c.garden_id||"",from_name:gName(c.garden_id)||c.garden_name||"",to:gid,to_name:g.name}].slice(-30);
   const log=[...(c.log||[]),{ts:new Date().toISOString(),by:uid,kind:"sys",text:`${c.garden_id?"הועבר/ה":"שויך/ה"} לגן ${g.name}`}].slice(-80);
-  await save(E.children,c._id,{garden_id:gid,garden_name:g.name,symbol:c.symbol||g.symbol||"",teacher_name:c.teacher_name||g.manager_name||"",garden_history:h,log})}
+  await save(E.children,c._id,{garden_id:gid,garden_name:g.name,symbol:c.symbol||g.symbol||"",teacher_name:g.manager_name||c.teacher_name||"",garden_history:h,log})}
 
 document.addEventListener("scroll",e=>{if(e.target&&e.target.id==="crmVirt")requestAnimationFrame(crmPaintRows)},true);
 (()=>{const or=render;render=function(){const keep=CRM.scroll;or();if(route==="crm"){const v=$("#crmVirt");if(v){v.scrollTop=keep;crmPaintRows()}}}})();
@@ -3406,6 +3424,56 @@ PAGES.regset=()=>{const c=regCfg(),yr=c.year_start||(new Date().getMonth()>=8?ne
 async function regSaveSet(el){const v=id=>$(id)?.value||"";const faq=[...document.querySelectorAll("#rgFaq .faqrow")].map(r=>({q:r.querySelector("[data-fq]").value.trim(),a:r.querySelector("[data-fa]").value.trim()})).filter(x=>x.q);
   busy(el,async()=>{await call("regSettings",{open:$("#rsOpen").checked,closed_msg:v("#rsClosed"),year_start:+v("#rsYear"),year_label:v("#rsYearL"),types:v("#rsTypes"),soon:v("#rsSoon"),areas:v("#rsAreas"),phone:v("#rsPhone"),email:v("#rsEmail"),intro:v("#rsIntro"),faq});await syncNow();toast("ההגדרות נשמרו – האתר מתעדכן מיד")})}
 
+
+/* ---------- two independent placements: garden/teacher and symbol ---------- */
+const PLC={kplace:{sel:"",q:"",gq:"",pick:new Set(),status:"active"},ksym:{sel:"",q:"",gq:"",pick:new Set(),status:"active"}};
+const plcKids=st=>vals("children").filter(c=>st==="all"||(st==="active"?isOn(c.is_active):!isOn(c.is_active)));
+const plcNorm=v=>String(v||"").replace(/\s+/g,"").trim();
+function plcGroups(kind,K){const m=new Map();
+  if(kind==="kplace"){vals("gardens").forEach(g=>m.set(g._id,{id:g._id,t:g.name||"(ללא שם)",s:[g.manager_name&&"גננת: "+g.manager_name,g.city].filter(Boolean).join(" · "),k:[]}));
+    const none={id:"__none",t:"ללא שיבוץ לגן",s:"ילדים שלא משויכים לאף גן",k:[],none:1};
+    K.forEach(c=>{const g=c.garden_id&&m.get(c.garden_id);(g||none).k.push(c)});
+    return [none,...[...m.values()].sort((a,b)=>a.t.localeCompare(b.t,"he"))]}
+  const gs=vals("gardens");gs.forEach(g=>{const v=plcNorm(g.symbol);if(!v)return;const e=m.get(v)||{id:v,t:"סמל "+v,s:"",k:[],gn:[]};e.gn.push(g.name);e.s=e.gn.join(", ");m.set(v,e)});
+  const none={id:"__none",t:"ללא סמל",s:"ילדים בלי סמל מוסד",k:[],none:1};
+  K.forEach(c=>{const v=plcNorm(c.symbol);if(!v){none.k.push(c);return}if(!m.has(v))m.set(v,{id:v,t:"סמל "+v,s:"סמל שלא מוגדר באף גן",k:[]});m.get(v).k.push(c)});
+  return [none,...[...m.values()].sort((a,b)=>a.id.localeCompare(b.id,"he",{numeric:true}))]}
+function plcPage(kind){const P=PLC[kind],isG=kind==="kplace";
+  if(!ready.has("children")||!ready.has("gardens"))return `<div class="ph"><div><h1>${isG?"שיבוץ לפי גן / גננת":"שיבוץ לפי סמל"}</h1></div></div><div class="tbox">${SKEL}</div>`;
+  const K=plcKids(P.status),G=plcGroups(kind,K);if(!P.sel||!G.some(g=>g.id===P.sel))P.sel=(G.find(g=>g.k.length&&!g.none)||G[0]).id;
+  const cur=G.find(g=>g.id===P.sel)||G[0],gq=P.gq.trim().toLowerCase(),q=P.q.trim().toLowerCase();
+  const list=cur.k.filter(c=>!q||[fullName(c),c.id_number,c.teacher_name,c.garden_name,c.symbol,c.city].join(" ").toLowerCase().includes(q)).sort((a,b)=>fullName(a).localeCompare(fullName(b),"he"));
+  [...P.pick].forEach(id=>{if(!S.children?.has(id))P.pick.delete(id)});const allOn=list.length&&list.every(c=>P.pick.has(c._id));
+  const target=isG?`<select id="plcTo" aria-label="גן יעד"><option value="">העברה לגן…</option>${G.filter(g=>!g.none).map(g=>`<option value="${g.id}">${esc(g.t)}${g.s?" – "+esc(g.s):""}</option>`).join("")}<option value="__none">הסרת השיבוץ לגן</option></select>`
+    :`<input id="plcTo" list="plcSyms" class="mono" inputmode="numeric" placeholder="סמל יעד" aria-label="סמל יעד"><datalist id="plcSyms">${G.filter(g=>!g.none).map(g=>`<option value="${esc(g.id)}">${esc(g.s||"")}</option>`).join("")}</datalist>`;
+  return `<div class="ph"><div><h1>${isG?"שיבוץ לפי גן / גננת":"שיבוץ לפי סמל"}</h1><p class="sub">${isG?"שיבוץ הילדים לגנים במערכת. העברה לגן מעדכנת את הגן ואת הגננת – <b>הסמל של הילד/ה לא משתנה</b>.":"שיבוץ סמל מוסד לכל ילד/ה. שינוי סמל מעדכן רק את הסמל – <b>הגן והגננת לא משתנים</b>."}</p></div>
+    <div class="bar"><div class="seg">${[["active","פעילים"],["inactive","לא פעילים"],["all","הכל"]].map(([k,l])=>`<button data-plcst="${kind}|${k}" aria-pressed="${P.status===k}">${l}</button>`).join("")}</div><a class="btn" href="#${isG?"ksym":"kplace"}">${isG?"לשיבוץ לפי סמל":"לשיבוץ לפי גן / גננת"}</a></div></div>
+   <div class="plc"><aside class="plc-side"><input class="search" type="search" data-plcgq="${kind}" value="${esc(P.gq)}" placeholder="${isG?"חיפוש גן או גננת…":"חיפוש סמל…"}" aria-label="חיפוש">
+     ${G.filter(g=>g.none||!gq||(g.t+" "+g.s).toLowerCase().includes(gq)).map(g=>`<button class="plc-g${g.none?" none":""}" data-plcg="${kind}|${esc(g.id)}" aria-pressed="${g.id===cur.id}"><b>${esc(g.t)}</b><span class="n">${g.k.length}</span>${g.s?`<small>${esc(g.s)}</small>`:""}</button>`).join("")}</aside>
+    <section class="plc-main"><div class="plc-head"><div><h2>${esc(cur.t)} <span class="sub">(${cur.k.length})</span></h2>${cur.s?`<p class="sub" style="margin:2px 0 0">${esc(cur.s)}</p>`:""}</div><input class="search" type="search" data-plcq="${kind}" value="${esc(P.q)}" placeholder="חיפוש ילד/ה…" aria-label="חיפוש ילד/ה" style="max-width:260px"></div>
+     ${canWrite?`<div class="plc-bar"><label class="row" style="gap:6px"><input type="checkbox" data-plcall="${kind}"${allOn?" checked":""}> בחירת הכל (${list.length})</label><span class="spacer"></span>${P.pick.size?`<b>${P.pick.size} נבחרו</b>`:'<span class="sub">סמנו ילדים כדי לשבץ</span>'}${target}<button class="btn primary" data-plcgo="${kind}"${P.pick.size?"":" disabled"}>${isG?"העברה":"עדכון סמל"}</button></div>`:""}
+     <div class="tbox"><table><thead><tr>${canWrite?"<th style=\"width:34px\"></th>":""}<th>שם</th><th>ת.ז.</th><th>תאריך לידה</th>${isG?"<th>גננת</th><th>סמל</th>":"<th>סמל</th><th>גן</th><th>גננת</th>"}<th>עיר</th></tr></thead><tbody>
+      ${list.map(c=>`<tr${P.pick.has(c._id)?' class="on"':""}>${canWrite?`<td><input type="checkbox" data-plcpick="${kind}|${c._id}"${P.pick.has(c._id)?" checked":""} aria-label="בחירת ${esc(fullName(c))}"></td>`:""}<td><button class="linkish" data-plcopen="${c._id}"><b>${esc(fullName(c))}</b></button></td><td class="mono">${esc(c.id_number||"")}</td><td>${esc(c.birth_date?String(c.birth_date).split("-").reverse().join("/"):"")}</td>${isG?`<td>${esc(c.teacher_name||"")}</td><td class="mono">${esc(c.symbol||"")}</td>`:`<td class="mono">${esc(c.symbol||"")}</td><td>${esc(gName(c.garden_id)||c.garden_name||"")}</td><td>${esc(c.teacher_name||"")}</td>`}<td>${esc(c.city||"")}</td></tr>`).join("")||`<tr><td colspan="8"><div class="empty"><b>אין ילדים כאן</b>${q?"נסו חיפוש אחר.":""}</div></td></tr>`}
+     </tbody></table></div></section></div>`}
+PAGES.kplace=()=>plcPage("kplace");PAGES.ksym=()=>plcPage("ksym");
+async function plcGo(kind,el){const P=PLC[kind],ids=[...P.pick].filter(id=>S.children?.has(id));if(!ids.length)return;const to=($("#plcTo")?.value||"").trim();
+  if(kind==="kplace"){if(!to)return toast("בחרו גן יעד");
+    if(to==="__none"){if(!confirm(`להסיר את השיבוץ לגן מ-${ids.length} ילדים? הסמל והגננת יישארו.`))return;
+      return busy(el,async()=>{const f=await pool(ids.map(id=>()=>save(E.children,id,{garden_id:""})),()=>{},10);audit("הסרת שיבוץ לגן","ילדים","",ids.length+" ילדים");toast(`עודכנו ${ids.length-f} ילדים`);P.pick.clear();render()})}
+    const g=S.gardens.get(to);if(!confirm(`להעביר ${ids.length} ילדים ל${g.name}${g.manager_name?` (גננת: ${g.manager_name})`:""}?\nהסמל של הילדים לא ישתנה.`))return;
+    return busy(el,async()=>{const f=await pool(ids.map(id=>()=>crmMove(S.children.get(id),to)),()=>{},10);audit("שיבוץ לפי גן","ילדים",g.name,ids.length+" ילדים");toast(`${ids.length-f} ילדים הועברו ל${g.name}`);P.pick.clear();P.sel=to;render()})}
+  const sym=to.replace(/[^\d]/g,"");if(!sym)return toast("כתבו או בחרו סמל (ספרות בלבד)");
+  if(!confirm(`לעדכן את הסמל ל-${sym} אצל ${ids.length} ילדים?\nהגן והגננת לא ישתנו.`))return;
+  busy(el,async()=>{const f=await pool(ids.map(id=>()=>save(E.children,id,{symbol:sym})),()=>{},10);audit("שיבוץ לפי סמל","ילדים","סמל "+sym,ids.length+" ילדים");toast(`הסמל עודכן אצל ${ids.length-f} ילדים`);P.pick.clear();P.sel=sym;render()})}
+document.addEventListener("click",e=>{const el=e.target.closest("[data-plcg],[data-plcst],[data-plcgo],[data-plcopen]");if(!el)return;
+  if(el.dataset.plcg){const[k,id]=el.dataset.plcg.split("|");PLC[k].sel=id;PLC[k].pick.clear();PLC[k].q="";render();scrollTo({top:0});return}
+  if(el.dataset.plcst){const[k,v]=el.dataset.plcst.split("|");PLC[k].status=v;PLC[k].pick.clear();return render()}
+  if(el.dataset.plcgo)return plcGo(el.dataset.plcgo,el);
+  if(el.dataset.plcopen)return openForm("children",el.dataset.plcopen)});
+document.addEventListener("change",e=>{const t=e.target;
+  if(t.dataset.plcpick){const[k,id]=t.dataset.plcpick.split("|");t.checked?PLC[k].pick.add(id):PLC[k].pick.delete(id);return render()}
+  if(t.dataset.plcall){const k=t.dataset.plcall,P=PLC[k],K=plcKids(P.status),cur=plcGroups(k,K).find(g=>g.id===P.sel);const q=P.q.trim().toLowerCase();(cur?cur.k:[]).filter(c=>!q||[fullName(c),c.id_number,c.teacher_name,c.garden_name,c.symbol,c.city].join(" ").toLowerCase().includes(q)).forEach(c=>t.checked?P.pick.add(c._id):P.pick.delete(c._id));return render()}});
+document.addEventListener("input",e=>{const t=e.target,k=t.dataset.plcq||t.dataset.plcgq;if(!k)return;const f=t.dataset.plcq?"q":"gq";PLC[k][f]=t.value;clearTimeout(PLC._t);PLC._t=setTimeout(()=>{const pos=t.selectionStart;render();const i=document.querySelector(`[data-plc${f}="${k}"]`);if(i){i.focus();try{i.setSelectionRange(pos,pos)}catch(_){}}},250)});
 (async()=>{
   let lk=window.KG_LOGIN||"";try{const u=new URL(location.href);if(!lk)lk=u.searchParams.get("login")||"";if(u.searchParams.get("login")){u.searchParams.delete("login");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
   if(lk){try{const r=await pub("linkLogin",lk);setToken(r.token);return start(r.me)}catch(e){return showLogin(e.message)}}
