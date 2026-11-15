@@ -1,3 +1,5 @@
 User-agent: *
-Allow: /register/$
+Allow: /register/
 Disallow: /
+
+Sitemap: https://kal-gan.online/sitemap.xml

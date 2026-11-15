@@ -3,8 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>גני מלכות – הרשמה לגנים ולמעונות</title>
-<meta name="description" content="הרשמה לגני הבנות ולמעונות היום של רשת גני מלכות: מרכז מידע להורים, מדריכים שלב אחר שלב וטופס הרשמה מקוון.">
+<title>גני מלכות | גני ילדים ומעונות יום לבנות – הרשמה מקוונת</title>
+<meta name="description" content="רשת גני מלכות: גני ילדות ומעונות יום לבנות בחינוך תורני, מגיל 3 חודשים ועד גן חובה. מידע להורים, סבסוד מעונות והרשמה מקוונת לשנת הלימודים.">
+<link rel="canonical" href="https://kal-gan.online/register/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="גני מלכות">
+<meta property="og:title" content="גני מלכות – גני ילדים ומעונות יום לבנות">
+<meta property="og:description" content="רשת גני מלכות: גני ילדות ומעונות יום לבנות בחינוך תורני, מגיל 3 חודשים ועד גן חובה. מידע להורים, סבסוד מעונות והרשמה מקוונת לשנת הלימודים.">
+<meta property="og:url" content="https://kal-gan.online/register/">
+<meta property="og:image" content="https://kal-gan.online/register/img/room.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://kal-gan.online/register/#org","name":"גני מלכות","alternateName":"רשת גני מלכות","url":"https://kal-gan.online/register/","logo":"https://kal-gan.online/register/img/room.jpg","description":"רשת גני מלכות: גני ילדות ומעונות יום לבנות בחינוך תורני, מגיל 3 חודשים ועד גן חובה. מידע להורים, סבסוד מעונות והרשמה מקוונת לשנת הלימודים."},{"@type":"WebSite","@id":"https://kal-gan.online/register/#site","url":"https://kal-gan.online/register/","name":"גני מלכות","inLanguage":"he","publisher":{"@id":"https://kal-gan.online/register/#org"}},{"@type":"WebPage","url":"https://kal-gan.online/register/","name":"גני מלכות | גני ילדים ומעונות יום לבנות – הרשמה מקוונת","inLanguage":"he","isPartOf":{"@id":"https://kal-gan.online/register/#site"},"primaryImageOfPage":"https://kal-gan.online/register/img/room.jpg"}]}</script>
 <meta name="theme-color" content="#FBF7F5">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='20' fill='%23FBE1E7'/%3E%3Cpath d='M14 44 L16 22 L25 31 L32 16 L39 31 L48 22 L50 44 Z' fill='%23E0668E'/%3E%3Ccircle cx='32' cy='14' r='4' fill='%23E9C677'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -857,7 +868,7 @@ function showGuide(id){const g=G.find(x=>x.id===id)||G[0],i=G.indexOf(g),prev=G[
      <div class="g-cta"><div><b>מוכנים להירשם?</b><p>ארבעה שלבים קצרים, ואנחנו ממשיכים מכאן.</p></div><a class="btn" href="#register">להתחלת ההרשמה <span class="arr">←</span></a></div>
      <div class="pn">${prev?`<a class="glass" href="#guide/${prev.id}"><small>→ המדריך הקודם</small><b>${prev.t}</b></a>`:"<span></span>"}${next?`<a class="glass next" href="#guide/${next.id}"><small>המדריך הבא ←</small><b>${next.t}</b></a>`:""}</div></article></div>`;
   scrollTo(0,0)}
-function showLanding(anchor){const was=$("#landing").hidden;$("#guideView").hidden=true;$("#solo").hidden=true;$("#landing").hidden=false;$("#navInfo").removeAttribute("aria-current");document.title="גני מלכות – הרשמה לגנים ולמעונות";
+function showLanding(anchor){const was=$("#landing").hidden;$("#guideView").hidden=true;$("#solo").hidden=true;$("#landing").hidden=false;$("#navInfo").removeAttribute("aria-current");document.title="גני מלכות | גני ילדים ומעונות יום לבנות – הרשמה מקוונת";
   if(anchor){const el=document.getElementById(anchor);if(el)requestAnimationFrame(()=>el.scrollIntoView({behavior:was||RM?"auto":"smooth"}))}else if(was)scrollTo(0,0)}
 function route(){if(Q.s||Q.f)return;const h=decodeURIComponent(location.hash||"");if(h.startsWith("#guide/"))return showGuide(h.slice(7));showLanding(h.slice(1))}
 document.addEventListener("click",e=>{const a=e.target.closest("[data-home]");if(a){e.preventDefault();history.pushState(null,"",location.pathname+location.search);showLanding("");scrollTo({top:0,behavior:RM?"auto":"smooth"})}});
