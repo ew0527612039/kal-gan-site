@@ -1,1 +1,0 @@
-var c="</span></button><button class=\"kpi${noT.length?\" warn\":\"\"}\" data-x=\"tchNoT\"><b>${noT.length}</b><span>  </span></button></div>\n   ${noT.length&&TCH.showNoT?`<div ";

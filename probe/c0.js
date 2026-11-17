@@ -1,1 +1,0 @@
-var c="const cur=TCH.sel&&S.staff?.get(TCH.sel);\n  return `<div class=\"ph\"><div><h1>  </h1><p class=\"sub\">   \u2013    .    .</p></div><div class=\"bar\">${canWrite?`<button cl";

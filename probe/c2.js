@@ -1,1 +1,0 @@
-var c="SON.stringify({roles:[\"\"],is_active:true}))}\">${ico(\"plus\")} /  </button>`:\"\"}</div></div>\n   <div class=\"kpis\"><button class=\"kpi\" data-x=\"tchA\" data-a=\"\"><b>${b";

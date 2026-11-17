@@ -1,1 +1,0 @@
-var d="A\" data-a=\"un\"><b>${un.length}</b><span>";

@@ -1,1 +1,0 @@
-var c="${[[\"\",\"\"],[\"un\",\" \"],[\"as\",\"\"]].map(([v,l])=>`<button data-x=\"tchA\" data-a=\"${v}\" aria-pressed=\"${TCH.a===v}\">${l}</button>`).join(\"\")}</div>\n    <label class=\"f";

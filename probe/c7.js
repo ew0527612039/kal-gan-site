@@ -1,1 +1,0 @@
-var c=",[\"teachers\",\" \"],[\"all\",\" \"]].map(([v,l])=>`<button data-x=\"tchF\" data-f=\"${v}\" aria-pressed=\"${TCH.f===v}\">${l}</button>`).join(\"\")}</div>\n    <div class=\"seg\">";

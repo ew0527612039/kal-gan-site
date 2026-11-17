@@ -1,1 +1,0 @@
-var c="</div>\n    <section class=\"cprof\">${cur?teacherProfile(cur):`<div class=\"empty cpempty\">${ico(\"users\")}<b> / </b>,   .</div>`}</section></div>`};\n";

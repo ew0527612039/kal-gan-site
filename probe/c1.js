@@ -1,1 +1,0 @@
-var c="ass=\"btn\" data-x=\"staffAssign\" data-gid=\"${TCH.g||\"\"}\">${ico(\"school\")}  </button><button class=\"btn primary\" data-act=\"new\" data-key=\"staff\" data-preset=\"${esc(J";

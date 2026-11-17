@@ -1,1 +1,0 @@
-var d="\"kpi${un.length?\" warn\":\"\"}\" data-x=\"tch";
