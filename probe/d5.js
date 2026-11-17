@@ -1,0 +1,1 @@
+var d="rn\":\"\"}\" data-x=\"tchA\" data-a=\"un\"><b>${";
