@@ -781,6 +781,10 @@ body:has(#modal .modal) .asfab{display:none}
 .plc-subin .note{display:inline-flex;gap:4px;align-items:center;font-size:.85rem;color:var(--muted)}
 .plc-sub.warn .note{color:var(--warn);font-weight:600}
 @media (max-width:900px){.plc{grid-template-columns:1fr}.plc-side{position:static;max-height:260px}}
+.orl{display:flex;flex-direction:column;gap:6px}
+.orr{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.orr input{flex:0 1 260px}
+.orfix{display:inline-block;min-width:200px;padding:8px 10px;font-weight:600}
 </style>
 
 <button class="skip" data-act="skip">דילוג לתוכן הראשי</button>
@@ -831,6 +835,8 @@ let db=null,uid=null,me={name:"",email:"",role:"",office_id:"",admin:false},isAd
 const S={};
 const ready=new Set();
 let settings={roles:["גננת","סייעת","מנהלת","מטפלת","איש צוות נוסף"],custom:{},screens:[],mastrio:""};
+const OFFICE_ROLES_DEF=["מזכירה","מנהלת","הנהלת חשבונות","כללי"];
+const officeRoles=()=>{const r=Array.isArray(settings.office_roles)&&settings.office_roles.length?settings.office_roles:OFFICE_ROLES_DEF;return r.includes("מנהלת")?r:["מנהלת",...r]};
 const names={};
 const subs={};
 
@@ -874,6 +880,7 @@ async function syncNow(){
   catch(e){if(e.code==="unavailable"){connWarn=true;banner("אין חיבור לשרת כרגע. השינויים יישמרו כשהחיבור יחזור.","warn")}}
   finally{syncing=false}}
 setInterval(()=>{if(document.visibilityState==="visible")syncNow()},20000);
+setInterval(()=>{try{if(document.visibilityState==="visible"&&typeof room!=="undefined"&&room&&document.getElementById("mlist"))syncNow()}catch(e){}},5000);
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")syncNow()});
 
 const wq=[];let wT=null;
@@ -952,7 +959,7 @@ const E={
   fields:[{k:"name",l:"שם הצהרון",req:1},{k:"garden_id",l:"גן",...ref("gardens")},{k:"manager_name",l:"אחראית"},{k:"phone",l:"טלפון",t:"tel"},{k:"notes",l:"הערות",t:"area"}],
   cols:["name","garden_id","manager_name","phone"],sort:"name"},
  office:{col:"office",title:"צוות משרד",one:"איש/אשת משרד",buckets:1,
-  fields:[{k:"full_name",l:"שם מלא",req:1},{k:"email",l:"אימייל (משמש לכניסה)",t:"email",req:1},{k:"phone",l:"טלפון",t:"tel"},{k:"role",l:"תפקיד",t:"sel",req:1,opts:()=>["מזכירה","מנהלת","הנהלת חשבונות","כללי"]},{k:"is_active",l:"סטטוס",t:"bool"}],
+  fields:[{k:"full_name",l:"שם מלא",req:1},{k:"email",l:"אימייל (משמש לכניסה)",t:"email",req:1},{k:"phone",l:"טלפון",t:"tel"},{k:"role",l:"תפקיד",t:"sel",req:1,opts:()=>officeRoles()},{k:"is_active",l:"סטטוס",t:"bool"}],
   cols:["full_name","email","phone","role","is_active"],sort:"full_name"},
  tasks:{col:"tasks",title:"משימות",one:"משימה",buckets:1,
   fields:[{k:"title",l:"כותרת",req:1},{k:"description",l:"תיאור",t:"area"},{k:"assigned_to",l:"מוקצה ל",...ref("office",r=>r.full_name)},{k:"due_date",l:"תאריך יעד",t:"date"},{k:"remind_at",l:"תזכורת (תאריך ושעה)",t:"dt"},
@@ -1061,6 +1068,11 @@ function ui(key,def){if(UI[key])return UI[key];const p=store("ui_"+key)||{};
   return UI[key]={q:"",f:{},cf:{},group:"",page:0,sort:{k:def.sort||def.fields[0].k,d:def.sortDir||1},cols:store("cols_"+key)||p.cols||def.cols,w:p.w||{},dense:!!p.dense,zoom:p.zoom||1,flt:false,sel:new Set(),max:false}}
 function uiSave(key){const u=UI[key];if(!u)return;store("ui_"+key,{w:u.w,dense:u.dense,zoom:u.zoom});store("cols_"+key,u.cols)}
 const colLabelOf=(def,k)=>def.virt?.[k]?.l||def.fields.find(f=>f.k===k)?.l||k;
+/* sort dates/times by their real value, not by the displayed dd.mm text */
+function sortKeyOf(def,k,keyOf){const f=!def.virt?.[k]&&def.fields.find(x=>x.k===k);
+  if(f&&["ts","dt","date"].includes(f.t))return r=>{const v=r[k];if(!v)return"";const d=new Date(v);return isNaN(d)?String(v):d.toISOString()};
+  if(k==="received_date"||k==="ts")return r=>{const v=r[k];if(!v)return"";const d=new Date(v);return isNaN(d)?String(v):d.toISOString()};
+  return keyOf(k)}
 function filtered(key,def,pre){
   const u=ui(key,def);const words=u.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const keyOf=k=>def.virt?.[k]?r=>String(def.virt[k].v(r)):r=>String(show(def,r,k,true));
@@ -1073,7 +1085,7 @@ function filtered(key,def,pre){
     if(!words.length)return true;
     const hay=(r._hay||(r._hay=def.fields.map(f=>show(def,r,f.k,true)).concat(Object.keys(def.virt||{}).map(k=>def.virt[k].v(r))).join(" ").toLowerCase()));
     return words.every(w=>hay.includes(w)||(digits(w).length>2&&digits(hay).includes(digits(w))));
-  }).sort((a,b)=>{const g=keyOf(u.sort.k),x=g(a),y=g(b);const nx=Number(x),ny=Number(y);return (x!==""&&y!==""&&!isNaN(nx)&&!isNaN(ny)?nx-ny:x.localeCompare(y,"he"))*u.sort.d});
+  }).sort((a,b)=>{const g=sortKeyOf(def,u.sort.k,keyOf),x=g(a),y=g(b);const nx=Number(x),ny=Number(y);return (x!==""&&y!==""&&!isNaN(nx)&&!isNaN(ny)?nx-ny:x.localeCompare(y,"he"))*u.sort.d});
 }
 const LISTS={};
 function listHTML(key,opts={}){
@@ -1995,6 +2007,9 @@ function settingsBody(t){
   if(t==="general")body=`<section class="card" style="display:flex;flex-direction:column;gap:10px"><h2>תפקידים לאנשי צוות</h2><p class="sub">גננת ממלאת מקום יכולה להיות במספר תפקידים.</p>
     <div class="chips">${settings.roles.map((r,i)=>`<span class="chip">${esc(r)}${isAdmin?`<button data-rmrole="${i}" aria-label="הסרה">×</button>`:""}</span>`).join("")}</div>
     ${isAdmin?`<div class="row"><input id="newRole" placeholder="תפקיד חדש" aria-label="תפקיד חדש"><button class="btn" data-act="addrole">הוספה</button></div>`:""}</section>
+   <section class="card" style="display:flex;flex-direction:column;gap:10px"><h2>תפקידים לצוות המשרד</h2><p class="sub">הרשימה שמופיעה בשדה "תפקיד" של אנשי המשרד. שינוי שם של תפקיד מעדכן גם את כל מי שמוגדר/ת בו. התפקיד "מנהלת" קבוע, כי הוא נותן הרשאת אישור סופי.</p>
+    <div class="orl">${officeRoles().map((r,i)=>{const n=vals("office").filter(o=>o.role===r).length;return `<div class="orr">${isAdmin&&r!=="מנהלת"?`<label class="sr" for="orl${i}">שם התפקיד</label><input id="orl${i}" value="${esc(r)}" data-orole="${esc(r)}">`:`<span class="orfix">${esc(r)}</span>`}<span class="sub">${n} ${n===1?"איש/אשת צוות":"אנשי צוות"}</span>${isAdmin&&r!=="מנהלת"?`<button class="btn sm ghost" data-ormv="${esc(r)}"${n?` title="מוגדר אצל ${n} – צריך להעביר אותם לתפקיד אחר קודם"`:""}>הסרה</button>`:""}</div>`}).join("")}</div>
+    ${isAdmin?`<div class="row"><input id="newORole" placeholder="תפקיד חדש, למשל: רכזת רישום" aria-label="תפקיד חדש לצוות המשרד"><button class="btn" data-x="addORole">הוספה</button></div>`:""}</section>
    <section class="card" style="display:flex;flex-direction:column;gap:10px"><h2>הגדרות Mastrio</h2><p class="sub">מספר החברה מופיע בייצוא השעות. מספרי העובדים מוגדרים בכרטיסי הצוות.</p>
     <div class="row"><input id="mastrio" class="mono" maxlength="3" inputmode="numeric" value="${esc(settings.mastrio||"")}" placeholder="3 ספרות" aria-label="מספר חברה"${isAdmin?"":" disabled"}>${isAdmin?`<button class="btn" data-act="savemastrio">שמירה</button>`:""}</div></section>`;
   if(t==="brand")body=brandSection();
@@ -2131,10 +2146,12 @@ function render(){
   const box=$(".tbox"),st=box?.scrollTop,ml=$("#mlist"),atBottom=!ml||ml.scrollHeight-ml.scrollTop-ml.clientHeight<40;
   if($("#modal .modal")?.dataset.mail)refreshMailModal();
   const lists=[...document.querySelectorAll(".tbox")].map(b=>b.scrollTop);
+  const typed=ae&&aid&&/^(INPUT|TEXTAREA)$/.test(ae.tagName)&&!/^(checkbox|radio|file|button|submit)$/i.test(ae.type||"")&&$("#view").contains(ae)?ae.value:null;const draftMsg=$("#mtext")?.value||"";
   $("#view").innerHTML=r.startsWith("s-")?screenPage(r):(PAGES[r]||PAGES.home)();
   $("#view").classList.toggle("full",!!$("#view .tbl-wrap.max"));
   renderNav();
-  if(aid){const el=document.getElementById(aid);if(el&&el!==ae){el.focus();if(sel&&"setSelectionRange" in el)try{el.setSelectionRange(...sel)}catch(e){}}}
+  {const mt=$("#mtext");if(mt&&draftMsg&&!mt.value)mt.value=draftMsg}
+  if(aid){const el=document.getElementById(aid);if(el&&el!==ae&&typed!=null&&"value" in el&&el.value!==typed)el.value=typed;if(el&&el!==ae){el.focus();if(sel&&"setSelectionRange" in el)try{el.setSelectionRange(...sel)}catch(e){}}}
   if(keepScroll)[...document.querySelectorAll(".tbox")].forEach((b,i)=>{if(lists[i])b.scrollTop=lists[i]});keepScroll=true;
   const nm=$("#mlist");if(nm&&atBottom)nm.scrollTop=nm.scrollHeight;
 }
@@ -2307,7 +2324,7 @@ document.addEventListener("change",async e=>{const t=e.target;
 document.addEventListener("submit",async e=>{e.preventDefault();const f=e.target;
   if(f.id==="frm")return submitForm(f);
   if(f.id==="msend"){const i=$("#mtext"),txt=i.value.trim();if(!txt||!room)return;i.value="";const ts=new Date().toISOString();
-    try{await db.collection(`chat/${room}/msgs`).add({text:txt.slice(0,2000),sender:uid||"",ts});await save({col:"rooms"},room,{last_message:txt.slice(0,80),last_ts:ts})}catch(err){toast("ההודעה לא נשלחה");i.value=txt}}
+    try{await db.collection(`chat/${room}/msgs`).add({text:txt.slice(0,2000),sender:uid||"",ts});await save({col:"rooms"},room,{last_message:txt.slice(0,80),last_ts:ts});setTimeout(()=>syncNow(),400)}catch(err){toast("ההודעה לא נשלחה");const j=$("#mtext");if(j)j.value=txt}finally{$("#mtext")?.focus()}}
   if(f.id==="mcomment"){const id=$("#modal .modal")?.dataset.mail;const i=$("#mctext"),txt=i.value.trim();if(!id||!txt)return;i.disabled=true;
     try{await call("mailComment",{id,text:txt});i.value="";await syncNow();refreshMailModal()}catch(err){toast(err.message)}i.disabled=false;i.focus();return}
   if(f.id==="loginEmail"){const em=$("#lgEmail").value.trim().toLowerCase();const b=f.querySelector("button");b.disabled=true;$("#lgErr").hidden=true;
@@ -3525,6 +3542,17 @@ document.addEventListener("change",e=>{const t=e.target;
   if(t.dataset.plcsub){const[k,key]=t.dataset.plcsub.split("|"),P=PLC[k];(P._subs?.[key]||[]).forEach(id=>t.checked?P.pick.add(id):P.pick.delete(id));return render()}
   if(t.dataset.plconly){const P=PLC[t.dataset.plconly];P.only=t.checked;P.pick.clear();return render()}});
 document.addEventListener("input",e=>{const t=e.target,k=t.dataset.plcq||t.dataset.plcgq;if(!k)return;const f=t.dataset.plcq?"q":"gq";PLC[k][f]=t.value;clearTimeout(PLC._t);PLC._t=setTimeout(()=>{const pos=t.selectionStart;render();const i=document.querySelector(`[data-plc${f}="${k}"]`);if(i){i.focus();try{i.setSelectionRange(pos,pos)}catch(_){}}},250)});
+
+/* ---------- office roles: add / rename / remove ---------- */
+document.addEventListener("click",async e=>{const a=e.target.closest('[data-x="addORole"],[data-ormv]');if(!a||!isAdmin)return;
+  if(a.dataset.x==="addORole"){const v=$("#newORole").value.trim();if(!v)return toast("כתבו שם לתפקיד");if(officeRoles().includes(v))return toast("התפקיד כבר קיים");
+    return busy(a,async()=>{await saveSettings({office_roles:[...officeRoles(),v]});audit("הוספת תפקיד","צוות משרד",v,"");toast("התפקיד נוסף");render()})}
+  const r=a.dataset.ormv,n=vals("office").filter(o=>o.role===r).length;if(n)return toast(`התפקיד "${r}" מוגדר אצל ${n} – העבירו אותם לתפקיד אחר קודם`);
+  if(!confirm(`להסיר את התפקיד "${r}" מהרשימה?`))return;busy(a,async()=>{await saveSettings({office_roles:officeRoles().filter(x=>x!==r)});audit("הסרת תפקיד","צוות משרד",r,"");toast("התפקיד הוסר");render()})});
+document.addEventListener("change",async e=>{const t=e.target;if(!t.dataset?.orole||!isAdmin)return;const old=t.dataset.orole,nw=t.value.trim();
+  if(!nw||nw===old){t.value=old;return}if(nw==="מנהלת"||officeRoles().includes(nw)){toast("כבר יש תפקיד בשם הזה");t.value=old;return}
+  const who=vals("office").filter(o=>o.role===old);if(who.length&&!confirm(`לשנות את "${old}" ל"${nw}"?\nגם ${who.length} אנשי הצוות שמוגדרים בתפקיד הזה יעודכנו.`)){t.value=old;return}
+  t.disabled=true;try{await saveSettings({office_roles:officeRoles().map(x=>x===old?nw:x)});const f=await pool(who.map(o=>()=>save(E.office||defOf("office"),o._id,{role:nw})),()=>{},8);audit("שינוי שם תפקיד","צוות משרד",old+" ← "+nw,who.length+" אנשי צוות");toast(f?`נשמר, ${f} עדכונים נכשלו`:"התפקיד עודכן")}catch(err){toast(err.message||"השמירה נכשלה");t.value=old}finally{t.disabled=false;render()}});
 (async()=>{
   let lk=window.KG_LOGIN||"";try{const u=new URL(location.href);if(!lk)lk=u.searchParams.get("login")||"";if(u.searchParams.get("login")){u.searchParams.delete("login");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
   if(lk){try{const r=await pub("linkLogin",lk);setToken(r.token);return start(r.me)}catch(e){return showLogin(e.message)}}
