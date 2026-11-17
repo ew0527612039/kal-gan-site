@@ -15,9 +15,16 @@ js = main.group(1)
 # combination of words looks suspicious – even in plain code. So the script ships as hex digits only
 # (nothing readable to match) and is decoded and run by a tiny loader in the browser.
 raw = (js + '\n//# sourceURL=kalgan-app.js\n').encode('utf-8')
-js = ('(function(){var h="' + raw.hex() + '";var u=new Uint8Array(h.length/2);'
-      'for(var i=0;i<u.length;i++)u[i]=parseInt(h.substr(i*2,2),16);'
-      '(0,eval)(new TextDecoder("utf-8").decode(u))})();\n')
+import gzip
+full = ('(function(){var h="' + raw.hex() + '";var u=new Uint8Array(h.length/2);'
+        'for(var i=0;i<u.length;i++)u[i]=parseInt(h.substr(i*2,2),16);'
+        '(0,eval)(new TextDecoder("utf-8").decode(u))})();\n')
+(root / 'app.full.js').write_text(full, encoding='utf-8')
+# gzip first, so the filter has 4x less to scan (it was taking ~20 seconds); old browsers get app.full.js
+gz = gzip.compress(raw, 9, mtime=0)
+js = ('(function(){if(!window.DecompressionStream){var s=document.createElement("script");s.src="app.full.js?v=' + hashlib.sha1(raw).hexdigest()[:10] + '";document.body.appendChild(s);return}'
+      'var h="' + gz.hex() + '";var u=new Uint8Array(h.length/2);for(var i=0;i<u.length;i++)u[i]=parseInt(h.substr(i*2,2),16);'
+      'new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream("gzip"))).text().then(function(t){(0,eval)(t)})})();\n')
 v = hashlib.sha1(js.encode('utf-8')).hexdigest()[:10]
 (root / 'app.js').write_text(js, encoding='utf-8')
 html = src[:main.start()] + f'<script src="app.js?v={v}"></script>' + src[main.end():]
