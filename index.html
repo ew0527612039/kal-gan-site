@@ -785,6 +785,23 @@ body:has(#modal .modal) .asfab{display:none}
 .orr{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .orr input{flex:0 1 260px}
 .orfix{display:inline-block;min-width:200px;padding:8px 10px;font-weight:600}
+.cbx{position:relative;min-width:180px;flex:1}
+.cbx-in{width:100%;box-sizing:border-box;padding-inline-end:28px;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:12px 55%,7px 55%;background-size:5px 5px;background-repeat:no-repeat}
+.cbx-list{position:absolute;z-index:60;inset-inline:0;top:calc(100% + 4px);max-height:280px;overflow:auto;margin:0;padding:4px;list-style:none;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.14);min-width:220px}
+.cbx-list li{padding:8px 10px;border-radius:7px;cursor:pointer;line-height:1.3}
+.cbx-list li.act,.cbx-list li:hover{background:var(--accent-soft)}
+.cbx-list li[aria-selected="true"]{font-weight:700}
+.cbx-list li.cbx-clear{color:var(--muted)}
+.cbx-list li.cbx-g{margin-top:22px;position:relative}
+.cbx-list li.cbx-g::before{content:attr(data-g);position:absolute;top:-18px;inset-inline-start:10px;font-size:.75rem;color:var(--muted);font-weight:600}
+.cbx-list li.cbx-none{color:var(--muted);cursor:default}
+.msrch{display:flex;gap:10px;align-items:center;margin-bottom:6px}.msrch input{flex:1}
+.checks.many{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:2px 12px;max-height:240px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.checks.many label[hidden]{display:none}
+.unk{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.unk-h{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-start}
+.unk-h h2{margin:0;font-size:1.1rem}.unk-a{flex-wrap:wrap}.unk-a .cbx{min-width:240px}
+.smtest{align-items:flex-end;padding:10px;border:1px dashed var(--line);border-radius:10px}
 </style>
 
 <button class="skip" data-act="skip">דילוג לתוכן הראשי</button>
@@ -972,7 +989,11 @@ const E={
   fields:[{k:"supplier_id",l:"ספק",req:1,...ref("suppliers")},{k:"doc_type",l:"סוג",t:"sel",opts:()=>["חשבונית","קבלה","חשבונית מס קבלה"]},{k:"invoice_number",l:"מספר מסמך",t:"mono"},{k:"invoice_date",l:"תאריך",t:"date"},{k:"amount",l:"סכום (₪)",t:"num"},{k:"status",l:"סטטוס",t:"sel",opts:()=>["ממתין לתשלום","שולם"]},{k:"notes",l:"הערות",t:"area"}],
   cols:["invoice_date","supplier_id","_from","doc_type","invoice_number","amount","status","_files","_note"],virt:{_files:{l:"קבצים",v:r=>(r.files||[]).length,html:r=>fileLinks(r.files)},_from:{l:"התקבל מ",v:r=>r.from_email||""}},filters:["supplier_id","status"],sort:"invoice_date",sortDir:-1,defaults:{status:"ממתין לתשלום",doc_type:"חשבונית"}},
 };
-const fullName=r=>(r.full_name||[r.first_name,r.last_name].filter(Boolean).join(" ")).trim();
+const cleanFirst=(first,last)=>{const L=String(last||"").trim().replace(/\s+/g," "),F=String(first||"").trim().replace(/\s+/g," ");if(!L||!F||F===L)return F;const fw=F.split(" "),n=L.split(" ").length;
+  if(fw.length>n){if(fw.slice(-n).join(" ")===L)return fw.slice(0,-n).join(" ");if(fw.slice(0,n).join(" ")===L)return fw.slice(n).join(" ")}return F};
+const nameJoin=(first,last)=>[cleanFirst(first,last),String(last||"").trim()].filter(Boolean).join(" ");
+const collapseDup=t=>String(t||"").trim().split(/\s+/).filter((w,i,a)=>w!==a[i-1]).join(" ");
+const fullName=r=>(r.first_name||r.last_name?nameJoin(r.first_name,r.last_name):collapseDup(r.full_name)).trim();
 const TASK_ST=["פעיל","בטיפול","ממתין לאישור","הושלם"];
 let KI={t:0,m:null,s:null};
 function kidsIndex(){if(KI.m&&Date.now()-KI.t<400)return KI;const gs=vals("gardens"),m=new Map(),sm=new Map();gs.forEach(g=>{m.set(g._id,[]);sm.set(g._id,[])});
@@ -1002,7 +1023,7 @@ function live(col){if(subs[col])return;S[col]=S[col]||new Map();subs[col]=sub(co
 async function retry(fn){for(let a=0;;a++){try{return await fn()}catch(e){if(a<2&&e.code==="unavailable"){await sleep(800*2**a+Math.random()*300);continue}throw e}}}
 async function save(def,id,data,expect){
   const ref=db.collection(def.col).doc(id||undefined);const body={...data};delete body._id;
-  if(def.col==="children"&&("first_name" in body||"last_name" in body||!id)){const base={...(id&&S.children?.get(id)||{}),...body};body.full_name=[base.first_name,base.last_name].filter(Boolean).join(" ")}
+  if(def.col==="children"&&("first_name" in body||"last_name" in body||!id)){const base={...(id&&S.children?.get(id)||{}),...body};body.full_name=nameJoin(base.first_name,base.last_name)}
   if(def.col==="tasks"&&"remind_at" in body&&(!id||body.remind_at!==(S.tasks?.get(id)?.remind_at||"")))body.reminded=false;
   await retry(()=>id?ref.update(body,expect&&Object.keys(expect).length?expect:null):ref.set(body));
   return ref.id;
@@ -1047,7 +1068,8 @@ function input(f,v,pre="f_"){
     case"emails":return `<input id="${id}" type="text" dir="ltr" class="mono" value="${esc((Array.isArray(v)?v:String(v||"").split(/[,;\s]+/).filter(Boolean)).join(", "))}" placeholder="name@example.com, other@example.com">`;
     case"sel":return `<select id="${id}"${req}><option value=""></option>${(f.opts?.()||[]).map(o=>`<option${o===v?" selected":""}>${esc(o)}</option>`).join("")}</select>`;
     case"ref":return `<select id="${id}"${req}><option value=""></option>${vals(f.col).sort((a,b)=>String(f.lab(a)).localeCompare(f.lab(b),"he")).map(o=>`<option value="${o._id}"${o._id===v?" selected":""}>${esc(f.lab(o))}</option>`).join("")}</select>`;
-    case"multi":return `<div class="checks" id="${id}">${(f.opts?.()||[]).map(o=>{const[val,lab]=Array.isArray(o)?o:[o,o];return `<label><input type="checkbox" value="${esc(val)}"${(v||[]).includes(val)?" checked":""}> ${esc(lab)}</label>`}).join("")}</div>`;
+    case"multi":{const O=(f.opts?.()||[]).map(o=>Array.isArray(o)?o:[o,o]),many=O.length>8;const S2=many?[...O].sort((a,b)=>String(a[1]).localeCompare(String(b[1]),"he")):O;
+      return `${many?`<div class="msrch"><input type="search" data-msearch="${id}" placeholder="חיפוש ברשימה (${O.length})…" aria-label="חיפוש ב${esc(f.l)}"><span class="sub" data-mcount="${id}">${(v||[]).length?`${(v||[]).length} נבחרו`:""}</span></div>`:""}<div class="checks${many?" many":""}" id="${id}">${S2.map(([val,lab])=>`<label><input type="checkbox" value="${esc(val)}"${(v||[]).includes(val)?" checked":""}> ${esc(lab)}</label>`).join("")}</div>`}
     default:{const dl=f.list?`<datalist id="dl_${id}">${f.list().map(o=>`<option value="${esc(o)}">`).join("")}</datalist>`:"";
       return `<input id="${id}" type="${f.t==="tel"?"tel":f.t==="email"?"email":"text"}"${f.t==="id"||f.t==="tel"||f.t==="mono"?' class="mono" inputmode="'+(f.t==="mono"?"text":"numeric")+'"':""}${f.list?` list="dl_${id}"`:""} value="${esc(v)}"${req}>${dl}`}
   }
@@ -1170,7 +1192,7 @@ const modal=(html,cls="")=>{const M=$("#modal"),had=!!M.innerHTML;
     if(ae&&M.contains(ae)){if(ae.id)fsel="#"+cssEsc(ae.id);else{const at=[...ae.attributes].find(x=>x.name.startsWith("data-"));if(at)fsel=`${ae.tagName.toLowerCase()}[${at.name}="${String(at.value).replace(/["\\]/g,"\\$&")}"]`}}
     keep={sc,fsel,sel:ae&&"selectionStart" in ae?(()=>{try{return[ae.selectionStart,ae.selectionEnd]}catch(e){return null}})():null}}
   M.innerHTML=`<div class="scrim" data-scrim><div class="modal ${cls}" role="dialog" aria-modal="true">${html}</div></div>`;
-  const box=$("#modal .modal"),h=box.querySelector("h2");if(h){h.id=h.id||"dlgTitle";box.setAttribute("aria-labelledby",h.id)}
+  const box=$("#modal .modal"),h=box.querySelector("h2");try{enhanceCombos(box)}catch(e){}if(h){h.id=h.id||"dlgTitle";box.setAttribute("aria-labelledby",h.id)}
   if(keep){[...M.querySelectorAll(".scrim,.tbox,.mlist,.colsdlg,[data-keepscroll]")].forEach((e,i)=>{if(keep.sc[i])e.scrollTop=keep.sc[i]});
     const f=keep.fsel&&M.querySelector(keep.fsel);if(f){f.focus({preventScroll:true});if(keep.sel&&"setSelectionRange" in f)try{f.setSelectionRange(...keep.sel)}catch(e){}}return}
   modalReturn=lastFocus;const f=box.querySelector("input:not([type=checkbox]),select,textarea")||box.querySelector("button");f&&f.focus({preventScroll:true})};
@@ -1248,17 +1270,27 @@ function parseSheet(aoa,def,fills){
     color[c]={on:I.n<=I.colored,by,other:"ללא"};if(!map[c]&&I.h){const f=matchHeader(def,I.h,idx);if(f)map[c]=f.k}});
   return{headers:headers.map((h,i)=>h||`עמודה ${i+1}`),rawHeaders:headers,rows,rf,map,skipped:hr,cols:keep,hiddenCols:hidden,info,sparse,color,newName:{},fix:{}};
 }
-function cellText(cell){if(cell.t==="d"&&cell.v instanceof Date&&!isNaN(cell.v)){const d=cell.v;return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}return cell.w!=null?String(cell.w):cell.v==null?"":String(cell.v)}
+function cellText(cell){if(cell.t==="d"&&cell.v instanceof Date&&!isNaN(cell.v)){const d=cell.v;return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+  /* dates straight from the serial number – no time-zone shift to the day before */
+  if(cell.t==="n"&&typeof cell.v==="number"){const z=cell.z||"";if(z&&XLSX.SSF.is_date(z)){const d=XLSX.SSF.parse_date_code(cell.v);if(d&&d.y)return`${d.y}-${String(d.m).padStart(2,"0")}-${String(d.d).padStart(2,"0")}`}
+    const w=cell.w!=null?String(cell.w):"";if(!w||/e[+-]?\d/i.test(w))return String(cell.v);if(Number.isInteger(cell.v)&&String(cell.v).length>=7&&/^[\d,]+$/.test(w))return String(cell.v);return w}
+  return cell.w!=null?String(cell.w):cell.v==null?"":String(cell.v)}
 function fillOf(cell){const s=cell.s;if(!s||!s.patternType||s.patternType==="none")return"";const c=s.fgColor||s.bgColor||{};
   if(c.rgb){const x=String(c.rgb).slice(-6).toUpperCase();return x==="FFFFFF"||x==="000000"&&s.patternType!=="solid"?"":"#"+x}
   if(c.theme!=null)return"theme"+c.theme+(c.tint?":"+(+c.tint).toFixed(2):"");if(c.indexed!=null&&c.indexed!==64)return"idx"+c.indexed;return""}
 const fillSw=k=>/^#/.test(k)?k:"linear-gradient(135deg,#ffe58a,#a6d4ff)";
 const fillName=k=>{if(!/^#/.test(k))return"צבע";const h=k.slice(1),r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);
   if(r>200&&g>200&&b<140)return"צהוב";if(r>200&&g<170&&b<150)return r>230&&g>120?"כתום":"אדום";if(g>170&&r<180&&b<170)return"ירוק";if(b>170&&r<170)return"כחול";if(r>170&&b>170&&g<150)return"סגול";if(r>200&&g>150&&b>170)return"ורוד";if(Math.abs(r-g)<20&&Math.abs(g-b)<20)return"אפור";return"צבע"};
+/* text files: Excel saves Hebrew CSV as windows-1255, not UTF-8 */
+function decodeText(buf){const u=new Uint8Array(buf);try{return new TextDecoder("utf-8",{fatal:true}).decode(u).replace(/^\ufeff/,"")}catch(e){try{return new TextDecoder("windows-1255").decode(u)}catch(e2){return new TextDecoder().decode(u)}}}
 async function readSheetX(file){await ensureXLSX();const ext=(file.name.split(".").pop()||"").toLowerCase();
-  const wb=["csv","tsv","txt"].includes(ext)?XLSX.read((await readF(file,"text")).replace(/^﻿/,""),{type:"string",raw:true}):XLSX.read(await readF(file,"buf"),{type:"array",cellDates:true,cellStyles:true});
-  const ws=wb.Sheets[wb.SheetNames[0]];if(!ws||!ws["!ref"])return{aoa:[],fills:[]};
-  const R=XLSX.utils.decode_range(ws["!ref"]),aoa=[],fills=[];
+  const wb=["csv","tsv","txt"].includes(ext)?XLSX.read(decodeText(await readF(file,"buf")),{type:"string",raw:true}):XLSX.read(await readF(file,"buf"),{type:"array",cellDates:false,cellNF:true,cellStyles:true});
+  /* the sheet with the most filled cells, not just the first one */
+  const filled=w=>Object.keys(w||{}).filter(k=>k[0]!=="!"&&w[k]&&String(w[k].v??"").trim()!=="").length;
+  const ws=wb.SheetNames.map(n=>wb.Sheets[n]).sort((a,b)=>filled(b)-filled(a))[0];if(!ws||!filled(ws))return{aoa:[],fills:[]};
+  /* real bounds from the cells themselves; some exports declare a range of a million rows */
+  let R={s:{r:1e9,c:1e9},e:{r:0,c:0}};Object.keys(ws).forEach(k=>{if(k[0]==="!")return;const a=XLSX.utils.decode_cell(k);if(a.r<R.s.r)R.s.r=a.r;if(a.c<R.s.c)R.s.c=a.c;if(a.r>R.e.r)R.e.r=a.r;if(a.c>R.e.c)R.e.c=a.c});
+  R.s.c=0;R.e.r=Math.min(R.e.r,R.s.r+30000);R.e.c=Math.min(R.e.c,200);const aoa=[],fills=[];
   for(let r=R.s.r;r<=R.e.r;r++){const row=[],fr=[];for(let c=R.s.c;c<=R.e.c;c++){const cell=ws[XLSX.utils.encode_cell({r,c})];row.push(cell?cellText(cell):"");fr.push(cell?fillOf(cell):"")}aoa.push(row);fills.push(fr)}
   return{aoa,fills}}
 async function readAoa(file){return (await readSheetX(file)).aoa}
@@ -1410,7 +1442,7 @@ function exportList(key){const L=LISTS[key];const def=L?.def||defOf(key);const l
 
 const MODS=[
  {k:"home",l:"דף הבית",i:"home",tabs:()=>[["home","דף הבית"]]},
- {k:"att",l:"נוכחות",i:"clock",tabs:()=>[["attendance","לוח נוכחות חודשי"],["requests","בקשות ודיווחים",pendCount()],...(isAdmin?[["attmail","מיילים לעובדות"],["attphone","מערכת טלפונית"]]:[])]},
+ {k:"att",l:"נוכחות",i:"clock",tabs:()=>[["attendance","לוח נוכחות חודשי"],["attunk","החתמות ללא שיוך",unkCount()],["requests","בקשות ודיווחים",pendCount()],...(isAdmin?[["attmail","מיילים לעובדות"],["attphone","מערכת טלפונית"]]:[])]},
  {k:"data",l:"נתונים",i:"table",tabs:()=>[["children","ילדים",count("children",c=>isOn(c.is_active))],["staff","אנשי צוות",count("staff",s=>isOn(s.is_active))],["gardens","מוסדות",vals("gardens").length],["programs","צהרונים"],["moe","השוואת משרד החינוך"],...(settings.screens||[]).filter(s=>s.is_active!==false).map(s=>["s-"+s.id,s.name]),...(isAdmin?[["screens","מסכים מותאמים"]]:[])]},
  {k:"mail",l:"מיילים",i:"mail",tabs:()=>[["mail","תיבת המיילים",vals("emails").filter(e=>e.status==="חדש").length],["rules","כללי ניתוב"]]},
  {k:"acc",l:"הנהלת חשבונות",i:"coin",tabs:()=>[["invoices","חשבוניות וקבלות"],["suppliers","ספקים"],["accset","הגדרות"]]},
@@ -1620,7 +1652,7 @@ async function detSave(btn){const sid=$("#attDet")?.dataset.sid;if(!sid)return;c
   if(bad){toast(`${bad} ימים עם שעה לא תקינה. הפורמט: 07:30, והיציאה אחרי הכניסה.`);return}
   await busy(btn,async()=>{try{const n=await call("attBulk",{month:attMonth,changes:ch});detEd.clear();detEdit=false;await syncNow();toast(`${n} ימים עודכנו`);attDetail(sid)}catch(e){toast(e.message||"השמירה נכשלה")}})}
 function staffMailSections(){const rs=settings.att_remind||{};const gs=vals("gardens").sort((a,b)=>String(a.name).localeCompare(b.name,"he"));
-  const who=p=>`<div class="row"><label class="f">למי<select id="${p}Who"><option value="">כל אנשי הצוות הפעילים</option>${gs.map(g=>`<option value="g:${g._id}">כל הצוות של ${esc(g.name)}</option>`).join("")}${(settings.roles||[]).map(r=>`<option value="r:${esc(r)}">כל מי שבתפקיד ${esc(r)}</option>`).join("")}${vals("staff").filter(x=>isOn(x.is_active)&&x.email).sort((a,b)=>a.full_name.localeCompare(b.full_name,"he")).map(x=>`<option value="s:${x._id}">${esc(x.full_name)}</option>`).join("")}</select></label></div>`;
+  const who=p=>`<div class="row"><label class="f" style="flex:1;min-width:260px">למי<select id="${p}Who" data-smwho="${p}"><option value="">כולם – כל אנשי הצוות הפעילים</option><option value="office">צוות המשרד</option><option value="edu">הצוות החינוכי (בלי צוות המשרד)</option><optgroup label="לפי תפקיד">${[...new Set([...(settings.roles||[])])].map(r=>`<option value="r:${esc(r)}">תפקיד: ${esc(r)}</option>`).join("")}${officeRoles().map(r=>`<option value="or:${esc(r)}">צוות משרד – ${esc(r)}</option>`).join("")}</optgroup><optgroup label="לפי גן">${gs.map(g=>`<option value="g:${g._id}">כל הצוות של ${esc(g.name)}</option>`).join("")}</optgroup><optgroup label="אדם אחד">${vals("staff").filter(x=>isOn(x.is_active)&&x.email).sort((a,b)=>a.full_name.localeCompare(b.full_name,"he")).map(x=>`<option value="s:${x._id}">${esc(x.full_name)}</option>`).join("")}</optgroup></select></label><span class="sub" data-smcount="${p}">${smCountText("")}</span></div>`;
   return `<section class="card col" id="remind"><h2>תזכורת לעדכון נוכחות</h2>
     <p class="sub">התזכורת נשלחת רק למי שעוד לא שלחה עדכון החודש, עם קישור אישי חדש לטופס.</p>
     <label class="row"><input type="checkbox" id="remOn"${rs.enabled?" checked":""}> לשלוח תזכורת אוטומטית <input id="remDays" type="number" min="1" max="10" value="${esc(rs.days||2)}" style="width:64px" aria-label="ימים"> ימים אחרי המייל החודשי</label>
@@ -1632,17 +1664,21 @@ function staffMailSections(){const rs=settings.att_remind||{};const gs=vals("gar
     <div class="row"><button class="btn primary" data-act="smSend" data-kind="reminder">שליחת תזכורת עכשיו</button><span class="sub" data-smmsg="reminder"></span></div></section>
    <section class="card col" id="broadcast"><h2>הודעה לעובדות</h2><p class="sub">מייל חופשי לכל העובדות או לחלק מהן. ההודעה נשלחת בעיצוב של המערכת, עם פנייה אישית בשם.</p>
     ${who("bc")}<label class="f">נושא<input id="bcSubj" maxlength="150" placeholder="למשל: עדכון לגבי חופשת חנוכה"></label><label class="f">תוכן<textarea id="bcBody" rows="6" placeholder="כתבו כאן את ההודעה…"></textarea></label>
-    <div class="row"><button class="btn primary" data-act="smSend" data-kind="broadcast">שליחה</button><span class="sub" data-smmsg="broadcast"></span></div></section>
+    <div class="col" style="gap:6px"><div class="row"><label class="btn" tabindex="0">${ico("upload")}צירוף קבצים<input type="file" id="bcFiles" multiple hidden></label><span class="sub">עד 8MB בסך הכל</span></div><div class="chips" id="bcFileList"></div></div>
+    <div class="row smtest"><label class="f">מייל דוגמה אל<select id="bcTestTo" data-nocbx>${(()=>{const L=vals("staff").filter(x=>x.email).sort((a,b)=>a.full_name.localeCompare(b.full_name,"he"));const mine=L.find(x=>lcs(x.email)===lcs(me.email));return (mine?`<option value="${mine._id}">אליי (${esc(mine.email)})</option>`:`<option value="">בחירת איש צוות…</option>`)+L.filter(x=>x!==mine).map(x=>`<option value="${x._id}">${esc(x.full_name)} – ${esc(x.email)}</option>`).join("")})()}</select></label><button class="btn" data-act="smTest">שליחת מייל דוגמה</button></div>
+    <div class="row"><button class="btn primary" data-act="smSend" data-kind="broadcast">שליחה לכל הנמענים</button><span class="sub" data-smmsg="broadcast"></span></div></section>
    <section class="card col" id="welcome"><h2>מייל פתיחה לעובדות</h2><p class="sub">מסביר לעובדת איך עובד דיווח הנוכחות: החתמה בטלפון, המייל החודשי ואיך מבקשים תיקון. מומלץ לשלוח לכל עובדת חדשה.</p>
     ${who("wl")}<label class="row"><input type="checkbox" id="wlNew" checked> רק למי שעוד לא קיבלה מייל פתיחה</label>
     <div class="row"><button class="btn primary" data-act="smSend" data-kind="welcome">שליחת מייל פתיחה</button><span class="sub" data-smmsg="welcome"></span></div></section>`}
 async function staffMailSend(btn){const kind=btn.dataset.kind,p={reminder:"rem",broadcast:"bc",welcome:"wl"}[kind];const w=$("#"+p+"Who").value;const msg=$(`[data-smmsg="${kind}"]`);
   const a={kind};if(w.startsWith("g:"))a.garden_id=w.slice(2);if(w.startsWith("r:"))a.role=w.slice(2);if(w.startsWith("s:"))a.staff_ids=[w.slice(2)];
+  if(w==="office"||w==="edu"||w.startsWith("or:")){const ids=smRecipients(w).map(x=>x._id);if(!ids.length){msg.textContent=w==="edu"?"אין אנשי צוות מתאימים":"לאנשי צוות המשרד אין כרטיס באנשי הצוות עם מייל – הוסיפו אותם במסך אנשי צוות";return}a.staff_ids=ids;a.group=true}
+  if(kind==="broadcast"&&BC_FILES.length)a.attachments=BC_FILES.map(f=>({name:f.name,mime:f.mime,data:f.data}));
   if(kind==="reminder"){a.month=$("#remMonth").value;a.only_pending=$("#remPend").checked}
   if(kind==="welcome")a.only_new=$("#wlNew").checked;
   if(kind==="broadcast"){a.subject=$("#bcSubj").value.trim();a.body=$("#bcBody").value.trim();if(!a.subject||!a.body){msg.textContent="יש למלא נושא ותוכן";return}}
-  if(!a.staff_ids&&btn.dataset.sure!=="1"){btn.dataset.sure="1";const t=btn.textContent;btn.textContent="ללחוץ שוב לאישור השליחה";setTimeout(()=>{if(document.contains(btn)){btn.dataset.sure="";btn.textContent=t}},6000);return}
-  btn.dataset.sure="";await busy(btn,async()=>{try{const r=await call("staffMail",a);msg.textContent=`${r.queued} מיילים בתור לשליחה${r.no_email?` · ${r.no_email} בלי כתובת מייל`:""}. השליחה נמשכת ברקע.`;if(kind==="broadcast"){$("#bcSubj").value="";$("#bcBody").value=""}}catch(e){msg.textContent=e.message}})}
+  if((!a.staff_ids||a.group)&&btn.dataset.sure!=="1"){btn.dataset.sure="1";const t=btn.textContent;btn.textContent="ללחוץ שוב לאישור השליחה";setTimeout(()=>{if(document.contains(btn)){btn.dataset.sure="";btn.textContent=t}},6000);return}
+  btn.dataset.sure="";await busy(btn,async()=>{try{const r=await call("staffMail",a);msg.textContent=`${r.queued} מיילים בתור לשליחה${r.no_email?` · ${r.no_email} בלי כתובת מייל`:""}. השליחה נמשכת ברקע.`;if(kind==="broadcast"){$("#bcSubj").value="";$("#bcBody").value="";BC_FILES=[];bcFilesPaint()}}catch(e){msg.textContent=e.message}})}
 async function attOp(args){try{await call("attEdit",args);await syncNow()}catch(e){toast(e.message||"הפעולה נכשלה")}}
 async function attImport(){
   const file=await pickFile();if(!file)return;let aoa;try{aoa=await readAoa(file)}catch(e){toast("לא ניתן לקרוא את הקובץ");return}
@@ -1844,7 +1880,7 @@ const ruleSentence=r=>{const c=(f,o,v)=>`<b>${esc(f||"נושא")}</b> ${esc(o||"
   const acts=[r.forward_to&&`להעביר אל <b class="mono">${esc(r.forward_to)}</b>`,r.archive==="כן"&&"להוציא מהדואר הנכנס",r.assign_to&&`לשייך ל<b>${esc(offName(r.assign_to))}</b>`,r.notify_to&&`התראה ל${esc(offName(r.notify_to))}`,
     r.mark_invoice==="כן"&&`לשמור כחשבונית${r.supplier_id&&S.suppliers?.get(r.supplier_id)?" של "+esc(S.suppliers.get(r.supplier_id).name):""}`,r.create_task==="כן"&&`ליצור משימה (${+r.task_due_days||2} ימים)`,r.set_category&&`קטגוריה: ${esc(r.set_category)}`,r.set_status&&`סטטוס: ${esc(r.set_status)}`,r.add_label&&`תווית: ${esc(r.add_label)}`,r.stop==="כן"&&"לא להפעיל כללים נוספים"].filter(Boolean);
   return `כשמגיע מייל ש${c(r.cond_field,r.cond_op,r.cond_value)}${r.cond2_value?` וגם ${c(r.cond2_field,r.cond2_op,r.cond2_value)}`:""} ← ${acts.join(" · ")||'<span class="sub">לא הוגדרה פעולה</span>'}`};
-PAGES.rules=()=>{const R=vals("email_rules").sort((a,b)=>(+a.priority||99)-(+b.priority||99));
+PAGES.rules=()=>{if(!ready.has("email_rules"))return `<div class="ph"><div><h1>כללי ניתוב</h1></div></div><div class="card empty"><span class="spin"></span><b>טוען…</b></div>`;const R=vals("email_rules").sort((a,b)=>(+a.priority||99)-(+b.priority||99));
   return `<div class="ph"><div><h1>כללי ניתוב</h1><p class="sub">כל מייל חדש נבדק מול הכללים מלמעלה למטה. כלל אומר "כשמגיע מייל כזה – תעשי את זה".</p></div>${canWrite?`<button class="btn primary" data-rule="">+ כלל חדש</button>`:""}</div>
   ${R.length?R.map((r,i)=>`<section class="card rulecard"><div class="t"><div class="row" style="gap:8px;margin-bottom:4px"><h3>${esc(r.name||"כלל")}</h3>${isOn(r.is_active)?'<span class="pill ok">פעיל</span>':'<span class="pill">מושהה</span>'}</div><div class="sent">${ruleSentence(r)}</div>${r.applied_note?`<p class="sub">${esc(r.applied_note)}</p>`:""}</div>
    ${canWrite?`<div class="row"><button class="btn sm primary" data-rule="${r._id}">עריכה</button>${menuHTML("⋯",[mi(`data-rtoggle="${r._id}"`,isOn(r.is_active)?"השהיית הכלל":"הפעלת הכלל",{ic:"⏯"}),mi(`data-rmove="${r._id}|-1"`,"להזיז למעלה",{ic:"▲",dis:!i}),mi(`data-rmove="${r._id}|1"`,"להזיז למטה",{ic:"▼",dis:i>=R.length-1})],{end:true,sm:true,aria:"עוד פעולות לכלל"})}</div>`:""}</section>`).join("")
@@ -1875,7 +1911,7 @@ function ruleEditor(id,preset){const r=id?S.email_rules.get(id):{...E.email_rule
     <label class="row"><input type="checkbox" id="rbOn"${isOn(r.is_active??true)?" checked":""}> הכלל פעיל</label>
     <p class="notice bad" id="rbErr" hidden></p>
     <div class="row"><button class="btn primary" id="rbGo">שמירת הכלל</button><button class="btn" data-close>ביטול</button>${id&&canDel("email_rules",S.email_rules?.get(id))?`<span class="spacer"></span><button class="btn bad" id="rbDel">מחיקת הכלל</button>`:""}</div></div>`,"wide");
-  $("#modal .modal").dataset.rule=id||"";
+  $("#modal .modal").dataset.ruleed=id||"";
   $("#rbAnd").onchange=e=>{$("#rbC2").hidden=!e.target.checked};
   $("#rbGo").onclick=e=>saveRule(id,e.currentTarget);
   if(id&&$("#rbDel"))$("#rbDel").onclick=e=>{const b=e.currentTarget;if(b.dataset.sure!=="1"){b.dataset.sure="1";b.textContent="ללחוץ שוב למחיקה";return}busy(b,async()=>{await del(E.email_rules,id);closeModal();toast("הכלל נמחק")})}}
@@ -2148,6 +2184,7 @@ function render(){
   const lists=[...document.querySelectorAll(".tbox")].map(b=>b.scrollTop);
   const typed=ae&&aid&&/^(INPUT|TEXTAREA)$/.test(ae.tagName)&&!/^(checkbox|radio|file|button|submit)$/i.test(ae.type||"")&&$("#view").contains(ae)?ae.value:null;const draftMsg=$("#mtext")?.value||"";
   $("#view").innerHTML=r.startsWith("s-")?screenPage(r):(PAGES[r]||PAGES.home)();
+  try{enhanceCombos($("#view"))}catch(e){}
   $("#view").classList.toggle("full",!!$("#view .tbl-wrap.max"));
   renderNav();
   {const mt=$("#mtext");if(mt&&draftMsg&&!mt.value)mt.value=draftMsg}
@@ -2228,6 +2265,7 @@ document.addEventListener("click",async e=>{
     if(a==="detCancel"){detEdit=false;detEd.clear();return attDetail($("#attDet").dataset.sid)}
     if(a==="detSave")return detSave(el);
     if(a==="smSend")return staffMailSend(el);
+    if(a==="smTest")return staffMailTest(el);
     if(a==="remSave")return busy(el,async()=>{try{await saveSettings({att_remind:{enabled:$("#remOn").checked,days:Math.max(1,Math.min(10,+$("#remDays").value||2))}});toast("נשמר")}catch(x){toast(x.message)}});
     if(a==="mNoteSave"){const id=$("#modal .modal")?.dataset.mail;const m=S.emails?.get(id);if(!m)return;return busy(el,async()=>{try{await save(E.emails,id,{row_note:$("#mNote").value.trim()},{row_note:m.row_note||""});toast("ההערה נשמרה")}catch(x){toast(x.code==="conflict"?"מישהו אחר עדכן את ההערה בינתיים":x.message)}})}
     if(a==="acSave"){const em=$("#acEmail").value.trim().toLowerCase();if(em&&!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(em)){toast("כתובת לא תקינה");return}return busy(el,async()=>{try{await saveSettings({acct:{email:em,auto:$("#acAuto").checked,pdf:$("#acPdf").checked}});toast("נשמר")}catch(x){toast(x.message)}})}
@@ -3025,6 +3063,7 @@ PAGES.health=()=>{const K=vals("children").filter(c=>isOn(c.is_active)),gs=vals(
   const card=(ic,n,l,sub,act,lvl)=>`<div class="hcard ${n?lvl:"good"}"><div class="hi">${ico(n?ic:"check")}</div><div class="t"><b>${n.toLocaleString("he-IL")}</b><span>${l}</span>${sub?`<small>${sub}</small>`:""}</div>${n&&act?`<div class="ha">${act}</div>`:""}</div>`;
   return `<div class="ph"><div><h1>איכות נתונים</h1><p class="sub">בדיקה אוטומטית של הנתונים על הילדים, הגנים והצוות – ומה אפשר לתקן בלחיצה.</p></div></div>
    <div class="hscore"><div class="ring" style="--p:${score}"><b>${score}%</b></div><div><h2>${score>=95?"הנתונים במצב מצוין":score>=80?"הנתונים במצב טוב":"יש מה לשפר"}</h2><p class="sub">${K.length.toLocaleString("he-IL")} ילדים פעילים · ${gs.length} גנים · ${st.length} אנשי צוות</p></div></div>
+   ${(()=>{const D=dupNameKids();return D.length?`<div class="notice warn" style="margin-bottom:12px"><span><b>${D.length} ילדים</b> ששם המשפחה מופיע אצלם פעמיים (למשל: ${esc(D.slice(0,3).map(c=>[c.first_name,c.last_name].join(" ")).join(" · "))}).</span>${canWrite?`<button class="btn sm primary" data-x="fixDupNames">תיקון אוטומטי</button>`:""}</div>`:""})()}
    <div class="hgrid">
     ${card("school",noG.length,"ילדים ללא שיוך לגן",auto.length?`${auto.length} אפשר לשייך אוטומטית לפי סמל, שם גן או גננת`:"",`${canWrite?`<button class="btn sm primary" data-x="kidsAssign">שיוך לגנים${auto.length?` (${auto.length} אוטומטית)`:""}</button>`:""}<button class="btn sm" data-x="hShow" data-i="nogarden">הצגה</button>`,"bad")}
     ${card("alert",bad.length,"ת.ז. לא תקינה (ספרת ביקורת)","",`<button class="btn sm" data-x="hShow" data-i="badid">הצגה</button>`,"warn")}
@@ -3553,6 +3592,106 @@ document.addEventListener("change",async e=>{const t=e.target;if(!t.dataset?.oro
   if(!nw||nw===old){t.value=old;return}if(nw==="מנהלת"||officeRoles().includes(nw)){toast("כבר יש תפקיד בשם הזה");t.value=old;return}
   const who=vals("office").filter(o=>o.role===old);if(who.length&&!confirm(`לשנות את "${old}" ל"${nw}"?\nגם ${who.length} אנשי הצוות שמוגדרים בתפקיד הזה יעודכנו.`)){t.value=old;return}
   t.disabled=true;try{await saveSettings({office_roles:officeRoles().map(x=>x===old?nw:x)});const f=await pool(who.map(o=>()=>save(E.office||defOf("office"),o._id,{role:nw})),()=>{},8);audit("שינוי שם תפקיד","צוות משרד",old+" ← "+nw,who.length+" אנשי צוות");toast(f?`נשמר, ${f} עדכונים נכשלו`:"התפקיד עודכן")}catch(err){toast(err.message||"השמירה נכשלה");t.value=old}finally{t.disabled=false;render()}});
+
+/* =================== combobox: a searchable select =================== */
+function comboize(sel){
+  if(sel.dataset.cbx||sel.multiple||sel.hasAttribute("data-nocbx")||sel.closest("[data-nocbx]")||sel.options.length<9)return;
+  sel.dataset.cbx="1";const base=sel.id||("cb"+Math.random().toString(36).slice(2,8));
+  const w=document.createElement("div");w.className="cbx";
+  const inp=document.createElement("input");inp.type="text";inp.className="cbx-in";inp.autocomplete="off";inp.id=base+"__cb";
+  inp.setAttribute("role","combobox");inp.setAttribute("aria-autocomplete","list");inp.setAttribute("aria-expanded","false");
+  const lab=sel.getAttribute("aria-label")||(sel.labels&&sel.labels[0]?sel.labels[0].textContent.trim():"");if(lab)inp.setAttribute("aria-label",lab);
+  if(sel.required){sel.required=false;inp.required=true}
+  const ul=document.createElement("ul");ul.className="cbx-list";ul.id=base+"__lb";ul.setAttribute("role","listbox");ul.hidden=true;inp.setAttribute("aria-controls",ul.id);
+  const first=sel.options[0];inp.placeholder=first&&first.value===""&&first.textContent.trim()?first.textContent.trim():"חיפוש…";
+  const txt=()=>{const o=sel.options[sel.selectedIndex];return o&&o.value!==""?o.textContent.trim():""};inp.value=txt();
+  sel.hidden=true;sel.tabIndex=-1;sel.after(w);w.append(inp,ul);
+  let act=-1,items=[],q="";
+  const grp=(o,i)=>o.parentElement.tagName==="OPTGROUP"&&(i===0||items[i-1].parentElement!==o.parentElement);
+  const paint=()=>{const n=q.trim().toLowerCase();items=[...sel.options].filter(o=>!o.disabled&&(!n||o.textContent.toLowerCase().includes(n)));
+    ul.innerHTML=items.slice(0,400).map((o,i)=>`<li role="option" id="${ul.id}_${i}" data-i="${i}" aria-selected="${o.selected&&o.value!==""}" class="${i===act?"act":""}${o.value===""?" cbx-clear":""}${grp(o,i)?" cbx-g":""}"${grp(o,i)?` data-g="${esc(o.parentElement.label)}"`:""}>${esc(o.textContent.trim()||"— ללא —")}</li>`).join("")||'<li class="cbx-none">לא נמצא</li>';
+    if(act>=0&&items.length){inp.setAttribute("aria-activedescendant",ul.id+"_"+act);ul.querySelector(".act")?.scrollIntoView({block:"nearest"})}else inp.removeAttribute("aria-activedescendant")};
+  const open=()=>{if(!ul.hidden)return;q="";act=[...sel.options].filter(o=>!o.disabled).findIndex(o=>o.selected);paint();ul.hidden=false;inp.setAttribute("aria-expanded","true")};
+  const close=()=>{ul.hidden=true;inp.setAttribute("aria-expanded","false");inp.value=txt();q=""};
+  const pick=o=>{if(!o)return;if(sel.value!==o.value){sel.value=o.value;sel.dispatchEvent(new Event("change",{bubbles:true}))}close()};
+  inp.addEventListener("click",()=>{ul.hidden?open():close()});
+  inp.addEventListener("focus",()=>{try{inp.select()}catch(e){}});
+  inp.addEventListener("input",()=>{q=inp.value;act=0;paint();ul.hidden=false;inp.setAttribute("aria-expanded","true")});
+  inp.addEventListener("keydown",e=>{
+    if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();if(ul.hidden){open();return}act=Math.max(0,Math.min(items.length-1,act+(e.key==="ArrowDown"?1:-1)));paint()}
+    else if(e.key==="Enter"){if(!ul.hidden){e.preventDefault();pick(items[act>=0?act:0])}}
+    else if(e.key==="Escape"){if(!ul.hidden){e.preventDefault();e.stopPropagation();close()}}
+    else if(e.key==="Tab"){if(!ul.hidden&&q&&items.length===1)pick(items[0]);else close()}});
+  ul.addEventListener("mousedown",e=>{const li=e.target.closest("li[data-i]");if(!li)return;e.preventDefault();pick(items[+li.dataset.i])});
+  inp.addEventListener("blur",()=>setTimeout(()=>{if(document.activeElement!==inp)close()},150));
+  sel.addEventListener("change",()=>{if(document.activeElement!==inp)inp.value=txt()});
+}
+function enhanceCombos(root){if(!root)return;root.querySelectorAll("select").forEach(comboize)}
+document.addEventListener("input",e=>{const t=e.target;if(!t.dataset?.msearch)return;const box=document.getElementById(t.dataset.msearch);if(!box)return;const q=t.value.trim().toLowerCase();box.querySelectorAll("label").forEach(l=>{l.hidden=!!q&&!l.textContent.toLowerCase().includes(q)})});
+document.addEventListener("change",e=>{const t=e.target;const box=t.closest?.(".checks.many");if(!box||t.type!=="checkbox")return;const c=document.querySelector(`[data-mcount="${box.id}"]`);if(c){const n=box.querySelectorAll("input:checked").length;c.textContent=n?`${n} נבחרו`:""}});
+
+/* =================== children whose family name appears twice =================== */
+function dupNameKids(){return vals("children").filter(c=>{const f=String(c.first_name||"").trim().replace(/\s+/g," ");return (f&&cleanFirst(f,c.last_name)!==f)||(!c.first_name&&!c.last_name&&collapseDup(c.full_name)!==String(c.full_name||"").trim())})}
+document.addEventListener("click",e=>{const b=e.target.closest('[data-x="fixDupNames"]');if(!b||!canWrite)return;const D=dupNameKids();if(!D.length)return toast("אין שמות כפולים");
+  if(!confirm(`לתקן ${D.length} ילדים?\nלדוגמה: "${[D[0].first_name,D[0].last_name].join(" ")}" ← "${nameJoin(D[0].first_name,D[0].last_name)}"`))return;
+  busy(b,async()=>{const f=await pool(D.map(c=>()=>save(E.children,c._id,c.first_name||c.last_name?{first_name:cleanFirst(c.first_name,c.last_name),last_name:c.last_name||""}:{full_name:collapseDup(c.full_name)})),()=>{},10);audit("תיקון שמות משפחה כפולים","ילדים","",(D.length-f)+" ילדים");toast(`תוקנו ${D.length-f} ילדים`);render()})});
+
+/* =================== phone punches from callers who are not on the staff list =================== */
+let unkMonth=ym();
+const unkKey=r=>[r.date,r.time,r.type,normId(r.id)||"",digits(r.phone||"")].join("|");
+const unkType=t=>/יציא|out|^2$/i.test(String(t||""))?"יציאה":"כניסה";
+const unkDone=m=>new Set(((settings.phone_done||{})[m])||[]);
+function unkRows(m){const L=phoneMiss[m]||[],done=unkDone(m);return (Array.isArray(L)?L:[]).filter(r=>!done.has(unkKey(r)))}
+function unkCount(){try{if(isAdmin&&TOKEN&&!phoneMiss[ym()])loadPhoneMiss(ym())}catch(e){}return unkRows(ym()).length||""}
+function unkGroups(m){const g=new Map();unkRows(m).forEach(r=>{const id=normId(r.id)||"",ph=digits(r.phone||"");const k=+id?"id"+id:"ph"+ph;if(!g.has(k))g.set(k,{k,id:+id?id:"",phone:ph,rows:[]});g.get(k).rows.push(r)});
+  const byId=new Map(vals("staff").map(s=>[normId(s.id_number),s]));
+  return [...g.values()].map(x=>({...x,match:x.id&&byId.get(x.id)||null,rows:x.rows.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))})).sort((a,b)=>b.rows.length-a.rows.length)}
+const gardenByPhone=ph=>ph?vals("gardens").find(g=>String(g.phone||"").split(/[,;]/).map(digits).some(d=>d&&d.slice(-9)===ph.slice(-9))):null;
+PAGES.attunk=()=>{loadPhoneMiss(unkMonth);const G=unkGroups(unkMonth),staff=vals("staff").filter(x=>isOn(x.is_active)).sort((a,b)=>a.full_name.localeCompare(b.full_name,"he"));
+  return `<div class="ph"><div><h1>החתמות ללא שיוך</h1><p class="sub">מי שהתקשרה לקו הנוכחות והקישה כניסה או יציאה, אבל לא נמצאה ברשימת אנשי הצוות. ההחתמות שמורות כאן עד שמשייכים אותן – לאשת צוות קיימת או לכרטיס חדש.</p></div>
+    <div class="bar"><label class="sr" for="unkM">חודש</label><input type="month" id="unkM" value="${unkMonth}"><button class="btn" data-x="unkReload">${ico("refresh")}רענון</button></div></div>
+   ${!phoneMiss[unkMonth]?`<div class="card empty"><span class="spin"></span><b>טוען…</b></div>`:!G.length?`<div class="card empty"><b>אין החתמות ללא שיוך בחודש הזה</b>כל מי שהתקשרה זוהתה.</div>`:
+   G.map(x=>{const gg=gardenByPhone(x.phone);return `<section class="card unk"><div class="unk-h"><div><h2>${x.id?`ת.ז. <span class="mono">${esc(x.id)}</span>`:"ללא ת.ז."}${x.phone?` · <span class="mono">${esc(x.phone)}</span>`:""}</h2><p class="sub">${x.rows.length} החתמות${gg?` · התקשרה מהטלפון של ${esc(gg.name)}`:""}${x.match?` · <b>ת.ז. הזו שייכת ל${esc(x.match.full_name)}</b> – כנראה התקשרה ממספר שלא מאושר לה`:""}</p></div>
+     ${canWrite?`<div class="row unk-a">${x.match?`<button class="btn primary" data-unkto="${x.k}" data-sid="${x.match._id}">שיוך ל${esc(x.match.full_name)}</button>`:`<button class="btn primary" data-unknew="${x.k}">${ico("plus")}הוספה כאיש צוות</button>`}
+      <select id="unkS_${x.k}" data-unksel="${x.k}" aria-label="שיוך לאשת צוות קיימת"><option value="">שיוך לאשת צוות קיימת…</option>${staff.map(s=>`<option value="${s._id}">${esc(s.full_name)}${s.id_number?" · "+esc(normId(s.id_number)):""}</option>`).join("")}</select>
+      <button class="btn ghost" data-unkdrop="${x.k}">התעלמות</button></div>`:""}</div>
+     <div class="tbox" style="max-height:240px"><table><thead><tr><th>תאריך</th><th>שעה</th><th>סוג</th></tr></thead><tbody>${x.rows.map(r=>`<tr><td class="mono">${esc(fmtDate(r.date))}</td><td class="mono">${esc(r.time)}</td><td>${esc(unkType(r.type))}</td></tr>`).join("")}</tbody></table></div></section>`}).join("")}`};
+NEEDS.attunk=["staff","gardens"];
+async function unkMark(m,rows){const done=unkDone(m);rows.forEach(r=>done.add(unkKey(r)));await saveSettings({phone_done:{...(settings.phone_done||{}),[m]:[...done]}})}
+async function unkAssign(k,sid,btn){const x=unkGroups(unkMonth).find(g=>g.k===k),s=S.staff?.get(sid);if(!x||!s)return;
+  const rows=x.rows.map(r=>({staff_id:sid,date:toIsoDate(r.date),time:String(r.time||"").slice(0,5).padStart(5,"0"),type:unkType(r.type)})).filter(r=>/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&/^\d{2}:\d{2}$/.test(r.time));
+  const run=async()=>{try{const n=await call("attImport",{rows});await unkMark(unkMonth,x.rows);audit("שיוך החתמות טלפון","נוכחות",s.full_name,`${rows.length} החתמות`);toast(`${n} החתמות נוספו לנוכחות של ${s.full_name}`);syncNow();render()}catch(e){toast(e.message||"השיוך נכשל")}};
+  return btn?busy(btn,run):run()}
+document.addEventListener("click",e=>{const t=e.target;let el;
+  if(el=t.closest("[data-unkto]"))return unkAssign(el.dataset.unkto,el.dataset.sid,el);
+  if(el=t.closest("[data-unknew]")){const k=el.dataset.unknew,x=unkGroups(unkMonth).find(g=>g.k===k);if(!x)return;
+    const preset={id_number:x.id||"",phone:x.phone?(x.phone.length===9&&x.phone[0]!=="0"?"0"+x.phone:x.phone):"",roles:["גננת"],is_active:true};
+    const gg=gardenByPhone(x.phone);if(gg)preset.garden_id=gg._id;
+    afterSave={key:"staff",fn:sid=>unkAssign(k,sid)};openForm("staff",null,preset);return}
+  if(el=t.closest("[data-unkdrop]")){const x=unkGroups(unkMonth).find(g=>g.k===el.dataset.unkdrop);if(!x||!confirm(`להתעלם מ-${x.rows.length} ההחתמות האלה? הן לא ייכנסו לנוכחות.`))return;return busy(el,async()=>{await unkMark(unkMonth,x.rows);render()})}
+  if(t.closest('[data-x="unkReload"]')){delete phoneMiss[unkMonth];render()}});
+document.addEventListener("change",e=>{const t=e.target;
+  if(t.id==="unkM"&&t.value){unkMonth=t.value;render();return}
+  if(t.dataset?.unksel&&t.value){const s=S.staff?.get(t.value);if(s&&confirm(`לשייך את ההחתמות ל${s.full_name}?`))unkAssign(t.dataset.unksel,t.value);else{t.value="";t.dispatchEvent(new Event("change"))}}});
+
+/* =================== staff mail: recipients, attachments, sample =================== */
+let BC_FILES=[];
+function smRecipients(w){const st=vals("staff").filter(x=>isOn(x.is_active)&&x.email&&x.no_monthly!=="כן");
+  const off=vals("office").filter(o=>o.is_active!==false);const offEm=new Set(off.map(o=>lcs(o.email)));
+  const isOff=x=>!!x.office_id||offEm.has(lcs(x.email));
+  if(w==="office")return st.filter(isOff);if(w==="edu")return st.filter(x=>!isOff(x));
+  if(w.startsWith("or:")){const r=w.slice(3),O=off.filter(o=>o.role===r),em=new Set(O.map(o=>lcs(o.email))),ids=new Set(O.map(o=>o._id));return st.filter(x=>em.has(lcs(x.email))||ids.has(x.office_id))}
+  if(w.startsWith("r:")){const r=w.slice(2);return st.filter(x=>(x.roles||[]).includes(r))}
+  if(w.startsWith("g:"))return st.filter(x=>x.garden_id===w.slice(2));if(w.startsWith("s:"))return st.filter(x=>x._id===w.slice(2));return st}
+function smCountText(w){try{const n=smRecipients(w).length;let t=`${n} נמענים עם כתובת מייל`;if(w==="office"||w.startsWith("or:")){const off=vals("office").filter(o=>o.is_active!==false&&(w==="office"||o.role===w.slice(3)));const miss=off.length-n;if(miss>0)t+=` · ${miss} מצוות המשרד בלי כרטיס באנשי הצוות`}return t}catch(e){return""}}
+document.addEventListener("change",e=>{const t=e.target;if(t.dataset?.smwho){const c=document.querySelector(`[data-smcount="${t.dataset.smwho}"]`);if(c)c.textContent=smCountText(t.value)}
+  if(t.id==="bcFiles"){const fs=[...t.files];t.value="";Promise.all(fs.map(f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res({name:f.name,mime:f.type||"application/octet-stream",size:f.size,data:String(r.result).split(",")[1]});r.onerror=rej;r.readAsDataURL(f)}))).then(L=>{const all=[...BC_FILES,...L];if(all.reduce((a,f)=>a+f.size,0)>8*1024*1024){toast("הקבצים גדולים מדי – עד 8MB בסך הכל");return}BC_FILES=all;bcFilesPaint()}).catch(()=>toast("לא ניתן לקרוא את הקובץ"))}});
+function bcFilesPaint(){const b=$("#bcFileList");if(b)b.innerHTML=BC_FILES.map((f,i)=>`<span class="chip">📎 ${esc(f.name)} <small>${Math.max(1,Math.round(f.size/1024))}KB</small><button type="button" data-bcrm="${i}" aria-label="הסרת ${esc(f.name)}">×</button></span>`).join("")}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-bcrm]");if(!b)return;BC_FILES.splice(+b.dataset.bcrm,1);bcFilesPaint()});
+async function staffMailTest(btn){const msg=$('[data-smmsg="broadcast"]');const to=$("#bcTestTo")?.value;const subject=$("#bcSubj").value.trim(),body=$("#bcBody").value.trim();
+  if(!subject||!body){msg.textContent="יש למלא נושא ותוכן";return}if(!to){msg.textContent="בחרו למי לשלוח את הדוגמה";return}
+  const a={kind:"broadcast",subject:"[דוגמה] "+subject,body,staff_ids:[to]};if(BC_FILES.length)a.attachments=BC_FILES.map(f=>({name:f.name,mime:f.mime,data:f.data}));
+  await busy(btn,async()=>{try{await call("staffMail",a);msg.textContent=`מייל דוגמה נשלח אל ${S.staff?.get(to)?.full_name||""}. בדקו שהוא נראה טוב${BC_FILES.length?" ושהקבצים צורפו":""}, ואז שלחו לכולם.`}catch(e){msg.textContent=e.message}})}
 (async()=>{
   let lk=window.KG_LOGIN||"";try{const u=new URL(location.href);if(!lk)lk=u.searchParams.get("login")||"";if(u.searchParams.get("login")){u.searchParams.delete("login");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
   if(lk){try{const r=await pub("linkLogin",lk);setToken(r.token);return start(r.me)}catch(e){return showLogin(e.message)}}
