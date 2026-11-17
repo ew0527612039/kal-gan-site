@@ -1,0 +1,1 @@
+var c="class=\"t\"><b>${esc(x.full_name)}</b><small>${esc((x.roles||[]).join(\", \")||\" \")}</small></span>\n      ${canWrite?`<select class=\"tsel${g?\"\":\" un\"}\" data-tchassign";

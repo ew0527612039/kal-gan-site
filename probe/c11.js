@@ -1,0 +1,1 @@
+var c="s?.get(x.garden_id);return `<div class=\"trow${TCH.sel===x._id?\" on\":\"\"}\" data-tch=\"${x._id}\" tabindex=\"0\">${avatar(x.full_name,g?hueOf(grpOf(g)):\"#9aa7ae\")}<span ";

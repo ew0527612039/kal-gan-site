@@ -1,0 +1,1 @@
+var c=" <div class=\"crmbar\"><input class=\"search\" type=\"search\" id=\"tchQ\" value=\"${esc(TCH.q)}\" placeholder=\"  , , \u2026\" aria-label=\" \">\n    <div class=\"seg\">${[[\"edu\",\" \"]";
