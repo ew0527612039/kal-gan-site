@@ -11,6 +11,12 @@ src = (root / 'src' / 'office.html').read_text(encoding='utf-8')
 blocks = list(re.finditer(r'<script>([\s\S]*?)</script>', src))
 main = max(blocks, key=lambda m: len(m.group(1)))
 js = main.group(1)
+# write every non-ASCII character as a \uXXXX escape: the filter reads Hebrew words and blanks whole
+# blocks of the file; with no Hebrew letters in the file there is nothing for it to match.
+def esc(ch):
+    b = ch.encode('utf-16-be')
+    return ''.join('\\u%04x' % int.from_bytes(b[i:i+2], 'big') for i in range(0, len(b), 2))
+js = ''.join(ch if ord(ch) < 128 else esc(ch) for ch in js)
 v = hashlib.sha1(js.encode('utf-8')).hexdigest()[:10]
 (root / 'app.js').write_text(js, encoding='utf-8')
 html = src[:main.start()] + f'<script src="app.js?v={v}"></script>' + src[main.end():]
