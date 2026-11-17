@@ -990,10 +990,12 @@ const E={
   fields:[{k:"supplier_id",l:"ספק",req:1,...ref("suppliers")},{k:"doc_type",l:"סוג",t:"sel",opts:()=>["חשבונית","קבלה","חשבונית מס קבלה"]},{k:"invoice_number",l:"מספר מסמך",t:"mono"},{k:"invoice_date",l:"תאריך",t:"date"},{k:"amount",l:"סכום (₪)",t:"num"},{k:"status",l:"סטטוס",t:"sel",opts:()=>["ממתין לתשלום","שולם"]},{k:"notes",l:"הערות",t:"area"}],
   cols:["invoice_date","supplier_id","_from","doc_type","invoice_number","amount","status","_files","_note"],virt:{_files:{l:"קבצים",v:r=>(r.files||[]).length,html:r=>fileLinks(r.files)},_from:{l:"התקבל מ",v:r=>r.from_email||""}},filters:["supplier_id","status"],sort:"invoice_date",sortDir:-1,defaults:{status:"ממתין לתשלום",doc_type:"חשבונית"}},
 };
-const cleanFirst=(first,last)=>{const L=String(last||"").trim().replace(/\s+/g," "),F=String(first||"").trim().replace(/\s+/g," ");if(!L||!F||F===L)return F;const fw=F.split(" "),n=L.split(" ").length;
-  if(fw.length>n){if(fw.slice(-n).join(" ")===L)return fw.slice(0,-n).join(" ");if(fw.slice(0,n).join(" ")===L)return fw.slice(n).join(" ")}return F};
-const nameJoin=(first,last)=>[cleanFirst(first,last),String(last||"").trim()].filter(Boolean).join(" ");
-const collapseDup=t=>String(t||"").trim().split(/\s+/).filter((w,i,a)=>w!==a[i-1]).join(" ");
+const collapseDup=t=>String(t||"").trim().split(/\s+/).filter((w,i,a)=>w&&w!==a[i-1]).join(" ");
+const cleanLast=last=>{const L=collapseDup(last),w=L.split(" ");if(w.length%2===0&&w.length>1&&w.slice(0,w.length/2).join(" ")===w.slice(w.length/2).join(" "))return w.slice(0,w.length/2).join(" ");return L};
+const cleanFirst=(first,last)=>{const L=cleanLast(last),F=collapseDup(first);if(!L||!F||F===L)return F;const fw=F.split(" "),lw=L.split(" "),n=lw.length;
+  if(fw.length>n){if(fw.slice(-n).join(" ")===L)return fw.slice(0,-n).join(" ");if(fw.slice(0,n).join(" ")===L)return fw.slice(n).join(" ");for(let i=1;i+n<fw.length;i++)if(fw.slice(i,i+n).join(" ")===L)return [...fw.slice(0,i),...fw.slice(i+n)].join(" ")}return F};
+/* first name identical to the family name: show it once (the real first name was lost in an import) */
+const nameJoin=(first,last)=>{const L=cleanLast(last),F=cleanFirst(first,last);return (F===L?[L]:[F,L]).filter(Boolean).join(" ")};
 const fullName=r=>(r.first_name||r.last_name?nameJoin(r.first_name,r.last_name):collapseDup(r.full_name)).trim();
 const TASK_ST=["פעיל","בטיפול","ממתין לאישור","הושלם"];
 let KI={t:0,m:null,s:null};
@@ -1243,7 +1245,7 @@ async function readXlsx(file){await ensureXLSX();return new Promise((res,rej)=>{
 const pickFile=(accept=".xlsx,.xls,.csv")=>new Promise(res=>{const i=document.createElement("input");i.type="file";i.accept=accept;i.onchange=()=>res(i.files[0]);i.click()});
 function toIsoDate(v){if(!v)return"";const s=String(v).trim();let m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);if(m)return`${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}`;m=s.match(/^(\d{1,2})[\x2f.](\d{1,2})[\x2f.](\d{2,4})/);if(m){const y=m[3].length===2?"20"+m[3]:m[3];return`${y}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`}return s}
 
-function fieldIndex(def){const idx=[];def.fields.forEach(f=>[f.k,f.l,...(f.al||[])].forEach(a=>idx.push([norm(a),f])));if(def.col==="children")idx.push([norm("שם מלא"),{k:"full_name",l:"שם מלא"}],[norm("שם הילד"),{k:"full_name",l:"שם מלא"}]);return idx}
+function fieldIndex(def){const idx=[];def.fields.forEach(f=>[f.k,f.l,...(f.al||[])].forEach(a=>idx.push([norm(a),f])));if(def.col==="children")["שם מלא","שם הילד","שם הילדה","שם התלמיד","שם התלמידה","שם ומשפחה","שם ושם משפחה","שם פרטי ומשפחה","שם פרטי ושם משפחה","שם משפחה ושם פרטי","שם הבת"].forEach(a=>idx.push([norm(a),{k:"full_name",l:"שם מלא"}]));return idx}
 function matchHeader(def,h,idx){const n=norm(h);if(!n)return null;
   const ex=idx.find(([a])=>a===n);if(ex)return ex[1];
   let best=null,bl=0;idx.forEach(([a,f])=>{if(a.length>=2&&(n.includes(a)||a.includes(n))&&a.length>bl){best=f;bl=a.length}});return best}
@@ -1300,7 +1302,10 @@ async function readSheetX(file){await ensureXLSX();const ext=(file.name.split(".
   return{aoa,fills}}
 async function readAoa(file){return (await readSheetX(file)).aoa}
 function coerce(def,o){const out={};for(const[k,v]of Object.entries(o)){const f=def.fields.find(x=>x.k===k);
-  if(!f){if(k==="full_name"&&def.col==="children"&&!o.first_name&&v){const p=String(v).trim().split(/\s+/);out.first_name=p.slice(0,-1).join(" ")||p[0];out.last_name=p.length>1?p.at(-1):""}continue}
+  if(!f){if(k==="full_name"&&def.col==="children"&&!o.first_name&&v){const p=String(v).trim().split(/\s+/),L=String(o.last_name||"").trim();
+      /* the file also has a family-name column: the first name is whatever is left after removing it, wherever it sits (Israeli lists often write the family name first) */
+      if(L){const lw=L.split(/\s+/),n=lw.length;let rest=p;if(p.slice(0,n).join(" ")===L)rest=p.slice(n);else if(p.slice(-n).join(" ")===L)rest=p.slice(0,-n);else rest=p.filter(w=>!lw.includes(w));out.first_name=rest.join(" ")||p[0]}
+      else{out.first_name=p.slice(0,-1).join(" ")||p[0];out.last_name=p.length>1?p.at(-1):""}}continue}
   if(v===""||v==null)continue;
   if(f.t==="bool")out[k]=isOn(v);else if(f.t==="id")out[k]=normId(v);else if(f.t==="num")out[k]=Number(String(v).replace(/[^\d.\-]/g,""))||0;else if(f.t==="date")out[k]=toIsoDate(v);
   else if(f.t==="multi")out[k]=String(v).split(/[,;]/).map(s=>s.trim()).filter(Boolean);
@@ -1308,6 +1313,8 @@ function coerce(def,o){const out={};for(const[k,v]of Object.entries(o)){const f=
   else if(f.t==="tel"){const d=digits(v);out[k]=d.length===9&&d[0]!=="0"?"0"+d:String(v).trim()}
   else if(f.t==="ref"){const t=String(v).trim();const o2=vals(f.col).find(x=>x._id===t||String(f.lab(x)).trim()===t||(x.symbol&&String(x.symbol)===t));if(o2)out[k]=o2._id}
   else out[k]=String(v).trim()}
+  /* a first-name column that also holds the family name ("כהן שרה" + "כהן") */
+  if(def.col==="children"&&out.first_name&&out.last_name){out.last_name=cleanLast(out.last_name);out.first_name=cleanFirst(out.first_name,out.last_name)}
   return out}
 
 let W=null;
@@ -2051,7 +2058,7 @@ function settingsBody(t){
   if(t==="general")body=`<section class="card" style="display:flex;flex-direction:column;gap:10px"><h2>תפקידים לאנשי צוות</h2><p class="sub">גננת ממלאת מקום יכולה להיות במספר תפקידים.</p>
     <div class="chips">${settings.roles.map((r,i)=>`<span class="chip">${esc(r)}${isAdmin?`<button data-rmrole="${i}" aria-label="הסרה">×</button>`:""}</span>`).join("")}</div>
     ${isAdmin?`<div class="row"><input id="newRole" placeholder="תפקיד חדש" aria-label="תפקיד חדש"><button class="btn" data-act="addrole">הוספה</button></div>`:""}</section>
-   <section class="card" style="display:flex;flex-direction:column;gap:10px"><h2>תפקידים לצוות המשרד</h2><p class="sub">הרשימה שמופיעה בשדה "תפקיד" של אנשי המשרד. שינוי שם של תפקיד מעדכן גם את כל מי שמוגדר/ת בו. התפקיד "מנהלת" קבוע, כי הוא נותן הרשאת אישור סופי.</p>
+   <section class="card" style="display:flex;flex-direction:column;gap:10px"><h2>תפקידים לצוות המשרד</h2><p class="sub">הרשימה שמופיעה בשדה "תפקיד" של אנשי המשרד. שינוי שם של תפקיד מעדכן גם את כל מי שמוגדר/ת בו. התפקיד "מנהלת" קבוע, כי הוא נותן הרשאת אישור סופי. <a href="#security">מה כל תפקיד וכל אחת רואה ←</a></p>
     <div class="orl">${officeRoles().map((r,i)=>{const n=vals("office").filter(o=>o.role===r).length;return `<div class="orr">${isAdmin&&r!=="מנהלת"?`<label class="sr" for="orl${i}">שם התפקיד</label><input id="orl${i}" value="${esc(r)}" data-orole="${esc(r)}">`:`<span class="orfix">${esc(r)}</span>`}<span class="sub">${n} ${n===1?"איש/אשת צוות":"אנשי צוות"}</span>${isAdmin&&r!=="מנהלת"?`<button class="btn sm ghost" data-ormv="${esc(r)}"${n?` title="מוגדר אצל ${n} – צריך להעביר אותם לתפקיד אחר קודם"`:""}>הסרה</button>`:""}</div>`}).join("")}</div>
     ${isAdmin?`<div class="row"><input id="newORole" placeholder="תפקיד חדש, למשל: רכזת רישום" aria-label="תפקיד חדש לצוות המשרד"><button class="btn" data-x="addORole">הוספה</button></div>`:""}</section>
    <section class="card" style="display:flex;flex-direction:column;gap:10px"><h2>הגדרות Mastrio</h2><p class="sub">מספר החברה מופיע בייצוא השעות. מספרי העובדים מוגדרים בכרטיסי הצוות.</p>
@@ -3077,6 +3084,7 @@ PAGES.health=()=>{const K=vals("children").filter(c=>isOn(c.is_active)),gs=vals(
   return `<div class="ph"><div><h1>איכות נתונים</h1><p class="sub">בדיקה אוטומטית של הנתונים על הילדים, הגנים והצוות – ומה אפשר לתקן בלחיצה.</p></div></div>
    <div class="hscore"><div class="ring" style="--p:${score}"><b>${score}%</b></div><div><h2>${score>=95?"הנתונים במצב מצוין":score>=80?"הנתונים במצב טוב":"יש מה לשפר"}</h2><p class="sub">${K.length.toLocaleString("he-IL")} ילדים פעילים · ${gs.length} גנים · ${st.length} אנשי צוות</p></div></div>
    ${(()=>{const D=dupNameKids();return D.length?`<div class="notice warn" style="margin-bottom:12px"><span><b>${D.length} ילדים</b> ששם המשפחה מופיע אצלם פעמיים (למשל: ${esc(D.slice(0,3).map(c=>[c.first_name,c.last_name].join(" ")).join(" · "))}).</span>${canWrite?`<button class="btn sm primary" data-x="fixDupNames">תיקון אוטומטי</button>`:""}</div>`:""})()}
+   ${(()=>{const Q=sameNameKids();return Q.length?`<div class="notice warn" style="margin-bottom:12px"><span><b>${Q.length} ילדים</b> שהשם הפרטי שלהם נקלט זהה לשם המשפחה (למשל: ${esc(Q.slice(0,3).map(c=>c.first_name+" "+c.last_name).join(" · "))}). זה קורה כשקולטים קובץ עם עמודת "שם מלא" שבה שם המשפחה כתוב ראשון. התיקון: לקלוט שוב את אותו קובץ – הקליטה מזהה עכשיו את הסדר נכון ומעדכנת את השם הפרטי לפי ת.ז.</span></div>`:""})()}
    <div class="hgrid">
     ${card("school",noG.length,"ילדים ללא שיוך לגן",auto.length?`${auto.length} אפשר לשייך אוטומטית לפי סמל, שם גן או גננת`:"",`${canWrite?`<button class="btn sm primary" data-x="kidsAssign">שיוך לגנים${auto.length?` (${auto.length} אוטומטית)`:""}</button>`:""}<button class="btn sm" data-x="hShow" data-i="nogarden">הצגה</button>`,"bad")}
     ${card("alert",bad.length,"ת.ז. לא תקינה (ספרת ביקורת)","",`<button class="btn sm" data-x="hShow" data-i="badid">הצגה</button>`,"warn")}
@@ -3134,14 +3142,17 @@ PAGES.home=()=>{
     ${hn.length?`<div class="hnlist">${hn.map(n=>`<article class="note" style="--nc:${esc(noteColor(n))}" data-x="noteOpen" data-id="${n._id}" tabindex="0" role="button" aria-label="${esc(n.title)}"><b>${n.pinned?ico("pin","pinc"):""}${esc(n.title)}</b>${n.content?`<p>${esc(String(n.content).slice(0,120))}</p>`:""}</article>`).join("")}</div>`:'<p class="sub">אין עדיין פתקים. אפשר להצמיד פתק חשוב והוא יופיע כאן.</p>'}</section></aside></div>`};
 
 const AREA_L={kids:"ילדים, גנים ומוסדות",staff:"אנשי צוות",att:"נוכחות ושכר",mail:"מיילים",acc:"הנהלת חשבונות"};
-const MOD_AREA={kids:["kids"],data:["kids","staff"],att:["att"],mail:["mail"],acc:["acc"]};
+const MOD_AREA={kids:["kids"],data:["kids","staff"],att:["att"],mail:["mail"],acc:["acc"],reg:["reg"],comm:["comm"],tasks:["tasks"],notes:["notes"]};
+/* areas that are open to everyone unless a personal setting closes them */
+const AREA_X={reg:"הרשמה",comm:"צ'אט והתראות",tasks:"משימות",notes:"פתקים"};
+const personalAreas=()=>{const oid=(()=>{try{return myOffice()?._id||me.office_id||""}catch(e){return me.office_id||""}})();const ua=settings.user_access||{};const a=oid&&ua[oid]||ua[lcs(me.email)];return Array.isArray(a)?a:null};
 const TAB_AREA={children:"kids",staff:"staff",programs:"kids",screens:"kids",sheets:"kids",crm:"kids",teachers:"staff",gardens:"kids",health:"kids",moe:"kids"};
-const hasArea=a=>!a||me.admin||!me.areas||me.areas.includes(a);
+const hasArea=a=>{if(!a||me.admin)return true;const pa=personalAreas();if(pa)return pa.includes(a);if(AREA_X[a])return true;return !me.areas||me.areas.includes(a)};
 (()=>{MODS.forEach(m=>{const need=MOD_AREA[m.k];if(!need)return;const ot=m.tabs;m.tabs=()=>ot().filter(t=>hasArea(TAB_AREA[t[0]]||need[0])||need.some(hasArea)&&!TAB_AREA[t[0]])});
-  const on=navHTML;navHTML=function(){const keep=MODS.slice();const hide=MODS.filter(m=>MOD_AREA[m.k]&&!m.tabs().length);hide.forEach(m=>MODS.splice(MODS.indexOf(m),1));try{return on()}finally{MODS.length=0;keep.forEach(m=>MODS.push(m))}};
+  const on=navHTML;navHTML=function(){const keep=MODS.slice();const hide=MODS.filter(m=>MOD_AREA[m.k]&&(!m.tabs().length||!MOD_AREA[m.k].some(hasArea)));hide.forEach(m=>MODS.splice(MODS.indexOf(m),1));try{return on()}finally{MODS.length=0;keep.forEach(m=>MODS.push(m))}};
   const og=go;go=function(h){const r=(ALIAS[h]||h||"home");
     if(TAB_AREA[r]&&!hasArea(TAB_AREA[r])){toast("אין לך הרשאה לאזור הזה");return og("home")}
-    const area={attendance:"att",requests:"att",attmail:"att",attphone:"att",mail:"mail",rules:"mail",invoices:"acc",suppliers:"acc",accset:"acc"}[r];if(area&&!hasArea(area)){toast("אין לך הרשאה לאזור הזה");return og("home")}
+    const area={attendance:"att",requests:"att",attmail:"att",attphone:"att",attunk:"att",mail:"mail",rules:"mail",invoices:"acc",suppliers:"acc",accset:"acc",reg:"reg",regset:"reg",chat:"comm",notifs:"comm",tasks:"tasks",notes:"notes",kplace:"kids",ksym:"kids"}[r];if(area&&!hasArea(area)){toast("אין לך הרשאה לאזור הזה");return og("home")}
     return og(h)}})();
 const VIEWED=new Set();
 (()=>{const oc=childProfile;childProfile=function(c){if(!VIEWED.has(c._id)){VIEWED.add(c._id);audit("צפייה בכרטיס ילד/ה","ילדים",fullName(c),"")}return oc(c)}})();
@@ -3162,6 +3173,10 @@ PAGES.security=()=>{if(!isAdmin)return `<div class="card empty"><b>האזור ז
    <section class="card col"><h2>${ico("users")} הרשאות לפי תפקיד</h2><p class="sub">מה כל תפקיד רואה. מנהלת רואה הכל. משימות, פתקים, צ'אט והתראות זמינים לכולם.</p>
     <div class="tbox"><table><thead><tr><th>תפקיד</th>${Object.values(AREA_L).map(l=>`<th>${esc(l)}</th>`).join("")}</tr></thead><tbody>${roles.map(r=>{const cur=ra[r]||defA[r]||[];return `<tr><td><b>${esc(r)}</b></td>${Object.keys(AREA_L).map(a=>`<td><input type="checkbox" data-ra="${esc(r)}|${a}"${cur.includes(a)?" checked":""} aria-label="${esc(r)} – ${esc(AREA_L[a])}"></td>`).join("")}</tr>`}).join("")}</tbody></table></div>
     <div class="row"><button class="btn primary" data-x="raSave">שמירת ההרשאות</button><span class="sub">השינוי חל מהכניסה הבאה של המשתמשת.</span></div></section>
+   <section class="card col" id="uaSec"><h2>${ico("user")} מה כל אחת רואה – הגדרה אישית</h2><p class="sub">ברירת המחדל: כל אחת רואה לפי התפקיד שלה (הטבלה למעלה). כאן אפשר לקבוע לאדם מסוים בדיוק אילו אזורים יופיעו לה בתפריט. מנהלת רואה תמיד הכל.</p>
+    <div class="tbox"><table><thead><tr><th>שם</th><th>תפקיד</th><th>הגדרה</th>${Object.values({...AREA_L,...AREA_X}).map(l=>`<th>${esc(l)}</th>`).join("")}</tr></thead><tbody>${vals("office").filter(o=>o.is_active!==false).sort((a,b)=>String(a.full_name).localeCompare(b.full_name,"he")).map(o=>{const ua=(settings.user_access||{})[o._id];const own=Array.isArray(ua);const boss=o.role==="מנהלת";const byRole=boss?Object.keys({...AREA_L,...AREA_X}):[...(ra[o.role]||defA[o.role]||[]),...Object.keys(AREA_X)];const cur=own?ua:byRole;
+      return `<tr data-uarow="${o._id}"><td><b>${esc(o.full_name)}</b><small class="sub" style="display:block">${esc(o.email||"")}</small></td><td>${esc(o.role||"")}</td><td>${boss?'<span class="pill ok">מנהלת – הכל</span>':`<select data-uamode="${o._id}" data-nocbx aria-label="הגדרה ל${esc(o.full_name)}"><option value="role"${own?"":" selected"}>לפי התפקיד</option><option value="own"${own?" selected":""}>הגדרה אישית</option></select>`}</td>${Object.keys({...AREA_L,...AREA_X}).map(a=>`<td><input type="checkbox" data-ua="${o._id}|${a}"${cur.includes(a)?" checked":""}${own&&!boss?"":" disabled"} aria-label="${esc(o.full_name)} – ${esc({...AREA_L,...AREA_X}[a])}"></td>`).join("")}</tr>`}).join("")}</tbody></table></div>
+    <div class="row"><button class="btn primary" data-x="uaSave">שמירת ההגדרות האישיות</button><span class="sub">התפריט מתעדכן אצלה ברענון הבא של המערכת.</span></div></section>
    <section class="card col"><div class="row" style="justify-content:space-between"><h2>${ico("search")} סקירת הרשאות תקופתית</h2>${rev?`<span class="pill ${revAge<=183?"ok":"warn"}">סקירה אחרונה: ${esc(fmtDate(rev.date.slice(0,10)))} (${esc(rev.by)})</span>`:'<span class="pill warn">עוד לא בוצעה סקירה</span>'}</div>
     <p class="sub">בודקים שלכל מי שמופיעה כאן עדיין יש צורך בגישה, ושמי שעזבה סומנה כלא פעילה.</p>
     <div class="tbox"><table><thead><tr><th>שם</th><th>אימייל</th><th>תפקיד</th><th>גישה</th><th>כניסה אחרונה</th><th>מחוברת עכשיו</th><th>סטטוס</th></tr></thead><tbody>${SEC.users.map(u=>`<tr><td><b>${esc(u.name||"")}</b></td><td class="mono">${esc(u.email||"")}</td><td>${esc(u.role||"")}</td><td class="sub">${esc(u.areas.map(a=>AREA_L[a]).join(", ")||"משימות וצ'אט בלבד")}</td><td>${u.last_login?esc(fmtTs(u.last_login)):'<span class="sub">לא נכנסה</span>'}</td><td>${u.sessions?`<span class="pill ok">${u.sessions}</span>`:""}</td><td>${u.active?'<span class="pill ok">פעילה</span>':'<span class="pill">לא פעילה</span>'}</td></tr>`).join("")}</tbody></table></div>
@@ -3644,10 +3659,11 @@ document.addEventListener("input",e=>{const t=e.target;if(!t.dataset?.msearch)re
 document.addEventListener("change",e=>{const t=e.target;const box=t.closest?.(".checks.many");if(!box||t.type!=="checkbox")return;const c=document.querySelector(`[data-mcount="${box.id}"]`);if(c){const n=box.querySelectorAll("input:checked").length;c.textContent=n?`${n} נבחרו`:""}});
 
 /* =================== children whose family name appears twice =================== */
-function dupNameKids(){return vals("children").filter(c=>{const f=String(c.first_name||"").trim().replace(/\s+/g," ");return (f&&cleanFirst(f,c.last_name)!==f)||(!c.first_name&&!c.last_name&&collapseDup(c.full_name)!==String(c.full_name||"").trim())})}
+function dupNameKids(){return vals("children").filter(c=>{const f=String(c.first_name||"").trim().replace(/\s+/g," "),l=String(c.last_name||"").trim().replace(/\s+/g," ");if(f&&l&&f===l)return false;return (f&&cleanFirst(f,l)!==f)||(l&&cleanLast(l)!==l)||(String(c.full_name||"").trim()&&String(c.full_name).trim().replace(/\s+/g," ")!==nameJoin(f,l)&&(f||l))||(!f&&!l&&collapseDup(c.full_name)!==String(c.full_name||"").trim())})}
+const sameNameKids=()=>vals("children").filter(c=>{const f=String(c.first_name||"").trim(),l=String(c.last_name||"").trim();return f&&l&&f===l});
 document.addEventListener("click",e=>{const b=e.target.closest('[data-x="fixDupNames"]');if(!b||!canWrite)return;const D=dupNameKids();if(!D.length)return toast("אין שמות כפולים");
   if(!confirm(`לתקן ${D.length} ילדים?\nלדוגמה: "${[D[0].first_name,D[0].last_name].join(" ")}" ← "${nameJoin(D[0].first_name,D[0].last_name)}"`))return;
-  busy(b,async()=>{const f=await pool(D.map(c=>()=>save(E.children,c._id,c.first_name||c.last_name?{first_name:cleanFirst(c.first_name,c.last_name),last_name:c.last_name||""}:{full_name:collapseDup(c.full_name)})),()=>{},10);audit("תיקון שמות משפחה כפולים","ילדים","",(D.length-f)+" ילדים");toast(`תוקנו ${D.length-f} ילדים`);render()})});
+  busy(b,async()=>{const f=await pool(D.map(c=>()=>save(E.children,c._id,c.first_name||c.last_name?{first_name:cleanFirst(c.first_name,c.last_name),last_name:cleanLast(c.last_name)}:{full_name:collapseDup(c.full_name)})),()=>{},10);audit("תיקון שמות משפחה כפולים","ילדים","",(D.length-f)+" ילדים");toast(`תוקנו ${D.length-f} ילדים`);render()})});
 
 /* =================== phone punches from callers who are not on the staff list =================== */
 let unkMonth=ym();
@@ -3705,6 +3721,12 @@ async function staffMailTest(btn){const msg=$('[data-smmsg="broadcast"]');const 
   if(!subject||!body){msg.textContent="יש למלא נושא ותוכן";return}if(!to){msg.textContent="בחרו למי לשלוח את הדוגמה";return}
   const a={kind:"broadcast",subject:"[דוגמה] "+subject,body,staff_ids:[to]};if(BC_FILES.length)a.attachments=BC_FILES.map(f=>({name:f.name,mime:f.mime,data:f.data}));
   await busy(btn,async()=>{try{await call("staffMail",a);msg.textContent=`מייל דוגמה נשלח אל ${S.staff?.get(to)?.full_name||""}. בדקו שהוא נראה טוב${BC_FILES.length?" ושהקבצים צורפו":""}, ואז שלחו לכולם.`}catch(e){msg.textContent=e.message}})}
+
+/* ---------- per-person visibility ---------- */
+document.addEventListener("change",e=>{const t=e.target;if(!t.dataset?.uamode)return;const own=t.value==="own";document.querySelectorAll(`[data-ua^="${t.dataset.uamode}|"]`).forEach(i=>i.disabled=!own)});
+document.addEventListener("click",e=>{const el=e.target.closest('[data-x="uaSave"]');if(!el||!isAdmin)return;const ua={...(settings.user_access||{})};
+  document.querySelectorAll("[data-uamode]").forEach(s=>{const id=s.dataset.uamode;if(s.value==="own")ua[id]=[...document.querySelectorAll(`[data-ua^="${id}|"]`)].filter(i=>i.checked).map(i=>i.dataset.ua.split("|")[1]);else delete ua[id]});
+  busy(el,async()=>{try{await saveSettings({user_access:ua});audit("הרשאות אישיות","אבטחה","",Object.keys(ua).map(id=>(S.office?.get(id)?.full_name||id)+": "+ua[id].join(",")).join(" | ").slice(0,180));toast("ההגדרות נשמרו");render()}catch(err){toast(err.message)}})});
 (async()=>{
   let lk=window.KG_LOGIN||"";try{const u=new URL(location.href);if(!lk)lk=u.searchParams.get("login")||"";if(u.searchParams.get("login")){u.searchParams.delete("login");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
   if(lk){try{const r=await pub("linkLogin",lk);setToken(r.token);return start(r.me)}catch(e){return showLogin(e.message)}}
