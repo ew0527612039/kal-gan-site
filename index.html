@@ -897,6 +897,7 @@ async function syncNow(){
   catch(e){if(e.code==="unavailable"){connWarn=true;banner("אין חיבור לשרת כרגע. השינויים יישמרו כשהחיבור יחזור.","warn")}}
   finally{syncing=false}}
 setInterval(()=>{if(document.visibilityState==="visible")syncNow()},20000);
+setInterval(()=>{if(document.visibilityState!=="visible")syncNow()},30000);
 setInterval(()=>{try{if(document.visibilityState==="visible"&&typeof room!=="undefined"&&room&&document.getElementById("mlist"))syncNow()}catch(e){}},5000);
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")syncNow()});
 
@@ -1258,7 +1259,10 @@ function parseSheet(aoa,def,fills){
   const rows=ri.map(i=>aoa[i]),rf=ri.map(i=>fills[i]||[]);
   const width=Math.max(headers.length,...rows.map(r=>r.length),0);
   const info=Array.from({length:width},(_,c)=>{const v=rows.map(r=>String(r[c]??"").trim()),f=rf.map(x=>x[c]||"");const n=v.filter(Boolean).length,byC={};f.forEach(x=>{if(x)byC[x]=(byC[x]||0)+1});
-    return{c,h:headers[c]||"",n,colored:f.filter(Boolean).length,byC}});
+    /* a fill that covers most of the column is the table's background (banding, table style) – not a mark */
+    Object.keys(byC).forEach(k=>{if(rows.length>=4&&byC[k]>=rows.length*.5)delete byC[k]});
+    return{c,h:headers[c]||"",n,colored:Object.values(byC).reduce((a,x)=>a+x,0),byC}});
+  rf.forEach(x=>x&&x.forEach((k,c)=>{if(k&&info[c]&&!info[c].byC[k])x[c]=""}));
   const keep=info.filter(x=>x.n||x.colored).map(x=>x.c);const hidden=width-keep.length;
   const saved=store("map_"+def.col)||{};const used=new Set();const notesK=def.fields.some(f=>f.k==="notes")?"notes":"row_note";
   const map=Array(width).fill("");const sparse={},color={};
@@ -1276,8 +1280,9 @@ function cellText(cell){if(cell.t==="d"&&cell.v instanceof Date&&!isNaN(cell.v))
     const w=cell.w!=null?String(cell.w):"";if(!w||/e[+-]?\d/i.test(w))return String(cell.v);if(Number.isInteger(cell.v)&&String(cell.v).length>=7&&/^[\d,]+$/.test(w))return String(cell.v);return w}
   return cell.w!=null?String(cell.w):cell.v==null?"":String(cell.v)}
 function fillOf(cell){const s=cell.s;if(!s||!s.patternType||s.patternType==="none")return"";const c=s.fgColor||s.bgColor||{};
-  if(c.rgb){const x=String(c.rgb).slice(-6).toUpperCase();return x==="FFFFFF"||x==="000000"&&s.patternType!=="solid"?"":"#"+x}
-  if(c.theme!=null)return"theme"+c.theme+(c.tint?":"+(+c.tint).toFixed(2):"");if(c.indexed!=null&&c.indexed!==64)return"idx"+c.indexed;return""}
+  if(c.rgb){const x=String(c.rgb).slice(-6).toUpperCase();if(x==="000000"&&s.patternType!=="solid")return"";const[r,g,b]=[0,2,4].map(i=>parseInt(x.slice(i,i+2),16));if(r>=0xF0&&g>=0xF0&&b>=0xF0)return"";return"#"+x}
+  /* white page background (theme 0 / indexed white) is not a highlight */
+  if(c.theme!=null){if((+c.theme===0||+c.theme===2)&&!(+c.tint<-0.1))return"";return"theme"+c.theme+(c.tint?":"+(+c.tint).toFixed(2):"")}if(c.indexed!=null&&![9,64,65].includes(+c.indexed))return"idx"+c.indexed;return""}
 const fillSw=k=>/^#/.test(k)?k:"linear-gradient(135deg,#ffe58a,#a6d4ff)";
 const fillName=k=>{if(!/^#/.test(k))return"צבע";const h=k.slice(1),r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);
   if(r>200&&g>200&&b<140)return"צהוב";if(r>200&&g<170&&b<150)return r>230&&g>120?"כתום":"אדום";if(g>170&&r<180&&b<170)return"ירוק";if(b>170&&r<170)return"כחול";if(r>170&&b>170&&g<150)return"סגול";if(r>200&&g>150&&b>170)return"ורוד";if(Math.abs(r-g)<20&&Math.abs(g-b)<20)return"אפור";return"צבע"};
@@ -1316,6 +1321,8 @@ async function importFlow(key){
   wRender();
 }
 function wCell(c,ri){const raw=String(W.rows[ri][c]??"").trim(),cl=W.color[c];if(!cl||!cl.on)return raw;const f=W.rf[ri][c]||"";
+  /* a column with real data keeps its data – the colour only fills cells that are empty */
+  const I=W.info[c];if(raw&&I&&I.n>W.rows.length*.5)return raw;
   if(f){const b=cl.by[f];return b&&b.v!==""?b.v:raw}return raw||cl.other}
 function wBuild(){
   const{def,rows,map,matchBy}=W;const req=def.fields.filter(f=>f.req).map(f=>f.k);
@@ -1356,7 +1363,7 @@ function wRender(){
       const pills=[k&&k!=="__new"&&!W.sparse[c]?'<span class="pill ok">זוהה</span>':"",k&&cnt[k]>1?`<span class="pill info" title="הערכים יאוחדו לשדה אחד">⇄ מאוחד (${cnt[k]} עמודות)</span>`:"",W.sparse[c]&&k?`<span class="pill warn" title="מעט ערכים בעמודה – כנראה הערות">נראה כמו הערות</span>`:"",cl?`<span class="pill" style="background:var(--raise)">🎨 ${I.colored} שורות צבועות</span>`:""].join(" ");
       return `<tr class="${k?"":"off"}"><td><b>${esc(W.headers[c])}</b><div class="sub">${I.n} ערכים (${pct}%)</div></td><td><div class="smps">${sample(c)||'<span class="sub">—</span>'}</div></td>
        <td><select data-wmap="${c}" aria-label="שדה עבור ${esc(W.headers[c])}">${opts(k,c)}</select>${k==="__new"?`<input class="wnew" data-wnew="${c}" value="${esc(W.newName[c]??W.rawHeaders[c]??"")}" placeholder="שם השדה החדש" aria-label="שם השדה החדש">`:""}<div class="pills">${pills}</div>
-       ${cl?`<div class="wcolor"><label class="row"><input type="checkbox" data-wcol="${c}"${cl.on?" checked":""}> להמיר לפי צבע הרקע</label>${cl.on?`<div class="wcmap">${Object.entries(cl.by).map(([f,b])=>`<label class="row"><span class="sw" style="background:${fillSw(f)}"></span>${fillName(f)} (${b.n}) ←<input data-wcv="${c}|${esc(f)}" value="${esc(b.v)}" aria-label="ערך לשורות ב${fillName(f)}"></label>`).join("")}<label class="row"><span class="sw none"></span>שורות לא צבועות ←<input data-wco="${c}" value="${esc(cl.other)}" placeholder="ריק" aria-label="ערך לשורות לא צבועות"></label></div>`:""}</div>`:""}</td></tr>`};
+       ${cl?`<div class="wcolor"><label class="row"><input type="checkbox" data-wcol="${c}"${cl.on?" checked":""}> להמיר לפי צבע הרקע</label>${I.n>W.rows.length*.5?'<p class="sub" style="margin:2px 0 0">בעמודה יש נתונים – הם נשמרים כמו שהם. הצבע ממלא רק תאים ריקים.</p>':""}${cl.on?`<div class="wcmap">${Object.entries(cl.by).map(([f,b])=>`<label class="row"><span class="sw" style="background:${fillSw(f)}"></span>${fillName(f)} (${b.n}) ←<input data-wcv="${c}|${esc(f)}" value="${esc(b.v)}" aria-label="ערך לשורות ב${fillName(f)}"></label>`).join("")}<label class="row"><span class="sw none"></span>שורות לא צבועות ←<input data-wco="${c}" value="${esc(cl.other)}" placeholder="ריק" aria-label="ערך לשורות לא צבועות"></label></div>`:""}</div>`:""}</td></tr>`};
     modal(`<div class="row" style="justify-content:space-between"><div><h2>קליטה והשוואה: ${esc(def.title)}</h2><p class="sub">${esc(W.file)} · ${W.rows.length} שורות${W.skipped?` · דילגתי על ${W.skipped} שורות כותרת עליונות`:""} · שויכו ${mapped} מתוך ${W.cols.length} עמודות${W.hiddenCols?` · ${W.hiddenCols} עמודות ריקות הוסתרו`:""}</p></div><button class="btn" data-close>ביטול</button></div>
      <div class="notice info"><span>בדקו לכל עמודה לאיזה שדה היא נכנסת. <b>אפשר לבחור את אותו שדה לשתי עמודות</b> – הערכים יאוחדו. עמודה עם מעט ערכים מסומנת כהערות (אפשר לשנות), ועמודה עם שורות צבועות אפשר להמיר לערכים.</span></div>
      <div class="tbox wmapt" style="max-height:56vh"><table><thead><tr><th>עמודה בקובץ</th><th>דוגמאות</th><th>נכנס לשדה</th></tr></thead><tbody>${W.cols.map(row).join("")}</tbody></table></div>
@@ -1509,7 +1516,8 @@ PAGES.home=()=>{
 function homeChat(){
   const rooms=vals("rooms").sort((a,b)=>(b.last_ts||"").localeCompare(a.last_ts||""));
   if(!room&&rooms[0])openRoom(rooms[0]._id);const cur=S.rooms?.get(room);
-  return `<aside class="card homechat" aria-label="צ'אט הצוות"><div class="hd">${svgI("chat")}<label class="sr" for="hroom">שיחה</label><select id="hroom" data-room-sel>${rooms.map(r=>`<option value="${r._id}"${r._id===room?" selected":""}>${esc(r.name)}</option>`).join("")||"<option>אין שיחות</option>"}</select>${canWrite?`<button class="btn sm icon" data-act="newroom" aria-label="שיחה חדשה">+</button>`:""}</div>
+  const askN="Notification" in window&&Notification.permission==="default";
+  return `<aside class="card homechat" aria-label="צ'אט הצוות">${askN?`<button class="btn sm primary" data-x="nPerm" style="margin:8px 10px 0">${ico("bell")}לקבל התראה על הודעות חדשות גם כשהמערכת ברקע</button>`:""}<div class="hd">${svgI("chat")}<label class="sr" for="hroom">שיחה</label><select id="hroom" data-room-sel>${rooms.map(r=>`<option value="${r._id}"${r._id===room?" selected":""}>${esc(r.name)}</option>`).join("")||"<option>אין שיחות</option>"}</select>${canWrite?`<button class="btn sm icon" data-act="newroom" aria-label="שיחה חדשה">+</button>`:""}</div>
    ${cur?`<div class="mlist" id="mlist">${msgs.map(m=>`<div class="msg${m.sender===uid?" me":""}"><small>${esc(names[m.sender]||m.sender||"משתמש")} · ${esc(fmtTs(m.ts))}</small>${esc(m.text)}</div>`).join("")||'<div class="empty">אין הודעות עדיין</div>'}</div>
     ${canWrite?`<form class="msend" id="msend"><input id="mtext" autocomplete="off" placeholder="כתיבת הודעה לצוות…" aria-label="הודעה"><button class="btn primary">שליחה</button></form>`:""}`:`<div class="empty" style="flex:1"><b>אין עדיין שיחות</b>${canWrite?`<button class="btn primary" data-act="newroom">פתיחת שיחה ראשונה</button>`:""}</div>`}</aside>`}
 
@@ -2050,7 +2058,7 @@ function settingsBody(t){
     <div class="row"><input id="mastrio" class="mono" maxlength="3" inputmode="numeric" value="${esc(settings.mastrio||"")}" placeholder="3 ספרות" aria-label="מספר חברה"${isAdmin?"":" disabled"}>${isAdmin?`<button class="btn" data-act="savemastrio">שמירה</button>`:""}</div></section>`;
   if(t==="brand")body=brandSection();
   if(t==="office")body=`<p class="sub">רק מי שמופיע כאן כפעיל יכול להיכנס למערכת, עם קוד חד-פעמי שנשלח למייל שלו. כשמוסיפים איש/אשת משרד, נשלח אליו אוטומטית מייל הצטרפות עם קישור והסבר איך נכנסים. התפקיד קובע מי מאשר בקשות: מזכירה יכולה להעביר לאישור מנהלת, ומנהלת מאשרת סופית ורואה את יומן הפעולות וההגדרות.</p>`+listHTML("office",{importable:false,readonly:!isAdmin,rowActions:r=>isAdmin&&r.email&&isOn(r.is_active)?`<button class="btn sm" data-welcome="${r._id}" data-noopen>${r.welcome_sent?"שליחה חוזרת של מייל הצטרפות":"שליחת מייל הצטרפות"}</button>`:"",actionsLabel:"מייל הצטרפות"});
-  if(t==="monthly"){if(!isAdmin)body=adminOnly;else if(!adm&&!admErr){loadAdm();body=`<div class="card empty"><b>טוען…</b></div>`}else if(admErr)body=`<p class="notice bad">${esc(admErr)}</p><button class="btn" data-act="admReload">ניסיון חוזר</button>`;else{const q=adm.queue;
+  if(t==="monthly"){if(!isAdmin)body=adminOnly;else if(!adm&&!admErr){loadAdm();body=`<div class="card empty"><b>טוען…</b></div>`}else if(admErr)body=`<p class="notice bad">${esc(admErr)}</p><button class="btn" data-act="admReload">ניסיון חוזר</button>`;else{const q=adm.queue||{};
     body=`<section class="card" style="display:flex;flex-direction:column;gap:10px;${adm.mail_paused?"border:2px solid #c0392b":""}"><h2>עצירת מיילים</h2>
       ${adm.mail_paused?`<p class="notice bad"><b>שליחת המיילים מהמערכת עצורה כרגע.</b> ${esc(adm.mail_paused_why||"")}<br>רק קודי כניסה ממשיכים להישלח.</p><div class="row"><button class="btn" data-act="mailResume">חידוש שליחת המיילים</button>`:`<p>אפשר לעצור מיד את כל המיילים שהמערכת שולחת (חוץ מקודי כניסה). המערכת גם עוצרת לבד אם נשלחים יותר מ-15 מיילים לאותו אדם בשעה, או יותר מ-400 ביום.</p><div class="row"><button class="btn danger" data-act="mailStop">עצירת כל המיילים עכשיו</button>`}
       <button class="btn ghost" data-act="mailCancel">ביטול כל המיילים שממתינים בתור</button><button class="btn ghost" data-act="mailReport">למי נשלחו מיילים השבוע?</button></div><div id="mailRep"></div></section>
@@ -2195,7 +2203,10 @@ function render(){
 function renderNav(){$("#rail").innerHTML=navHTML();const t=tabsHTML();const tb=$("#tabs");tb.innerHTML=t;tb.hidden=!t;const top=topHTML();$("#crumb").innerHTML=top.crumb;$("#mebox").innerHTML=top.me}
 const ALIAS={staffpage:"staff",accounting:"invoices"};
 function go(h){h=ALIAS[h]||h||"home";if(brDraftActive&&h!=="brand"){brDraftActive=false;brDraft=null;applyBrand()}route=(PAGES[h]||h.startsWith("s-"))?h:"home";modLast[modOf(route).k]=route;keepScroll=false;document.body.classList.remove("navopen");document.body.style.overflow="";Object.values(UI).forEach(u=>u.max=false);if(route==="audit")auditRows=null;if(["attmail","attphone","access"].includes(route))adm=null,admErr="";render();window.scrollTo(0,0);const t=$("#tabs a[aria-current]");t&&t.scrollIntoView({block:"nearest",inline:"nearest"})}
-function nav(h){try{history.replaceState(null,"","#"+h)}catch(e){}go(h)}
+function nav(h){try{if(location.hash.slice(1)!==h)history.pushState(null,"","#"+h)}catch(e){}go(h)}
+/* browser back / forward and plain #links move between screens */
+window.addEventListener("popstate",()=>{const h=location.hash.slice(1);if(db&&h&&h!==route)go(h)});
+window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(db&&h&&h!==route&&(PAGES[ALIAS[h]||h]||h.startsWith("s-")))go(h)});
 document.addEventListener("click",e=>{const it=e.target.closest(".menu .mnu button");document.querySelectorAll("details.menu[open]").forEach(d=>{if(it?d.contains(it):!d.contains(e.target))d.open=false});const g=e.target.closest("[data-go]");if(g){e.preventDefault();nav(g.dataset.go)}},true);
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){const d=document.querySelector("details.menu[open]");if(d){d.open=false;d.querySelector("summary").focus()}}});
 document.addEventListener("click",e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;e.preventDefault();nav(a.getAttribute("href").slice(1))},true);
@@ -2488,7 +2499,8 @@ PAGES.chat=()=>{
 homeChat=function(){
   const rooms=vals("rooms").sort((a,b)=>(b.last_ts||"").localeCompare(a.last_ts||""));
   if(!room&&rooms[0])openRoom(rooms[0]._id);const cur=S.rooms?.get(room);
-  return `<aside class="card homechat" aria-label="צ'אט הצוות"><div class="hd"><span class="hico">${ico("msg")}</span><label class="sr" for="hroom">שיחה</label><select id="hroom" data-room-sel>${rooms.map(r=>`<option value="${r._id}"${r._id===room?" selected":""}>${esc(roomName(r))}</option>`).join("")||"<option>אין שיחות</option>"}</select>${canWrite?`<button class="btn sm icon" data-act="newroom" aria-label="שיחה חדשה">+</button>`:""}</div>
+  const askN="Notification" in window&&Notification.permission==="default";
+  return `<aside class="card homechat" aria-label="צ'אט הצוות">${askN?`<button class="btn sm primary" data-x="nPerm" style="margin:8px 10px 0">${ico("bell")}לקבל התראה על הודעות חדשות גם כשהמערכת ברקע</button>`:""}<div class="hd"><span class="hico">${ico("msg")}</span><label class="sr" for="hroom">שיחה</label><select id="hroom" data-room-sel>${rooms.map(r=>`<option value="${r._id}"${r._id===room?" selected":""}>${esc(roomName(r))}</option>`).join("")||"<option>אין שיחות</option>"}</select>${canWrite?`<button class="btn sm icon" data-act="newroom" aria-label="שיחה חדשה">+</button>`:""}</div>
    ${cur?`<div class="mlist" id="mlist">${msgs.slice(-40).map(m=>msgHTML(m,cur)).join("")||'<div class="empty">אין הודעות עדיין</div>'}</div>
     ${canWrite?`<form class="msend" id="msend"><input id="mtext" autocomplete="off" placeholder="כתיבת הודעה…" aria-label="הודעה"><button class="btn primary">שליחה</button></form>`:""}`:`<div class="empty" style="flex:1"><b>אין עדיין שיחות</b>${canWrite?`<button class="btn primary" data-act="newroom">פתיחת שיחה ראשונה</button>`:""}</div>`}</aside>`};
 const roomName=r=>{if(!r)return"";if(r.kind==="dm"){const o=roomMembers(r).find(e=>lcs(e)!==lcs(uid));return names[lcs(o)]||names[o]||(o||"").split("@")[0]||r.name}return r.name};
@@ -2782,8 +2794,9 @@ const viewingRoom=r=>!document.hidden&&(route==="chat"||route==="home")&&room===
 function beep(){try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return;const a=CW.ac||(CW.ac=new A()),o=a.createOscillator(),g=a.createGain();o.type="sine";o.frequency.value=880;g.gain.setValueAtTime(.0001,a.currentTime);g.gain.exponentialRampToValueAtTime(.18,a.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+.35);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.4)}catch(e){}}
 function chatAlert(m){const r=S.rooms?.get(m._p);const who=names[lcs(m.sender)]||names[m.sender]||m.sender||"";const pr=store("chat_prefs")||{};
   if(pr.sound!==false)beep();
-  if(document.hidden&&"Notification" in window&&Notification.permission==="granted"){try{const n=new Notification(`${who} · ${roomName(r)||"צ'אט"}`,{body:String(m.text||"").slice(0,140),tag:"kg-"+m._p,renotify:true});n.onclick=()=>{try{window.focus()}catch(e){}room=null;openRoom(m._p);nav("chat");n.close()}}catch(e){}}
-  else if(!document.hidden){chatToast(m,who,r)}}
+  const away=document.hidden||!document.hasFocus();
+  if(away&&"Notification" in window&&Notification.permission==="granted"){try{const n=new Notification(`${who} · ${roomName(r)||"צ'אט"}`,{body:String(m.text||"").slice(0,140),tag:"kg-"+m._p,renotify:true});n.onclick=()=>{try{window.focus()}catch(e){}room=null;openRoom(m._p);nav("chat");n.close()}}catch(e){}}
+  if(!document.hidden){chatToast(m,who,r)}}
 function chatToast(m,who,r){let box=$("#chatToasts");if(!box){box=document.createElement("div");box.id="chatToasts";box.className="ctoasts";box.setAttribute("aria-live","polite");document.body.appendChild(box)}
   const t=document.createElement("button");t.className="ctoast";t.type="button";t.innerHTML=`<span class="cav">${esc((who||"?").trim().slice(0,1))}</span><span class="t"><b>${esc(who)}</b><small>${esc(roomName(r))}</small><span>${esc(String(m.text||"").slice(0,90))}</span></span>`;
   t.onclick=()=>{room=null;openRoom(m._p);nav("chat");t.remove()};box.appendChild(t);setTimeout(()=>t.classList.add("out"),6500);setTimeout(()=>t.remove(),7000)}
@@ -3138,16 +3151,16 @@ async function loadSec(){try{SEC=await call("secInfo");SECERR=""}catch(e){SECERR
 NEEDS.security=["office"];
 const SEC_MANUAL=[["defdoc","מסמך הגדרות מאגר מעודכן","תקנה 2: מטרות המאגר, סוגי המידע, העברות, ספקים, מנהל המאגר"],["procedure","נוהל אבטחת מידע כתוב","תקנה 4: הרשאות, גיבוי, טיפול באירועים, אמצעים ניידים"],["risk","סקר סיכונים","ברמת אבטחה בינונית – פעם ב-18 חודשים לפחות"],["audit24","ביקורת עמידה בתקנות","פעם ב-24 חודשים לפחות"],["training","הדרכת עובדות על אבטחת מידע","לפני מתן הרשאה ובאופן תקופתי"],["vendors","הסכמים עם ספקים (Google, ימות המשיח, GitHub)","תקנה 15: התחייבות הספק לאבטחת המידע"],["dpo","בדיקה אם נדרש ממונה הגנת פרטיות","תיקון 13 – בהתאם להיקף המידע הרגיש; כדאי להתייעץ עם יועץ/ת פרטיות"],["notice","הודעה להורים ולעובדות על איסוף המידע","סעיף 11 לחוק: למה נאסף המידע ולמי הוא מועבר"]];
 PAGES.security=()=>{if(!isAdmin)return `<div class="card empty"><b>האזור זמין למנהלת בלבד</b></div>`;if(!SEC&&!SECERR){loadSec();return `<div class="ph"><div><h1>אבטחה ופרטיות</h1></div></div><div class="card">${SKEL}</div>`}if(SECERR)return `<p class="notice bad">${esc(SECERR)}</p>`;
-  const ck=SEC.checklist||{},rev=SEC.review,revAge=rev?Math.floor((Date.now()-Date.parse(rev.date))/864e5):null,lastB=SEC.backups[0];
-  const auto=[["הצפנת תעבורה (HTTPS) בכל הגישות",true],["כניסה עם קוד חד-פעמי / חשבון Google, נעילה אחרי 5 ניסיונות",true],["ניתוק אוטומטי אחרי חוסר פעילות",true],["הרשאות לפי תפקיד (צמצום גישה)",Object.keys(SEC.roles||{}).length>0||true],["יומן פעולות וגישה (נשמר, לא ניתן למחיקה מהמערכת)",SEC.audit_months.length>0],["הסתרת מספרי זהות ותיעוד כל הצגה",true],["גיבוי יומי (30 יום אחורה)",!!lastB&&Date.now()-Date.parse(lastB.date)<3*864e5],["סקירת הרשאות ב-6 החודשים האחרונים",revAge!=null&&revAge<=183]];
+  const ck=SEC.checklist||{},rev=SEC.review,revAge=rev?Math.floor((Date.now()-Date.parse(rev.date))/864e5):null,lastB=(SEC.backups||[])[0];
+  const auto=[["הצפנת תעבורה (HTTPS) בכל הגישות",true],["כניסה עם קוד חד-פעמי / חשבון Google, נעילה אחרי 5 ניסיונות",true],["ניתוק אוטומטי אחרי חוסר פעילות",true],["הרשאות לפי תפקיד (צמצום גישה)",Object.keys(SEC.roles||{}).length>0||true],["יומן פעולות וגישה (נשמר, לא ניתן למחיקה מהמערכת)",(SEC.audit_months||[]).length>0],["הסתרת מספרי זהות ותיעוד כל הצגה",true],["גיבוי יומי (30 יום אחורה)",!!lastB&&Date.now()-Date.parse(lastB.date)<3*864e5],["סקירת הרשאות ב-6 החודשים האחרונים",revAge!=null&&revAge<=183]];
   const done=auto.filter(x=>x[1]).length+SEC_MANUAL.filter(([k])=>ck[k]).length,total=auto.length+SEC_MANUAL.length,pct=Math.round(done/total*100);
-  const roles=["מזכירה","הנהלת חשבונות","כללי"];const ra=SEC.roles||{};const defA={"מזכירה":["kids","staff","att","mail","acc"],"הנהלת חשבונות":["staff","att","mail","acc"],"כללי":[]};
+  const roles=officeRoles().filter(r=>r!=="מנהלת");const ra=SEC.roles||{};const defA={"מזכירה":["kids","staff","att","mail","acc"],"הנהלת חשבונות":["staff","att","mail","acc"],"כללי":[]};
   return `<div class="ph"><div><h1>אבטחה ופרטיות</h1><p class="sub">היערכות לתקנות הגנת הפרטיות (אבטחת מידע), התשע״ז-2017, ולתיקון 13 לחוק. מאגר עם מידע על ילדים מחייב לפחות רמת אבטחה בינונית.</p></div></div>
    <div class="hscore"><div class="ring" style="--p:${pct}"><b>${pct}%</b></div><div><h2>${done} מתוך ${total} דרישות מכוסות</h2><p class="sub">החלק הטכני מיושם במערכת. החלק הארגוני (מסמכים, הדרכות, הסכמים) מסמנים כאן כשהושלם.</p></div></div>
    <div class="hcols"><section class="card col"><h2>${ico("lock")} אמצעים טכניים במערכת</h2><ul class="secl">${auto.map(([l,ok])=>`<li class="${ok?"ok":"no"}">${ico(ok?"check":"alert")}<span>${esc(l)}</span></li>`).join("")}</ul></section>
     <section class="card col"><h2>${ico("note")} דרישות ארגוניות</h2><ul class="secl">${SEC_MANUAL.map(([k,l,sub])=>`<li><label class="row"><input type="checkbox" data-secck="${k}"${ck[k]?" checked":""}><span><b>${esc(l)}</b><small>${esc(sub)}${ck[k]?` · סומן ${esc(fmtDate(String(ck[k]).slice(0,10)))}`:""}</small></span></label></li>`).join("")}</ul></section></div>
    <section class="card col"><h2>${ico("users")} הרשאות לפי תפקיד</h2><p class="sub">מה כל תפקיד רואה. מנהלת רואה הכל. משימות, פתקים, צ'אט והתראות זמינים לכולם.</p>
-    <div class="tbox"><table><thead><tr><th>תפקיד</th>${Object.values(AREA_L).map(l=>`<th>${esc(l)}</th>`).join("")}</tr></thead><tbody>${roles.map(r=>{const cur=ra[r]||defA[r];return `<tr><td><b>${esc(r)}</b></td>${Object.keys(AREA_L).map(a=>`<td><input type="checkbox" data-ra="${esc(r)}|${a}"${cur.includes(a)?" checked":""} aria-label="${esc(r)} – ${esc(AREA_L[a])}"></td>`).join("")}</tr>`}).join("")}</tbody></table></div>
+    <div class="tbox"><table><thead><tr><th>תפקיד</th>${Object.values(AREA_L).map(l=>`<th>${esc(l)}</th>`).join("")}</tr></thead><tbody>${roles.map(r=>{const cur=ra[r]||defA[r]||[];return `<tr><td><b>${esc(r)}</b></td>${Object.keys(AREA_L).map(a=>`<td><input type="checkbox" data-ra="${esc(r)}|${a}"${cur.includes(a)?" checked":""} aria-label="${esc(r)} – ${esc(AREA_L[a])}"></td>`).join("")}</tr>`}).join("")}</tbody></table></div>
     <div class="row"><button class="btn primary" data-x="raSave">שמירת ההרשאות</button><span class="sub">השינוי חל מהכניסה הבאה של המשתמשת.</span></div></section>
    <section class="card col"><div class="row" style="justify-content:space-between"><h2>${ico("search")} סקירת הרשאות תקופתית</h2>${rev?`<span class="pill ${revAge<=183?"ok":"warn"}">סקירה אחרונה: ${esc(fmtDate(rev.date.slice(0,10)))} (${esc(rev.by)})</span>`:'<span class="pill warn">עוד לא בוצעה סקירה</span>'}</div>
     <p class="sub">בודקים שלכל מי שמופיעה כאן עדיין יש צורך בגישה, ושמי שעזבה סומנה כלא פעילה.</p>
