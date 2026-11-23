@@ -802,6 +802,8 @@ body:has(#modal .modal) .asfab{display:none}
 .unk-h{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-start}
 .unk-h h2{margin:0;font-size:1.1rem}.unk-a{flex-wrap:wrap}.unk-a .cbx{min-width:240px}
 .smtest{align-items:flex-end;padding:10px;border:1px dashed var(--line);border-radius:10px}
+.rgkind{margin:4px 0 8px}.rgkind small{opacity:.7;margin-inline-start:4px}.netbk{border:1px dashed var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.plc-kh{margin:10px 4px 2px;font-size:.8rem;font-weight:700;color:var(--muted)}
 </style>
 
 <button class="skip" data-act="skip">דילוג לתוכן הראשי</button>
@@ -852,7 +854,7 @@ let db=null,uid=null,me={name:"",email:"",role:"",office_id:"",admin:false},isAd
 const S={};
 const ready=new Set();
 let settings={roles:["גננת","סייעת","מנהלת","מטפלת","איש צוות נוסף"],custom:{},screens:[],mastrio:""};
-const OFFICE_ROLES_DEF=["מזכירה","מנהלת","הנהלת חשבונות","כללי"];
+const OFFICE_ROLES_DEF=["מזכירה","מנהלת","מנהלת מוסד","הנהלת חשבונות","כללי"];
 const officeRoles=()=>{const r=Array.isArray(settings.office_roles)&&settings.office_roles.length?settings.office_roles:OFFICE_ROLES_DEF;return r.includes("מנהלת")?r:["מנהלת",...r]};
 const names={};
 const subs={};
@@ -969,7 +971,7 @@ const E={
    {k:"hourly_rate",l:"שכר לשעה",t:"num"},{k:"mastrio_no",l:"מספר עובד Mastrio",t:"mono"},{k:"is_active",l:"סטטוס",t:"bool"},{k:"no_monthly",l:"לא לכלול במיילים לעובדות (נוכחות, תזכורות, הודעות)",t:"sel",opts:()=>["","כן"]},{k:"notes",l:"הערות",t:"area"}],
   cols:["full_name","id_number","phone","roles","garden_id","program_id","hourly_rate","is_active","_note"],filters:["roles","garden_id","is_active"],groups:[["garden_id","לפי גן"]],sort:"full_name"},
  gardens:{col:"gardens",title:"מוסדות",one:"גן",buckets:1,idField:"symbol",
-  fields:[{k:"name",l:"שם הגן",req:1},{k:"institution",l:"מוסד",list:()=>uniq("gardens","institution"),al:["מוסד","רשת","שםהמוסד"]},{k:"symbol",l:"סמל מוסד",t:"mono",al:["סמל"]},{k:"manager_name",l:"גננת אחראית",al:["מנהלת","גננת"]},{k:"phone",l:"טלפון הגן (לדיווח נוכחות; אפשר כמה מספרים מופרדים בפסיק)",t:"tel"},{k:"city",l:"עיר",list:()=>uniq("gardens","city")},{k:"building",l:"מבנה",list:()=>uniq("gardens","building"),al:["בניין","מבנה"]},{k:"area",l:"אזור / שכונה",list:()=>uniq("gardens","area"),al:["שכונה"]},{k:"age_group",l:"שכבת גיל",list:()=>uniq("gardens","age_group"),al:["גיל","שכבה"]},{k:"address",l:"כתובת"},{k:"notes",l:"הערות",t:"area"}],
+  fields:[{k:"name",l:"שם הגן",req:1},{k:"institution",l:"מוסד",list:()=>uniq("gardens","institution"),al:["מוסד","רשת","שםהמוסד"]},{k:"symbol",l:"סמל מוסד",t:"mono",al:["סמל"]},{k:"manager_name",l:"גננת אחראית",al:["מנהלת","גננת"]},{k:"manager_email",l:"מייל המנהלת (לשיתוף תיקיית הגיבוי)",t:"email"},{k:"phone",l:"טלפון הגן (לדיווח נוכחות; אפשר כמה מספרים מופרדים בפסיק)",t:"tel"},{k:"city",l:"עיר",list:()=>uniq("gardens","city")},{k:"building",l:"מבנה",list:()=>uniq("gardens","building"),al:["בניין","מבנה"]},{k:"area",l:"אזור / שכונה",list:()=>uniq("gardens","area"),al:["שכונה"]},{k:"age_group",l:"שכבת גיל",list:()=>uniq("gardens","age_group"),al:["גיל","שכבה"]},{k:"address",l:"כתובת"},{k:"notes",l:"הערות",t:"area"}],
   cols:["name","symbol","manager_name","phone","city","building","area","_kids","_staff","_note"],
   virt:{_kids:{l:"ילדים",v:r=>kidsOf(r).length,num:1},_staff:{l:"צוות",v:r=>staffOf(r).length,num:1}},
   filters:["city","building","area"],groups:[["city","לפי עיר"],["building","לפי מבנה"],["area","לפי אזור"]],sort:"name"},
@@ -977,7 +979,7 @@ const E={
   fields:[{k:"name",l:"שם הצהרון",req:1},{k:"garden_id",l:"גן",...ref("gardens")},{k:"manager_name",l:"אחראית"},{k:"phone",l:"טלפון",t:"tel"},{k:"notes",l:"הערות",t:"area"}],
   cols:["name","garden_id","manager_name","phone"],sort:"name"},
  office:{col:"office",title:"צוות משרד",one:"איש/אשת משרד",buckets:1,
-  fields:[{k:"full_name",l:"שם מלא",req:1},{k:"email",l:"אימייל (משמש לכניסה)",t:"email",req:1},{k:"phone",l:"טלפון",t:"tel"},{k:"role",l:"תפקיד",t:"sel",req:1,opts:()=>officeRoles()},{k:"is_active",l:"סטטוס",t:"bool"}],
+  fields:[{k:"full_name",l:"שם מלא",req:1},{k:"email",l:"אימייל (משמש לכניסה)",t:"email",req:1},{k:"phone",l:"טלפון",t:"tel"},{k:"role",l:"תפקיד",t:"sel",req:1,opts:()=>officeRoles()},{k:"places",l:"מעונות / גנים בניהולה (מנהלת מוסד רואה רק אותם)",t:"multi",opts:()=>vals("gardens").sort((a,b)=>String(a.name).localeCompare(b.name,"he")).map(g=>[g._id,(/מעון/.test(g.kind||"")?"מעון · ":"")+g.name])},{k:"is_active",l:"סטטוס",t:"bool"}],
   cols:["full_name","email","phone","role","is_active"],sort:"full_name"},
  tasks:{col:"tasks",title:"משימות",one:"משימה",buckets:1,
   fields:[{k:"title",l:"כותרת",req:1},{k:"description",l:"תיאור",t:"area"},{k:"assigned_to",l:"מוקצה ל",...ref("office",r=>r.full_name)},{k:"due_date",l:"תאריך יעד",t:"date"},{k:"remind_at",l:"תזכורת (תאריך ושעה)",t:"dt"},
@@ -3182,6 +3184,7 @@ PAGES.security=()=>{if(!isAdmin)return `<div class="card empty"><b>האזור ז
     <div class="tbox"><table><thead><tr><th>שם</th><th>אימייל</th><th>תפקיד</th><th>גישה</th><th>כניסה אחרונה</th><th>מחוברת עכשיו</th><th>סטטוס</th></tr></thead><tbody>${SEC.users.map(u=>`<tr><td><b>${esc(u.name||"")}</b></td><td class="mono">${esc(u.email||"")}</td><td>${esc(u.role||"")}</td><td class="sub">${esc(u.areas.map(a=>AREA_L[a]).join(", ")||"משימות וצ'אט בלבד")}</td><td>${u.last_login?esc(fmtTs(u.last_login)):'<span class="sub">לא נכנסה</span>'}</td><td>${u.sessions?`<span class="pill ok">${u.sessions}</span>`:""}</td><td>${u.active?'<span class="pill ok">פעילה</span>':'<span class="pill">לא פעילה</span>'}</td></tr>`).join("")}</tbody></table></div>
     <div class="row"><label class="sr" for="revNote">הערה לסקירה</label><input id="revNote" style="flex:1" placeholder="הערה (לא חובה): למשל, הוסרה גישה של…"><button class="btn primary" data-x="revDo">${ico("check")}אישור: ביצעתי סקירת הרשאות</button><a class="btn" href="#office">לניהול צוות המשרד</a></div></section>
    <div class="hcols"><section class="card col"><div class="row" style="justify-content:space-between"><h2>${ico("folder")} גיבויים</h2><button class="btn sm" data-x="bkNow">${ico("refresh")}גיבוי עכשיו</button></div>
+     ${(()=>{if(NETBK===undefined){NETBK=null;call("netBackupInfo").then(r=>{NETBK=r||false;render()}).catch(()=>{NETBK=false})}const n=NETBK;return `<div class="netbk"><div class="row" style="justify-content:space-between"><b>${ico("folder")} גיבוי רשת לדרייב</b><button class="btn sm" data-x="netBk">${ico("refresh")}גיבוי רשת עכשיו</button></div><p class="sub">כל יום: תיקיית "גיבוי רשת" ← מעונות / גנים ← תיקייה לכל מוסד, עם קובץ רישומים וילדות ומסמכים לפי ילדה. משותף רק עם צוות המשרד ועם המנהלת של אותו מוסד.</p>${n?`<p class="sub">אחרון: ${esc(fmtTs(n.at))} · ${n.places}/${n.total} מוסדות${n.url?` · <a href="${esc(n.url)}" target="_blank" rel="noopener">פתיחת התיקייה</a>`:""}</p>`:""}</div>`})()}
      ${SEC.backups.length?`<ul class="secl">${SEC.backups.slice(0,6).map(b=>`<li class="ok">${ico("check")}<span>${b.url?`<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.name)}</a>`:esc(b.name)}</span></li>`).join("")}</ul>`:'<p class="sub">עוד אין גיבויים. גיבוי נוצר אוטומטית כל יום בבוקר.</p>'}</section>
     <section class="card col"><div class="row" style="justify-content:space-between"><h2>${ico("alert")} אירועי אבטחה</h2><button class="btn sm" data-x="incNew">${ico("plus")}תיעוד אירוע</button></div>
      <p class="sub">כל אירוע מתועד כאן (למשל: מייל שנשלח לנמען שגוי, מכשיר שאבד, חשד לגישה לא מורשית). <b>אירוע אבטחה חמור יש לדווח לרשות להגנת הפרטיות באופן מיידי.</b></p>
@@ -3412,7 +3415,7 @@ const REG_ST=["חדשה","נשלח טופס השלמה","טופס הושלם","�
 const REG_STC={"חדשה":"#2563eb","נשלח טופס השלמה":"#9333ea","טופס הושלם":"#0891b2","שובצה":"#d97706","אושרה":"#16a34a","רשימת המתנה":"#64748b","נדחתה":"#dc2626","בוטלה":"#94a3b8"};
 const REG_HINT={"חדשה":"בקשה חדשה מהאתר – לבדוק ולשלוח להורים טופס השלמה","נשלח טופס השלמה":"מחכים שההורים ימלאו את הטופס ויצרפו מסמכים","טופס הושלם":"הפרטים והמסמכים התקבלו – לשבץ לגן","שובצה":"נבחר גן – לאשר ולשלוח להורים אישור הרשמה","אושרה":"הילדה נקלטה במערכת בגן","רשימת המתנה":"ממתינה למקום פנוי","נדחתה":"הבקשה נדחתה","בוטלה":"הבקשה בוטלה"};
 const REG_AGES=["מעון","טרום טרום חובה","טרום חובה","חובה"];
-let RG={st:"",q:"",type:"",area:"",age:"",sel:null};
+let RG={st:"",q:"",type:"",area:"",age:"",sel:null,kind:"",place:""};
 const regCfg=()=>tbl("settings").docs.get("reg")||{};
 const regSite=()=>(regCfg().site||"https:/\/kal-gan.online")+"/register/";
 const regPill=s=>`<span class="rgpill" style="--c:${REG_STC[s]||"#64748b"}">${esc(s||"")}</span>`;
@@ -3436,7 +3439,8 @@ function gardenFit(r){const gs=vals("gardens"),kids=vals("children").filter(c=>i
 PAGES.reg=()=>{const all=regAll(),q=asNorm?asNorm(RG.q):RG.q.toLowerCase();
   const cnt=Object.fromEntries(REG_ST.map(s=>[s,all.filter(r=>r.status===s).length]));
   const areas=[...new Set(all.map(r=>r.area||r.city).filter(Boolean))].sort();
-  const L=all.filter(r=>(!RG.st?!["בוטלה","נדחתה"].includes(r.status):RG.st==="__closed"?["בוטלה","נדחתה"].includes(r.status):r.status===RG.st)&&(!RG.type||r.type===RG.type)&&(!RG.area||(r.area||r.city)===RG.area)&&(!RG.age||r.age_group===RG.age)&&(!q||(asNorm?asNorm:String)([regName(r),r.ref,r.id_number,r.parent1_first_name,r.parent1_last_name,r.parent1_phone,r.email,r.city,r.area,r.garden_name].join(" ")).includes(q)))
+  const isM=r=>/מעון/.test(r.type||"")||/מעון/.test(S.gardens?.get(r.garden_id)?.kind||"");
+  const L=all.filter(r=>(!RG.kind||(RG.kind==="m"?isM(r):!isM(r)))&&(!RG.place||r.garden_id===RG.place)&&(!RG.st?!["בוטלה","נדחתה"].includes(r.status):RG.st==="__closed"?["בוטלה","נדחתה"].includes(r.status):r.status===RG.st)&&(!RG.type||r.type===RG.type)&&(!RG.area||(r.area||r.city)===RG.area)&&(!RG.age||r.age_group===RG.age)&&(!q||(asNorm?asNorm:String)([regName(r),r.ref,r.id_number,r.parent1_first_name,r.parent1_last_name,r.parent1_phone,r.email,r.city,r.area,r.garden_name].join(" ")).includes(q)))
     .sort((a,b)=>String(b.submitted_at||b.created_date||"").localeCompare(a.submitted_at||a.created_date||""));
   const flow=["חדשה","נשלח טופס השלמה","טופס הושלם","שובצה","אושרה"];
   return `<div class="ph"><div><h1>הרשמת תלמידות</h1><p class="sub">כל בקשות ההרשמה מהאתר – מקליטה ועד אישור ושיבוץ בגן</p></div>
@@ -3444,14 +3448,23 @@ PAGES.reg=()=>{const all=regAll(),q=asNorm?asNorm(RG.q):RG.q.toLowerCase();
    <div class="rgflow">${flow.map((s,i)=>`<button class="rgstep${RG.st===s?" on":""}" data-rgst="${esc(s)}" style="--c:${REG_STC[s]}"><b>${cnt[s]||0}</b><span>${esc(s)}</span>${i<flow.length-1?'<i aria-hidden="true">›</i>':""}</button>`).join("")}
     <div class="rgside">${["רשימת המתנה"].map(s=>`<button class="rgstep small${RG.st===s?" on":""}" data-rgst="${esc(s)}" style="--c:${REG_STC[s]}"><b>${cnt[s]||0}</b><span>${s}</span></button>`).join("")}<button class="rgstep small${RG.st==="__closed"?" on":""}" data-rgst="__closed" style="--c:#94a3b8"><b>${(cnt["נדחתה"]||0)+(cnt["בוטלה"]||0)}</b><span>נדחו / בוטלו</span></button></div></div>
    ${RG.st&&RG.st!=="__closed"?`<p class="sub rghint">${ico("spark")} ${esc(REG_HINT[RG.st]||"")} <button class="btn sm ghost" data-rgst="">הצגת הכל</button></p>`:""}
-   <div class="row rgfil"><input class="search" type="search" id="rgQ" value="${esc(RG.q)}" placeholder="חיפוש לפי שם, ת.ז., טלפון, מספר בקשה…" style="flex:1" aria-label="חיפוש הרשמות">
+   <div class="seg rgkind" role="group" aria-label="סוג מסגרת">${[["","הכל"],["m","מעונות"],["g","גנים"]].map(([k,l])=>`<button data-rgkind="${k}" aria-pressed="${(RG.kind||"")===k}">${l} <small>${k?all.filter(r=>k==="m"?isM(r):!isM(r)).length:all.length}</small></button>`).join("")}</div>
+   <div class="row rgfil"><select data-rgf="place" aria-label="מוסד"><option value="">כל המוסדות</option>${(()=>{const G=vals("gardens").filter(g=>!RG.kind||(RG.kind==="m")===/מעון/.test(g.kind||"")).sort((a,b)=>String(a.name).localeCompare(b.name,"he"));return G.map(g=>`<option value="${g._id}"${RG.place===g._id?" selected":""}>${esc(g.name)} (${all.filter(r=>r.garden_id===g._id).length})</option>`).join("")})()}</select><input class="search" type="search" id="rgQ" value="${esc(RG.q)}" placeholder="חיפוש לפי שם, ת.ז., טלפון, מספר בקשה…" style="flex:1" aria-label="חיפוש הרשמות">
     <select data-rgf="type" aria-label="סוג"><option value="">כל הסוגים</option>${["גן","מעון יום","צהרון"].map(t=>`<option${RG.type===t?" selected":""}>${t}</option>`).join("")}</select>
     <select data-rgf="age" aria-label="שכבת גיל"><option value="">כל הגילאים</option>${REG_AGES.map(t=>`<option${RG.age===t?" selected":""}>${t}</option>`).join("")}</select>
     <select data-rgf="area" aria-label="אזור"><option value="">כל האזורים</option>${areas.map(t=>`<option${RG.area===t?" selected":""}>${esc(t)}</option>`).join("")}</select></div>
    ${L.length?`<div class="tbox"><table class="rgtbl"><thead><tr><th>תלמידה</th><th>שכבה</th><th>מסגרת</th><th>אזור</th><th>הורה</th><th>סטטוס</th><th>גן</th><th>התקבלה</th></tr></thead><tbody>
     ${L.map(r=>`<tr data-rgopen="${r._id}" tabindex="0"><td><b>${esc(regName(r))}</b><small class="mono">${esc(r.ref||"")}</small></td><td>${esc(regAge(r))}</td><td>${esc(r.type||"")}</td><td>${esc(r.area||r.city||"")}</td><td>${esc([r.parent1_first_name,r.parent1_last_name].filter(Boolean).join(" "))}<small class="mono" dir="ltr">${esc(r.parent1_phone||"")}</small></td><td>${regPill(r.status)}${(r.docs||[]).length?` <span title="מסמכים מצורפים">${ico("clip")}</span>`:""}</td><td>${esc(r.garden_name||"")}</td><td><small>${esc(fmtTs(r.submitted_at||r.created_date))}</small></td></tr>`).join("")}</tbody></table></div>`
     :`<div class="empty"><b>${all.length?"אין בקשות שמתאימות לסינון":"עוד אין בקשות הרשמה"}</b>${all.length?"":`כשהורים ימלאו את הטופס באתר ההרשמה, הבקשות יופיעו כאן. <a href="${esc(regSite())}" target="_blank" rel="noopener">לאתר ההרשמה</a>`}</div>`}`};
-function regOpen(id){const r=S.registrations?.get(id);if(!r)return;RG.sel=id;const fit=gardenFit(r).slice(0,6),stepI=["חדשה","נשלח טופס השלמה","טופס הושלם","שובצה","אושרה"].indexOf(r.status);
+function maonOpen(r){const F=(l,v,c)=>v?`<div class="rgf"><span>${l}</span><b${c?` class="${c}"`:""}>${esc(v)}</b></div>`:"";const par=n=>[r[`parent${n}_first_name`],r[`parent${n}_last_name`]].filter(Boolean).join(" ");
+  modal(`<div class="rgd"><div class="mx-head"><div class="mx-title"><h2>${esc(regName(r))} ${regPill(r.status)}</h2><p class="sub">מעון מלכות · ${esc(r.garden_name||r.maon_branch||"")} · ${esc(r.age_group||"")} · שלב במעון: <b>${esc(r.maon_status||"")}</b> · התקבלה ${esc(fmtTs(r.submitted_at))}</p></div><button class="iconbtn" data-close aria-label="סגירה">${ico("x")}</button></div>
+   <p class="notice info">${ico("spark")} ההרשמה, הסטטוסים וההתכתבות עם ההורים מנוהלים בממשק של מעון מלכות. כל שינוי שם מגיע לכאן תוך דקה.</p>
+   <div class="row rgacts"><a class="btn primary" href="https://maonmalchut.com/?v=admin" target="_blank" rel="noopener">${ico("link")}פתיחה בממשק מעון מלכות</a></div>
+   <div class="rggrid"><section class="card flat col"><h3>${ico("child")} פרטי הילדה</h3>${F("שם",regName(r))}${F("ת.ז.",r.id_number,"mono")}${F("תאריך לידה",r.birth_date&&r.birth_date.split("-").reverse().join("/"))}${F("כיתה",r.age_group)}${F("תחילת לימודים",r.start_date)}${F("קופת חולים",r.hmo)}${F("בריאות",r.health_notes)}${F("אלרגיות",r.allergies)}</section>
+    <section class="card flat col"><h3>${ico("users")} הורים</h3>${F("הורה 1",par(1))}${F("טלפון",r.parent1_phone,"mono")}${F("הורה 2",par(2))}${F("טלפון",r.parent2_phone,"mono")}${F("מייל",r.email,"mono")}${F("כתובת",r.street)}</section>
+    <section class="card flat col"><h3>${ico("clip")} מסמכים (${(r.maon_files||[]).length})</h3>${(r.maon_files||[]).map(f=>`<a class="rgf" href="https://drive.google.com/file/d/${encodeURIComponent(f.id)}/view" target="_blank" rel="noopener"><span>${ico("clip")}</span><b>${esc(f.name||"מסמך")}</b></a>`).join("")||'<p class="sub">אין מסמכים</p>'}</section>
+    <section class="card flat col"><h3>${ico("chat")} התכתבות אחרונה עם ההורים</h3>${(r.maon_thread||[]).slice(-8).reverse().map(t=>`<div class="rgf"><span>${t.from==="parent"?"הורה":"מעון"} · ${esc(fmtTs(t.at))}</span><b style="font-weight:500">${esc(t.text)}</b></div>`).join("")||'<p class="sub">אין התכתבות</p>'}</section></div></div>`,"wide")}
+function regOpen(id){const r=S.registrations?.get(id);if(!r)return;if(r.source==="מעון מלכות")return maonOpen(r);RG.sel=id;const fit=gardenFit(r).slice(0,6),stepI=["חדשה","נשלח טופס השלמה","טופס הושלם","שובצה","אושרה"].indexOf(r.status);
   const F=(l,v,c)=>v?`<div class="rgf"><span>${l}</span><b${c?` class="${c}"`:""}>${esc(v)}</b></div>`:"";
   const parent=(n)=>[r[`parent${n}_first_name`],r[`parent${n}_last_name`]].filter(Boolean).join(" ");
   const act=[];const st=r.status;
@@ -3526,10 +3539,10 @@ const PLC={kplace:{sel:"",q:"",gq:"",pick:new Set(),status:"active",only:false},
 const plcKids=st=>vals("children").filter(c=>st==="all"||(st==="active"?isOn(c.is_active):!isOn(c.is_active)));
 const plcNorm=v=>String(v||"").replace(/\s+/g,"").trim();
 function plcGroups(kind,K){const m=new Map();
-  if(kind==="kplace"){vals("gardens").forEach(g=>m.set(g._id,{id:g._id,t:g.name||"(ללא שם)",s:[g.manager_name&&"גננת: "+g.manager_name,g.city].filter(Boolean).join(" · "),k:[]}));
+  if(kind==="kplace"){vals("gardens").forEach(g=>m.set(g._id,{id:g._id,t:g.name||"(ללא שם)",s:[g.manager_name&&"גננת: "+g.manager_name,g.city].filter(Boolean).join(" · "),k:[],mk:/מעון/.test(g.kind||"")}));
     const none={id:"__none",t:"ללא שיבוץ לגן",s:"ילדים שלא משויכים לאף גן",k:[],none:1};
     K.forEach(c=>{const g=c.garden_id&&m.get(c.garden_id);(g||none).k.push(c)});
-    return [none,...[...m.values()].sort((a,b)=>a.t.localeCompare(b.t,"he"))]}
+    return [none,...[...m.values()].sort((a,b)=>(b.mk-a.mk)||a.t.localeCompare(b.t,"he"))]}
   const gs=vals("gardens");gs.forEach(g=>{const v=plcNorm(g.symbol);if(!v)return;const e=m.get(v)||{id:v,t:"סמל "+v,s:"",k:[],gn:[]};e.gn.push(g.name);e.s=e.gn.join(", ");m.set(v,e)});
   const none={id:"__none",t:"ללא סמל",s:"ילדים בלי סמל מוסד",k:[],none:1};
   K.forEach(c=>{const v=plcNorm(c.symbol);if(!v){none.k.push(c);return}if(!m.has(v))m.set(v,{id:v,t:"סמל "+v,s:"סמל שלא מוגדר באף גן",k:[]});m.get(v).k.push(c)});
@@ -3564,7 +3577,7 @@ function plcPage(kind){const P=PLC[kind],isG=kind==="kplace";
     <a class="btn" href="#${isG?"ksym":"kplace"}">${isG?"לשיבוץ לפי סמל":"לשיבוץ לפי גן / גננת"}</a></div></div>
    ${totW?`<div class="plc-alert">${ico("alert")} <span><b>${totW} ילדים</b> ${isG?"משובצים בגן שהסמל שלו שונה מהסמל שלהם":"משויכים לסמל ששונה מסמל הגן שלהם"}. הגנים המסומנים ברשימה מימין.</span></div>`:""}
    <div class="plc"><aside class="plc-side"><input class="search" type="search" data-plcgq="${kind}" value="${esc(P.gq)}" placeholder="${isG?"חיפוש גן או גננת…":"חיפוש סמל או גן…"}" aria-label="חיפוש">
-     ${G.filter(g=>g.none||!gq||(g.t+" "+g.s).toLowerCase().includes(gq)).map(g=>`<button class="plc-g${g.none?" none":""}" data-plcg="${kind}|${esc(g.id)}" aria-pressed="${g.id===cur.id}"><b>${esc(g.t)}</b><span class="n">${g.k.length}</span>${g.s?`<small>${esc(g.s)}</small>`:""}${g.w?`<small class="w">${g.w} ${isG?"בסמל אחר":"בגן עם סמל אחר"}</small>`:""}</button>`).join("")}</aside>
+     ${G.filter(g=>g.none||!gq||(g.t+" "+g.s).toLowerCase().includes(gq)).map((g,i,A)=>`${isG&&!g.none&&G.some(x=>x.mk)&&(i===0||A[i-1].none||A[i-1].mk!==g.mk)?`<p class="plc-kh">${g.mk?"מעונות":"גנים"}</p>`:""}<button class="plc-g${g.none?" none":""}" data-plcg="${kind}|${esc(g.id)}" aria-pressed="${g.id===cur.id}"><b>${esc(g.t)}</b><span class="n">${g.k.length}</span>${g.s?`<small>${esc(g.s)}</small>`:""}${g.w?`<small class="w">${g.w} ${isG?"בסמל אחר":"בגן עם סמל אחר"}</small>`:""}</button>`).join("")}</aside>
     <section class="plc-main"><div class="plc-head"><div><h2>${esc(cur.t)} <span class="sub">(${cur.k.length})</span></h2>${cur.s?`<p class="sub" style="margin:2px 0 0">${esc(cur.s)}${isG&&!cur.none?` · סמל הגן: ${gSym?`<span class="mono">${esc(gSym)}</span>`:"לא מוגדר"}`:""}</p>`:""}</div>
       <div class="row" style="gap:8px;flex-wrap:wrap">${cur.w?`<label class="row" style="gap:6px"><input type="checkbox" data-plconly="${kind}"${P.only?" checked":""}> רק ${isG?"בסמל אחר":"גנים עם סמל אחר"} (${cur.w})</label>`:""}<input class="search" type="search" data-plcq="${kind}" value="${esc(P.q)}" placeholder="חיפוש ילד/ה…" aria-label="חיפוש ילד/ה" style="max-width:220px"><button class="btn" data-plcx="${kind}|cur">${ico("download")} ייצוא ${isG?"הגן":"הסמל"}</button></div></div>
      ${canWrite?`<div class="plc-bar"><label class="row" style="gap:6px"><input type="checkbox" data-plcall="${kind}"${allOn?" checked":""}> בחירת הכל (${list.length})</label><span class="spacer"></span>${P.pick.size?`<b>${P.pick.size} נבחרו</b>`:'<span class="sub">סמנו ילדים כדי לשבץ</span>'}${target}<button class="btn primary" data-plcgo="${kind}"${P.pick.size?"":" disabled"}>${isG?"העברה":"עדכון סמל"}</button>${isG&&gSym&&cur.w?`<button class="btn" data-plcalign="${cur.id}"${P.pick.size?"":" disabled"} title="מעדכן רק את הסמל של הילדים שנבחרו">עדכון לסמל הגן (${esc(gSym)})</button>`:""}</div>`:""}
@@ -3727,6 +3740,10 @@ document.addEventListener("change",e=>{const t=e.target;if(!t.dataset?.uamode)re
 document.addEventListener("click",e=>{const el=e.target.closest('[data-x="uaSave"]');if(!el||!isAdmin)return;const ua={...(settings.user_access||{})};
   document.querySelectorAll("[data-uamode]").forEach(s=>{const id=s.dataset.uamode;if(s.value==="own")ua[id]=[...document.querySelectorAll(`[data-ua^="${id}|"]`)].filter(i=>i.checked).map(i=>i.dataset.ua.split("|")[1]);else delete ua[id]});
   busy(el,async()=>{try{await saveSettings({user_access:ua});audit("הרשאות אישיות","אבטחה","",Object.keys(ua).map(id=>(S.office?.get(id)?.full_name||id)+": "+ua[id].join(",")).join(" | ").slice(0,180));toast("ההגדרות נשמרו");render()}catch(err){toast(err.message)}})});
+
+document.addEventListener("click",e=>{const b=e.target.closest("[data-rgkind]");if(!b)return;RG.kind=b.dataset.rgkind;RG.place="";render()});
+document.addEventListener("click",e=>{const b=e.target.closest('[data-x="netBk"]');if(!b||!isAdmin)return;busy(b,async()=>{try{const r=await call("netBackupNow");NETBK=r;toast(`גובו ${r.places} מתוך ${r.total} מוסדות${r.files?`, ${r.files} מסמכים חדשים`:""}`);render()}catch(err){toast(err.message)}})});
+let NETBK;
 (async()=>{
   let lk=window.KG_LOGIN||"";try{const u=new URL(location.href);if(!lk)lk=u.searchParams.get("login")||"";if(u.searchParams.get("login")){u.searchParams.delete("login");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
   if(lk){try{const r=await pub("linkLogin",lk);setToken(r.token);return start(r.me)}catch(e){return showLogin(e.message)}}
