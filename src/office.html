@@ -738,7 +738,9 @@ details.menu[open]{z-index:60}.ph:has(details.menu[open]),.bar:has(details.menu[
 .rgside{display:flex;gap:8px;flex-direction:column}.rgstep.small{min-width:120px;flex:none;padding:7px 12px;flex-direction:row;align-items:center;gap:8px}.rgstep.small b{font-size:1.1rem}
 .rghint{display:flex;gap:6px;align-items:center}.rghint .ico{width:16px;height:16px;color:#7c3aed}
 .rgfil{margin-bottom:10px;flex-wrap:wrap}
-.rgtbl td{vertical-align:middle}.rgtbl td small{display:block;color:var(--muted)}.rgtbl tbody tr{cursor:pointer}.rgtbl tbody tr:hover{background:var(--raise)}
+.rgtbl td{vertical-align:middle}.rgtbl td small{display:block;color:var(--muted)}.rgtbl tbody tr{cursor:pointer}
+.rgtbl tr.rg-grp th{background:var(--soft,#f4f4f7);text-align:start;font-size:14px;padding:8px 12px;cursor:default}.rgtbl tr.rg-grp small{color:var(--muted);font-weight:500;margin-inline-start:6px}
+.pm-list{display:grid;gap:8px}.pm-row{display:grid;grid-template-columns:minmax(150px,1.2fr) minmax(170px,1.3fr) minmax(200px,1.6fr) auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line,#e5e7eb);border-radius:12px;background:var(--card,#fff)}.pm-row small{display:block;color:var(--muted)}.pm-row .pm-in{display:flex;gap:6px}.pm-row .pm-in input{min-width:0;flex:1}.pm-none{color:#b45309;font-weight:600}.pm-h{margin:18px 0 8px;font-size:16px}@media(max-width:760px){.pm-row{grid-template-columns:1fr}.pm-row .pm-in{flex-wrap:wrap}}.rgtbl tbody tr:hover{background:var(--raise)}
 .rgd{display:flex;flex-direction:column;gap:14px}.rgd h2 .rgpill{font-size:.75rem;vertical-align:middle}
 .rgstepper{display:flex;list-style:none;padding:0;margin:0;gap:4px;counter-reset:s}.rgstepper li{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.78rem;color:var(--muted);position:relative}
 .rgstepper li span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--raise);border:2px solid var(--line);font-weight:700}
@@ -3422,13 +3424,18 @@ const regPill=s=>`<span class="rgpill" style="--c:${REG_STC[s]||"#64748b"}">${es
 const regName=r=>[r.first_name,r.last_name].filter(Boolean).join(" ");
 const regAge=r=>r.age_group||"";
 const regAll=()=>vals("registrations");
+const regArea=r=>S.gardens?.get(r.garden_id)?.area||r.area||r.city||"";
+function regRows(L,grpOf){const row=r=>`<tr data-rgopen="${r._id}" tabindex="0"><td><b>${esc(regName(r))}</b><small class="mono">${esc(r.ref||"")}</small></td><td>${esc(regAge(r))}</td><td>${esc(r.type||"")}</td><td>${esc(r.area||r.city||"")}</td><td>${esc([r.parent1_first_name,r.parent1_last_name].filter(Boolean).join(" "))}<small class="mono" dir="ltr">${esc(r.parent1_phone||"")}</small></td><td>${regPill(r.status)}${(r.docs||[]).length?` <span title="מסמכים מצורפים">${ico("clip")}</span>`:""}</td><td>${esc(r.garden_name||"")}</td><td><small>${esc(fmtTs(r.submitted_at||r.created_date))}</small></td></tr>`;
+  if(!grpOf)return L.map(row).join("");const G=new Map();L.forEach(r=>{const k=grpOf(r);if(!G.has(k))G.set(k,[]);G.get(k).push(r)});
+  return [...G.keys()].sort((a,b)=>a.localeCompare(b,"he")).map(k=>`<tr class="rg-grp"><th colspan="8">${esc(k)}<small>${G.get(k).length} בקשות</small></th></tr>`+G.get(k).map(row).join("")).join("")}
+
 
 (()=>{const g=E.gardens;if(!g||g.fields.some(f=>f.k==="kind"))return;
   g.fields.push({k:"kind",l:"סוג מסגרת",t:"sel",opts:()=>["","גן","מעון יום"],sec:"הרשמה ושיבוץ"},{k:"age_groups",l:"שכבות גיל",t:"multi",opts:()=>REG_AGES,sec:"הרשמה ושיבוץ"},{k:"capacity",l:"מספר מקומות",t:"num",sec:"הרשמה ושיבוץ"})})();
 
 (()=>{if(MODS.some(m=>m.k==="reg"))return;const i=MODS.findIndex(m=>m.k==="kids")+1;
-  MODS.splice(i,0,{k:"reg",l:"הרשמה",i:"spark",tabs:()=>[["reg","בקשות הרשמה",regAll().filter(r=>["חדשה","טופס הושלם"].includes(r.status)).length],...(isAdmin?[["regset","הגדרות הרשמה"]]:[])]});
-  MOD_C.reg="#7c3aed";NEEDS.reg=["registrations","gardens","children","settings"];NEEDS.regset=["settings","gardens"];MOD_AREA.reg=["kids"];TAB_AREA.reg="kids";TAB_AREA.regset="kids"})();
+  MODS.splice(i,0,{k:"reg",l:"הרשמה",i:"spark",tabs:()=>[["reg","בקשות הרשמה",regAll().filter(r=>["חדשה","טופס הושלם"].includes(r.status)).length],...(isAdmin?[["placemgr","מנהלות מוסדות",vals("gardens").filter(g=>g.is_active!==false&&/מעון/.test(g.kind||"")&&!g.manager_email).length||""],["regset","הגדרות הרשמה"]]:[])]});
+  MOD_C.reg="#7c3aed";NEEDS.reg=["registrations","gardens","children","settings"];NEEDS.regset=["settings","gardens"];NEEDS.placemgr=["gardens","office","registrations"];TAB_AREA.placemgr="kids";MOD_AREA.reg=["kids"];TAB_AREA.reg="kids";TAB_AREA.regset="kids"})();
 function gardenFit(r){const gs=vals("gardens"),kids=vals("children").filter(c=>isOn(c.is_active));
   return gs.map(g=>{let sc=0,why=[];const n=kids.filter(c=>c.garden_id===g._id).length,cap=+g.capacity||0;
     if(r.area&&(g.area===r.area||g.city===r.area)){sc+=4;why.push("באזור")}else if(r.city&&g.city===r.city){sc+=3;why.push("באותה עיר")}
@@ -3442,6 +3449,7 @@ PAGES.reg=()=>{const all=regAll(),q=asNorm?asNorm(RG.q):RG.q.toLowerCase();
   const isM=r=>/מעון/.test(r.type||"")||/מעון/.test(S.gardens?.get(r.garden_id)?.kind||"");
   const L=all.filter(r=>(!RG.kind||(RG.kind==="m"?isM(r):!isM(r)))&&(!RG.place||r.garden_id===RG.place)&&(!RG.st?!["בוטלה","נדחתה"].includes(r.status):RG.st==="__closed"?["בוטלה","נדחתה"].includes(r.status):r.status===RG.st)&&(!RG.type||r.type===RG.type)&&(!RG.area||(r.area||r.city)===RG.area)&&(!RG.age||r.age_group===RG.age)&&(!q||(asNorm?asNorm:String)([regName(r),r.ref,r.id_number,r.parent1_first_name,r.parent1_last_name,r.parent1_phone,r.email,r.city,r.area,r.garden_name].join(" ")).includes(q)))
     .sort((a,b)=>String(b.submitted_at||b.created_date||"").localeCompare(a.submitted_at||a.created_date||""));
+  const grpOf=RG.kind&&!RG.place?(RG.kind==="m"?(r=>S.gardens?.get(r.garden_id)?.name||r.garden_name||r.maon_branch||"ללא שיוך למעון"):(r=>regArea(r)||"ללא אזור")):null;
   const flow=["חדשה","נשלח טופס השלמה","טופס הושלם","שובצה","אושרה"];
   return `<div class="ph"><div><h1>הרשמת תלמידות</h1><p class="sub">כל בקשות ההרשמה מהאתר – מקליטה ועד אישור ושיבוץ בגן</p></div>
    <div class="bar"><a class="btn" href="${esc(regSite())}" target="_blank" rel="noopener">${ico("link")}אתר ההרשמה</a><button class="btn" data-x="regCopy">${ico("copy")}העתקת הקישור</button>${isAdmin?`<button class="btn" data-go="regset">${ico("gear")}הגדרות</button>`:""}</div></div>
@@ -3449,12 +3457,12 @@ PAGES.reg=()=>{const all=regAll(),q=asNorm?asNorm(RG.q):RG.q.toLowerCase();
     <div class="rgside">${["רשימת המתנה"].map(s=>`<button class="rgstep small${RG.st===s?" on":""}" data-rgst="${esc(s)}" style="--c:${REG_STC[s]}"><b>${cnt[s]||0}</b><span>${s}</span></button>`).join("")}<button class="rgstep small${RG.st==="__closed"?" on":""}" data-rgst="__closed" style="--c:#94a3b8"><b>${(cnt["נדחתה"]||0)+(cnt["בוטלה"]||0)}</b><span>נדחו / בוטלו</span></button></div></div>
    ${RG.st&&RG.st!=="__closed"?`<p class="sub rghint">${ico("spark")} ${esc(REG_HINT[RG.st]||"")} <button class="btn sm ghost" data-rgst="">הצגת הכל</button></p>`:""}
    <div class="seg rgkind" role="group" aria-label="סוג מסגרת">${[["","הכל"],["m","מעונות"],["g","גנים"]].map(([k,l])=>`<button data-rgkind="${k}" aria-pressed="${(RG.kind||"")===k}">${l} <small>${k?all.filter(r=>k==="m"?isM(r):!isM(r)).length:all.length}</small></button>`).join("")}</div>
-   <div class="row rgfil"><select data-rgf="place" aria-label="מוסד"><option value="">כל המוסדות</option>${(()=>{const G=vals("gardens").filter(g=>!RG.kind||(RG.kind==="m")===/מעון/.test(g.kind||"")).sort((a,b)=>String(a.name).localeCompare(b.name,"he"));return G.map(g=>`<option value="${g._id}"${RG.place===g._id?" selected":""}>${esc(g.name)} (${all.filter(r=>r.garden_id===g._id).length})</option>`).join("")})()}</select><input class="search" type="search" id="rgQ" value="${esc(RG.q)}" placeholder="חיפוש לפי שם, ת.ז., טלפון, מספר בקשה…" style="flex:1" aria-label="חיפוש הרשמות">
+   <div class="row rgfil"><select data-rgf="place" aria-label="מוסד"><option value="">כל המוסדות</option>${(()=>{const G=vals("gardens").filter(g=>!RG.kind||(RG.kind==="m")===/מעון/.test(g.kind||"")).sort((a,b)=>String(a.name).localeCompare(b.name,"he"));const opt=g=>`<option value="${g._id}"${RG.place===g._id?" selected":""}>${esc(g.name)} (${all.filter(r=>r.garden_id===g._id).length})</option>`;if(RG.kind!=="g")return G.map(opt).join("");const A=new Map();G.forEach(g=>{const k=g.area||g.city||"ללא אזור";if(!A.has(k))A.set(k,[]);A.get(k).push(g)});return [...A.keys()].sort((a,b)=>a.localeCompare(b,"he")).map(k=>`<optgroup label="${esc(k)}">${A.get(k).map(opt).join("")}</optgroup>`).join("")})()}</select><input class="search" type="search" id="rgQ" value="${esc(RG.q)}" placeholder="חיפוש לפי שם, ת.ז., טלפון, מספר בקשה…" style="flex:1" aria-label="חיפוש הרשמות">
     <select data-rgf="type" aria-label="סוג"><option value="">כל הסוגים</option>${["גן","מעון יום","צהרון"].map(t=>`<option${RG.type===t?" selected":""}>${t}</option>`).join("")}</select>
     <select data-rgf="age" aria-label="שכבת גיל"><option value="">כל הגילאים</option>${REG_AGES.map(t=>`<option${RG.age===t?" selected":""}>${t}</option>`).join("")}</select>
     <select data-rgf="area" aria-label="אזור"><option value="">כל האזורים</option>${areas.map(t=>`<option${RG.area===t?" selected":""}>${esc(t)}</option>`).join("")}</select></div>
    ${L.length?`<div class="tbox"><table class="rgtbl"><thead><tr><th>תלמידה</th><th>שכבה</th><th>מסגרת</th><th>אזור</th><th>הורה</th><th>סטטוס</th><th>גן</th><th>התקבלה</th></tr></thead><tbody>
-    ${L.map(r=>`<tr data-rgopen="${r._id}" tabindex="0"><td><b>${esc(regName(r))}</b><small class="mono">${esc(r.ref||"")}</small></td><td>${esc(regAge(r))}</td><td>${esc(r.type||"")}</td><td>${esc(r.area||r.city||"")}</td><td>${esc([r.parent1_first_name,r.parent1_last_name].filter(Boolean).join(" "))}<small class="mono" dir="ltr">${esc(r.parent1_phone||"")}</small></td><td>${regPill(r.status)}${(r.docs||[]).length?` <span title="מסמכים מצורפים">${ico("clip")}</span>`:""}</td><td>${esc(r.garden_name||"")}</td><td><small>${esc(fmtTs(r.submitted_at||r.created_date))}</small></td></tr>`).join("")}</tbody></table></div>`
+    ${regRows(L,grpOf)}</tbody></table></div>`
     :`<div class="empty"><b>${all.length?"אין בקשות שמתאימות לסינון":"עוד אין בקשות הרשמה"}</b>${all.length?"":`כשהורים ימלאו את הטופס באתר ההרשמה, הבקשות יופיעו כאן. <a href="${esc(regSite())}" target="_blank" rel="noopener">לאתר ההרשמה</a>`}</div>`}`};
 function maonOpen(r){const F=(l,v,c)=>v?`<div class="rgf"><span>${l}</span><b${c?` class="${c}"`:""}>${esc(v)}</b></div>`:"";const par=n=>[r[`parent${n}_first_name`],r[`parent${n}_last_name`]].filter(Boolean).join(" ");
   modal(`<div class="rgd"><div class="mx-head"><div class="mx-title"><h2>${esc(regName(r))} ${regPill(r.status)}</h2><p class="sub">מעון מלכות · ${esc(r.garden_name||r.maon_branch||"")} · ${esc(r.age_group||"")} · שלב במעון: <b>${esc(r.maon_status||"")}</b> · התקבלה ${esc(fmtTs(r.submitted_at))}</p></div><button class="iconbtn" data-close aria-label="סגירה">${ico("x")}</button></div>
@@ -3744,6 +3752,24 @@ document.addEventListener("click",e=>{const el=e.target.closest('[data-x="uaSave
 document.addEventListener("click",e=>{const b=e.target.closest("[data-rgkind]");if(!b)return;RG.kind=b.dataset.rgkind;RG.place="";render()});
 document.addEventListener("click",e=>{const b=e.target.closest('[data-x="netBk"]');if(!b||!isAdmin)return;busy(b,async()=>{try{const r=await call("netBackupNow");NETBK=r;toast(`גובו ${r.places} מתוך ${r.total} מוסדות${r.files?`, ${r.files} מסמכים חדשים`:""}`);render()}catch(err){toast(err.message)}})});
 let NETBK;
+PAGES.placemgr=()=>{if(!isAdmin)return `<div class="empty"><b>המסך הזה זמין להנהלה בלבד</b></div>`;
+  const gs=vals("gardens").filter(g=>g.is_active!==false).sort((a,b)=>String(a.name).localeCompare(b.name,"he"));
+  const off=vals("office"),mgrOf=g=>off.find(o=>o.is_active!==false&&Array.isArray(o.places)&&o.places.includes(g._id))||null;
+  const regN=id=>vals("registrations").filter(r=>r.garden_id===id&&!["בוטלה","נדחתה"].includes(r.status)).length;
+  const row=g=>{const m=mgrOf(g),em=m?m.email:(g.manager_email||"");return `<div class="pm-row" data-pmrow="${g._id}"><div><b>${esc(g.name)}</b><small>${esc([g.area||g.city,regN(g._id)+" בקשות פעילות"].filter(Boolean).join(" · "))}</small></div>
+    <div>${m?`<b>${esc(m.full_name||m.email)}</b><small dir="ltr" class="mono">${esc(m.email)}</small>`:`<span class="pm-none">אין מנהלת</span><small>מוצג רק למשרד</small>`}</div>
+    <div class="pm-in"><input type="email" dir="ltr" id="pmE-${g._id}" placeholder="מייל המנהלת" aria-label="מייל המנהלת של ${esc(g.name)}" value="${esc(em)}"><input id="pmN-${g._id}" placeholder="שם (לא חובה)" aria-label="שם המנהלת" value="${esc(m?m.full_name||"":"")}" style="max-width:140px"></div>
+    <div class="row" style="gap:6px;flex-wrap:nowrap"><button class="btn sm primary" data-x="pmSave" data-g="${g._id}">${m?"החלפה":"שיוך"}</button>${m?`<button class="btn sm ghost" data-x="pmDel" data-g="${g._id}" aria-label="הסרת המנהלת של ${esc(g.name)}">הסרה</button>`:""}</div></div>`};
+  const M=gs.filter(g=>/מעון/.test(g.kind||"")),Gn=gs.filter(g=>!/מעון/.test(g.kind||""));
+  const A=new Map();Gn.forEach(g=>{const k=g.area||g.city||"ללא אזור";if(!A.has(k))A.set(k,[]);A.get(k).push(g)});
+  return `<div class="ph"><div><h1>מנהלות מוסדות</h1><p class="sub">לכל מעון וגן משייכים מנהלת לפי מייל. המנהלת נכנסת לקל גן עם המייל הזה ורואה רק את המקום שלה: בקשות ההרשמה, הילדות והצוות. מקום בלי מנהלת מוצג רק למשרד.</p></div></div>
+   <h2 class="pm-h">מעונות (${M.length})</h2><div class="pm-list">${M.map(row).join("")||'<p class="sub">עוד אין מעונות. הם נוצרים אוטומטית עם הרישום הראשון ממעון מלכות.</p>'}</div>
+   <h2 class="pm-h">גנים (${Gn.length})</h2>${[...A.keys()].sort((a,b)=>a.localeCompare(b,"he")).map(k=>`<h3 class="sub" style="margin:12px 0 6px">${esc(k)}</h3><div class="pm-list">${A.get(k).map(row).join("")}</div>`).join("")||'<p class="sub">אין גנים פעילים</p>'}`};
+document.addEventListener("click",e=>{const b=e.target.closest('[data-x="pmSave"],[data-x="pmDel"]');if(!b||!isAdmin)return;const id=b.dataset.g,del=b.dataset.x==="pmDel";
+  const email=del?"":($("#pmE-"+id)?.value||"").trim(),name=del?"":($("#pmN-"+id)?.value||"").trim(),g=S.gardens?.get(id);
+  if(!del&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){toast("צריך להזין מייל תקין");$("#pmE-"+id)?.focus();return}
+  busy(b,async()=>{try{await call("setPlaceManager",{garden_id:id,email,name});await syncNow();toast(del?`המנהלת הוסרה מ${g?.name||"המוסד"} – עכשיו רק המשרד רואה אותו`:`${email} שויכה ל${g?.name||"מוסד"}`);render()}catch(err){toast(err.message)}})});
+
 (async()=>{
   let lk=window.KG_LOGIN||"";try{const u=new URL(location.href);if(!lk)lk=u.searchParams.get("login")||"";if(u.searchParams.get("login")){u.searchParams.delete("login");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
   if(lk){try{const r=await pub("linkLogin",lk);setToken(r.token);return start(r.me)}catch(e){return showLogin(e.message)}}
