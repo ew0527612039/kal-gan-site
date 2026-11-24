@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://kal-gan.online/register/img/room.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://kal-gan.online/register/#org","name":"גני מלכות","alternateName":"רשת גני מלכות","url":"https://kal-gan.online/register/","logo":"https://kal-gan.online/register/img/room.jpg","description":"רשת גני מלכות: גני ילדות ומעונות יום לבנות בחינוך תורני, מגיל 3 חודשים ועד גן חובה. מידע להורים, סבסוד מעונות והרשמה מקוונת לשנת הלימודים."},{"@type":"WebSite","@id":"https://kal-gan.online/register/#site","url":"https://kal-gan.online/register/","name":"גני מלכות","inLanguage":"he","publisher":{"@id":"https://kal-gan.online/register/#org"}},{"@type":"WebPage","url":"https://kal-gan.online/register/","name":"גני מלכות | גני ילדים ומעונות יום לבנות – הרשמה מקוונת","inLanguage":"he","isPartOf":{"@id":"https://kal-gan.online/register/#site"},"primaryImageOfPage":"https://kal-gan.online/register/img/room.jpg"}]}</script>
-<meta name="theme-color" content="#FBF7F5">
+<meta name="theme-color" content="#2B2235">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='20' fill='%23FBE1E7'/%3E%3Cpath d='M14 44 L16 22 L25 31 L32 16 L39 31 L48 22 L50 44 Z' fill='%23E0668E'/%3E%3Ccircle cx='32' cy='14' r='4' fill='%23E9C677'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -564,6 +564,172 @@ h1,h2,h3,h4{font-family:var(--f-d);font-weight:700;letter-spacing:0}
 footer{background:var(--ink);margin-top:90px}
 .mcta{background:#fff;border:1px solid var(--hair);border-radius:16px}
 .xsite{white-space:nowrap}.xnav{display:none}@media(max-width:720px){.xsite{display:none}.xnav{display:block}}
+
+/* ================= Combined: לילה ושנהב, זהב, קשתות שנפתחות ================= */
+:root{--bg:#FBF8F6;--ink:#2B2235;--ink2:#4A3F55;--muted:#6A5E73;--hair:rgba(43,34,53,.12);--hair2:rgba(43,34,53,.07);
+ --rose:#8E3B63;--rose-d:#7A2E54;--blush:#F3E6EC;--rose2:#D9A0B4;--gold:#C9A45C;--gold-d:#8A6A2A;--mint-d:#7A2E54;
+ --night:#2B2235;--night2:#3A2E4A;--mist:#D9CDD4;--line-n:#4E4260;--dome:220px;
+ --f-d:"Frank Ruhl Libre","Times New Roman",serif;--f-b:"Assistant","Segoe UI","Arial Hebrew",Arial,sans-serif}
+body{background:var(--night)}
+#landing,#guideView,#solo{background:var(--bg)}
+h1,h2{font-weight:900;letter-spacing:-.01em}
+h2{font-size:clamp(34px,4.4vw,54px);line-height:1.08}
+:focus-visible{outline-color:var(--gold)}
+.btn{font-weight:700}
+.btn-gold{background:var(--gold);color:var(--night)}.btn-gold:hover{background:#D8B46C;color:var(--night)}
+.btn-ghost{background:transparent;color:#F6EEF2;box-shadow:inset 0 0 0 1.5px #8C7F99}.btn-ghost:hover{background:rgba(255,255,255,.08);color:#fff}
+.btn-rose{background:var(--rose);color:#fff}.btn-rose:hover{background:var(--rose-d)}
+.go{font-weight:700;color:var(--rose-d);text-decoration:none;display:inline-flex;gap:8px;align-items:center}
+.go .arr{display:inline-block;transition:transform .25s var(--ease)}.go:hover .arr{transform:translateX(-5px)}.go:hover{text-decoration:underline;text-underline-offset:5px}
+.kick{color:var(--rose-d);font-weight:700;font-size:16px}
+.prog-top{background:var(--gold)}
+
+/* header */
+.top{background:var(--night);color:#F6EEF2;border-bottom:1px solid transparent}
+.top.scrolled{background:rgba(43,34,53,.94);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom-color:rgba(255,255,255,.07)}
+.brand{color:#F6EEF2}.brand svg{width:34px;height:34px;color:var(--gold)}
+.crown-draw path,.j-crown path{stroke-dasharray:120}
+.crown-draw path{animation:gmDraw 1.6s ease-out .15s both}
+@keyframes gmDraw{from{stroke-dashoffset:120}to{stroke-dashoffset:0}}
+.top nav a{color:#E9DDE4}.top nav a:hover,.top nav a[aria-current="page"]{color:var(--gold)}
+.top .xsite{color:#E9DDE4;font-weight:600;font-size:15px;text-decoration:underline;text-underline-offset:5px;margin-inline-end:6px}.top .xsite:hover{color:var(--gold)}
+.menu-btn{background:transparent;border-color:rgba(255,255,255,.2);color:#F6EEF2}
+.top nav.open{background:rgba(43,34,53,.97);border-color:rgba(255,255,255,.08)}.top nav.open a{color:#F6EEF2}
+@media (min-width:981px){.top .xsite{display:inline}}
+
+/* hero */
+.hx{background:var(--night);color:#F6EEF2;padding:36px 0 210px;position:relative;overflow:hidden;overflow:clip}
+.hx-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px}
+.hx-copy,.hx-media,.hx-side,.hx .a1{will-change:transform}
+.hx .pill{color:var(--gold);font-weight:700;font-size:16px}
+.hx h1{color:#F6EEF2;font-size:clamp(50px,6.6vw,86px);line-height:1.02;letter-spacing:-1px;max-width:none;margin:18px 0 24px}
+.hx .lead{color:var(--mist);font-size:21px;max-width:34ch}
+.hx-copy>*:nth-child(5){animation-delay:.2s}.hx-copy>*:nth-child(6){animation-delay:.28s}
+.hx-rule{display:block;height:1px;background:var(--line-n);margin:44px 0 18px;max-width:520px;transform-origin:right;animation:gmLine 1s var(--ease) .9s both}
+@keyframes gmLine{from{transform:scaleX(0)}to{transform:none}}
+.hx-facts{display:flex;flex-wrap:wrap;gap:6px 28px;color:#BFB1BA;font-size:16px}
+.hx-media{display:flex;gap:18px;align-items:flex-end;justify-content:center;padding:0;align-self:center}
+.garch{position:relative;border-radius:999px 999px 18px 18px;overflow:hidden;overflow:clip;background:var(--night2)}.garch::after{display:none}
+.hx .a1{width:62%;flex:none;aspect-ratio:3/4;animation:gmArch 1.3s var(--ease) .2s both}
+.hx-side{width:34%;display:flex;flex-direction:column;gap:18px}
+.hx .a2{width:100%;aspect-ratio:3/4;animation:gmArch 1.3s var(--ease) .45s both}
+@keyframes gmArch{from{opacity:0;transform:scale(1.06);clip-path:inset(100% 0 0 0)}to{opacity:1;transform:none;clip-path:inset(0 0 0 0)}}
+.hx-verse{border:0;margin:0;padding:0;font-family:var(--f-d);font-size:21px;line-height:1.35;color:var(--gold);max-width:none}
+.hx-down{position:absolute;bottom:150px;left:50%;width:26px;height:42px;border:1.5px solid #8C7F99;border-radius:999px;transform:translateX(-50%);z-index:0}
+.hx-down span{position:absolute;top:8px;left:50%;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:var(--gold);animation:wheel 1.8s ease-in-out infinite}
+@keyframes wheel{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(14px)}}
+
+/* the arch transition: every coloured band rises over the one before it as a dome, and flattens as it fills the screen */
+.sec{padding:100px 0 100px}.sec:has(+.band:not([hidden])),.sec:has(+[hidden]+.band){padding-bottom:220px}.hx:has(+.band){padding-bottom:220px}
+.band{position:relative;z-index:1;--p:1;margin-top:-120px;padding-top:130px;
+ border-top-left-radius:calc(50% * (1 - var(--p))) calc(var(--dome) * (1 - var(--p)));
+ border-top-right-radius:calc(50% * (1 - var(--p))) calc(var(--dome) * (1 - var(--p)));
+ box-shadow:0 -40px 70px -40px rgba(43,34,53,calc(.45 * (1 - var(--p))))}
+.band>.wrap{transform:translateY(calc((1 - var(--p)) * 46px));opacity:calc(.35 + .65 * var(--p))}
+.band-cream{background:var(--bg)}.band-blush{background:var(--blush)}.band-night{background:var(--night);color:#F6EEF2}
+#landing>.sec:last-child{padding-bottom:120px}
+
+/* words that rise in */
+.split .w{display:inline-block;overflow:hidden;overflow:clip;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
+.split .w>span{display:inline-block;transform:translateY(108%);transition:transform .95s var(--ease);transition-delay:calc(var(--i) * 55ms + .05s)}
+.rv.in .split .w>span,.split.in .w>span{transform:none}
+
+/* vision */
+.vis-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:56px;align-items:start}
+#vision .sec-h{margin:0;max-width:none}
+#vision .sec-h h2{font-size:clamp(36px,4.6vw,56px)}
+#vision .sec-h p:not(.kick){font-size:20px;color:var(--ink2);max-width:38ch}
+#vision .vals{display:flex;flex-direction:column;border-top:1px solid var(--ink);gap:0}
+#vision .val{display:flex;gap:22px;padding:28px 0;border-top:0;border-bottom:1px solid #E3D8DE}
+#vision .val svg{width:30px;height:30px;color:var(--gold);flex:none;margin-top:4px}
+#vision .val.in svg path{animation:gmDraw 1.4s ease-out both;animation-delay:calc(var(--d,0s) + .2s)}
+#vision .val h3{font-family:var(--f-b);font-size:22px;font-weight:700;margin-bottom:4px}
+#vision .val p{color:var(--ink2);font-size:18px}
+
+/* frames */
+#frames .fcards{gap:28px;align-items:stretch}
+#frames .fcard{display:block;background:#fff;border:0;border-radius:28px;transition:transform .35s var(--ease),box-shadow .35s,opacity .9s var(--ease)}
+#frames .fcard:hover{transform:translateY(-6px);box-shadow:0 22px 44px rgba(43,34,53,.12)}
+#frames .fc-body{padding:36px;display:flex;flex-direction:column;gap:18px;height:100%}
+.fc-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.fc-top h3{font-family:var(--f-d);font-size:34px;font-weight:900}
+#frames .fc-age{color:var(--rose-d)}
+#frames .stages{border-top:1px solid #E8DCE2;margin:0}
+#frames .stages li{border-top:0;border-bottom:1px solid #E8DCE2;padding:14px 0}
+#frames .stages li span{color:var(--ink2)}
+#frames .fcard .fc-ph{aspect-ratio:auto;height:170px;border-radius:18px}
+#frames .fc-ph img{transition:transform 1.2s var(--ease)}#frames .fcard:hover .fc-ph img{transform:scale(1.05)}
+#frames .fc-cta{margin-top:auto;gap:22px}
+#frames .soon-note{color:var(--ink2)}
+
+/* gallery: pictures open like curtains */
+.unveil{clip-path:inset(0 0 100% 0);transition:clip-path 1.25s var(--ease);transition-delay:var(--d,0s)}
+.unveil img{transform:scale(1.18);transition:transform 1.8s var(--ease);transition-delay:var(--d,0s)}
+.unveil.in{clip-path:inset(0 0 0 0)}.unveil.in img{transform:none}
+.gal .ph{border-radius:22px}
+.gal .gl1{border-radius:999px 999px 22px 22px}
+.fin-ph.unveil{clip-path:inset(100% 0 0 0)}.fin-ph.unveil.in{clip-path:inset(0 0 0 0)}
+
+/* process: a gold thread runs through the four steps as you scroll */
+#process{background:transparent;border:0}
+.steps-wrap{position:relative}
+.steps-line{position:absolute;top:30px;right:0;left:0;height:2px;background:var(--hair)}
+.steps-line i{display:block;height:100%;background:var(--gold);transform-origin:right;transform:scaleX(var(--sp,0))}
+#process .steps4{position:relative;gap:28px}
+#process .steps4 span{display:inline-block;justify-self:start;background:var(--bg);padding-inline-end:16px;color:var(--rose2);font-size:60px;transition:color .5s,transform .5s var(--spring)}
+#process .steps4 li h3,#process .steps4 li p{transition:opacity .5s,transform .6s var(--ease);opacity:.45;transform:translateY(8px)}
+#process .steps4 li.on span{color:var(--rose);transform:translateY(-4px)}
+#process .steps4 li.on h3,#process .steps4 li.on p{opacity:1;transform:none}
+#process .steps4 p{color:var(--ink2)}
+
+/* information – night band */
+.band-night .sec-h h2{color:#F6EEF2}
+.band-night .sec-h p{color:var(--mist)}
+.band-night .hub-search{background:#fff;border:0;color:var(--ink)}
+.band-night .tile{color:#F6EEF2;border-bottom-color:#45395A;border-radius:12px;padding-inline:12px}
+.band-night .tile:hover{background:var(--night2)}
+.band-night .tile span,.band-night .tile small{color:var(--mist)}
+.band-night .tile small em,.band-night .tile:hover b{color:var(--gold)}
+.band-night .hit{color:#F6EEF2}.band-night .hit span{color:var(--mist)}.band-night .hit:hover{background:var(--night2)}
+.band-night a{color:var(--gold)}
+
+/* final */
+.fin{display:flex;flex-wrap:wrap;gap:56px;align-items:center}
+.fin-ph{flex:1 1 320px;max-width:420px;aspect-ratio:1;border-radius:999px 999px 24px 24px}
+.fin-copy{flex:1 1 420px;display:grid;gap:16px;justify-items:start}
+.fin-copy h2{font-size:clamp(40px,5vw,62px);line-height:1.04}
+#finalTxt{font-weight:700;color:var(--rose-d);font-size:19px}
+.fin-sub{color:var(--ink2);font-size:20px;max-width:40ch}
+.fin-cta{display:flex;flex-wrap:wrap;gap:22px;align-items:center;margin-top:8px}
+footer{margin-top:0;background:var(--night)}
+
+/* journey rail: where am I on the page */
+.journey{position:fixed;left:26px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:26px;padding:4px 0;opacity:0;pointer-events:none;transition:opacity .4s}
+.journey.show{opacity:1;pointer-events:auto}
+.journey a{position:relative;z-index:1;display:block;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink2);background:var(--bg);transition:background .3s,border-color .3s,transform .3s var(--spring)}
+.journey a span{position:absolute;left:24px;top:50%;transform:translate(-6px,-50%);white-space:nowrap;font-size:14px;font-weight:700;color:var(--ink);opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;background:var(--bg);padding:3px 12px;border-radius:999px;box-shadow:var(--sh1)}
+.journey a:hover span,.journey a:focus-visible span{opacity:1;transform:translate(0,-50%)}
+.journey a.past{background:var(--ink2)}
+.journey a.cur{background:var(--gold);border-color:var(--gold);transform:scale(1.25)}
+.j-line{position:absolute;left:5px;top:10px;bottom:10px;width:2px;background:var(--hair)}
+.j-line i{display:block;width:100%;height:100%;background:var(--gold);transform-origin:top;transform:scaleY(var(--jp,0))}
+.j-crown{position:absolute;left:-7px;width:26px;height:26px;color:var(--gold);top:calc(var(--jp,0) * (100% - 26px));z-index:2;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(43,34,53,.25))}
+.j-crown path{fill:var(--bg);stroke-dashoffset:0}
+.journey.dark a{border-color:var(--mist);background:var(--night)}.journey.dark a.past{background:var(--mist)}.journey.dark a.cur{background:var(--gold);border-color:var(--gold)}
+.journey.dark .j-line{background:rgba(255,255,255,.16)}.journey.dark .j-crown path{fill:var(--night)}
+.journey.dark a span{background:var(--night2);color:#F6EEF2}
+@media (max-width:1240px){.journey{display:none}}
+
+@media (max-width:960px){.hx-grid{grid-template-columns:1fr;gap:40px}.hx{padding-bottom:150px}.hx-down{display:none}.vis-grid{grid-template-columns:1fr;gap:28px}}
+@media (max-width:760px){:root{--dome:110px}.sec{padding:72px 0 72px}.sec:has(+.band:not([hidden])),.sec:has(+[hidden]+.band){padding-bottom:140px}.hx:has(+.band){padding-bottom:120px}.band{margin-top:-70px;padding-top:90px}.hx{padding:20px 0 120px}.hx h1{font-size:50px}
+ #process .steps4 span{font-size:44px}.steps-line{display:none}#frames .fc-body{padding:26px}.fc-top h3{font-size:30px}.fin{gap:30px}.fin-ph{max-width:none;flex-basis:100%;aspect-ratio:4/3}}
+@media (prefers-reduced-motion:reduce){.band{--p:1!important}.split .w>span{transform:none!important}.unveil{clip-path:none!important}.unveil img{transform:none!important}
+ #process .steps4 li h3,#process .steps4 li p{opacity:1;transform:none}[data-par]{transform:none!important}.crown-draw path{animation:none}}
+
+.maon-link{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:12px;padding:14px 18px;border-radius:18px;border:1.5px dashed var(--rose2);color:var(--ink);text-decoration:none;background:rgba(255,255,255,.6);transition:border-color .25s,background .25s}
+.maon-link b{display:block;color:var(--rose-d)}.maon-link small{color:var(--ink2);font-size:15px}
+.maon-link .arr{font-weight:700;color:var(--rose-d);transition:transform .25s var(--ease)}.maon-link:hover{border-style:solid;background:#fff}.maon-link:hover .arr{transform:translateX(-5px)}
+.agechip a.btn{margin-inline-start:auto}
 </style>
 </head>
 <body>
@@ -576,66 +742,77 @@ footer{background:var(--ink);margin-top:90px}
 
 <header class="top" id="top"><div class="wrap" style="position:relative"><div class="bar">
   <a class="brand" href="#" data-home aria-label="גני מלכות – דף הבית">
-    <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="20" fill="#FBE1E7"/><path d="M13 45 L15 23 L24.5 32 L32 17 L39.5 32 L49 23 L51 45 Z" fill="#E0668E"/><rect x="13" y="47" width="38" height="5" rx="2.5" fill="#B83E68"/><circle cx="32" cy="14" r="4.2" fill="#E9C677"/><circle cx="14.5" cy="20.5" r="3" fill="#A8E0D4"/><circle cx="49.5" cy="20.5" r="3" fill="#A8E0D4"/></svg>
+    <svg class="crown-draw" viewBox="0 0 34 34" aria-hidden="true"><path d="M5 26V10l6.5 6L17 6l5.5 10L29 10v16H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
     <span>גני מלכות</span></a>
   <nav id="mainNav" aria-label="ניווט באתר"><a href="#frames">המסגרות</a><a href="#process">איך נרשמים</a><a href="#locs" id="navLocs" hidden>איפה אנחנו</a><a href="#info" id="navInfo">מידע להורים</a><a href="#faq" id="navFaq">שאלות</a><a href="https://maonmalchut.com" class="xnav" rel="noopener">מחפשים מעון?</a></nav>
-  <div class="acts"><a class="btn btn-line btn-sm xsite" href="https://maonmalchut.com" rel="noopener">מחפשים מעון?</a><a class="btn btn-rose btn-sm" href="#register">להרשמה</a>
+  <div class="acts"><a class="xsite" href="https://maonmalchut.com" rel="noopener">מחפשים מעון?</a><a class="btn btn-gold btn-sm" href="#register">להרשמה</a>
     <button class="menu-btn" id="menuBtn" aria-label="תפריט" aria-expanded="false" aria-controls="mainNav"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
 </div></div></header>
 
+<nav class="journey" id="journey" aria-label="מעבר בין חלקי העמוד">
+  <span class="j-line" aria-hidden="true"><i id="jFill"></i></span>
+  <svg class="j-crown" id="jCrown" viewBox="0 0 34 34" aria-hidden="true"><path d="M5 26V10l6.5 6L17 6l5.5 10L29 10v16H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  <a href="#vision" data-j="vision"><span>הרוח שלנו</span></a><a href="#frames" data-j="frames"><span>המסגרות</span></a><a href="#process" data-j="process"><span>איך נרשמים</span></a><a href="#info" data-j="info"><span>מידע להורים</span></a><a href="#register" data-j="register"><span>הרשמה</span></a>
+</nav>
+
 <main id="landing">
-  <section class="hx"><div class="wrap hx-grid">
-    <div class="hx-copy">
+  <section class="hx" id="hero"><div class="wrap hx-grid">
+    <div class="hx-copy" data-par=".18">
       <span class="pill" id="pill"><i></i><span id="pillTxt">ההרשמה פתוחה</span></span>
-      <h1 id="heroTitle">גני ילדות ומעונות יום לבנות</h1>
-      <p class="lead" id="intro">חינוך תורני חם ומקצועי – מגיל 3 חודשים ועד גן חובה.</p>
-      <div class="hero-cta"><a class="btn btn-rose btn-lg" href="#register" id="heroCta">להרשמה</a><a class="btn btn-line btn-lg" href="#frames">המסגרות שלנו</a></div>
-      <p class="hx-verse">״כל כבודה בת מלך פנימה״</p>
+      <h1 id="heroTitle">מקום טוב<br>לגדול בו</h1>
+      <p class="lead" id="intro">מעונות יום וגני ילדות לבנות, מגיל 3 חודשים ועד גן חובה. חינוך תורני, צוות שמכיר כל ילדה, ויחס אישי מהיום הראשון.</p>
+      <div class="hero-cta"><a class="btn btn-gold btn-lg" href="#register" id="heroCta">להרשמה</a><a class="btn btn-ghost btn-lg" href="#frames">להכיר את המסגרות</a></div>
+      <span class="hx-rule" aria-hidden="true"></span>
+      <p class="hx-facts"><span>מגיל 3 חודשים</span><span>מעונות וגנים ברצף אחד</span><span>הרשמה מקוונת בכחמש דקות</span></p>
     </div>
     <div class="hx-media">
-      <figure class="ph ph-main"><img src="img/room.jpg" alt="חדר משחק ושינה במעון היום: עריסות לבנות, פינת משחק ועיצוב קיר בגוונים רכים" width="1400" height="1381" fetchpriority="high"></figure>
-      <figure class="ph ph-sub"><img src="img/sleep.jpg" alt="חדר השינה במעון עם עריסות מסודרות" width="1200" height="1264" loading="lazy"></figure>
-      <p class="hx-cap">מתוך אחד המעונות ברשת</p>
+      <figure class="ph garch a1" data-par="-.10"><img src="img/room.jpg" alt="חדר המעון: עריסות ופינת משחק" width="1400" height="1381" fetchpriority="high"></figure>
+      <div class="hx-side" data-par="-.22">
+        <figure class="ph garch a2"><img src="img/corner.jpg" alt="פינת משחק עם מטבחון" width="1200" height="960" loading="lazy" style="object-position:50% 75%"></figure>
+        <p class="hx-verse">״כל כבודה בת מלך פנימה״</p>
+      </div>
     </div>
+  </div>
+  <a class="hx-down" href="#vision" aria-label="גלילה לחלק הבא"><span></span></a></section>
+
+  <section class="sec band band-cream" id="vision"><div class="wrap vis-grid">
+    <div class="sec-h rv"><p class="kick">הרוח של הרשת</p><h2 class="split">שכל בת תגדל בשמחה, ביראת שמיים ובביטחון</h2><p>זה מה שמנחה אותנו בכל מעון ובכל גן – מהיום הראשון בתינוקייה ועד שהיא עולה לכיתה א׳, בטוחה ומוכנה.</p></div>
+    <div class="vals" id="vals"></div>
   </div></section>
 
-  <section class="sec" id="frames"><div class="wrap">
-    <div class="sec-h rv"><h2>המסגרות שלנו</h2><p>רצף אחד מהתינוקייה ועד גן חובה.</p></div>
+  <section class="sec band band-blush" id="frames"><div class="wrap">
+    <div class="sec-h rv"><h2 class="split">רצף אחד – מהתינוקייה ועד גן חובה</h2><p>שתי מסגרות תחת קורת גג אחת. כשהבת עוברת מהמעון לגן, היא נשארת בבית.</p></div>
     <div class="fcards">
-      <article class="fcard rv"><figure class="ph"><img src="img/sleep.jpg" alt="חדר שינה במעון היום" loading="lazy" width="1200" height="1264"></figure>
-        <div class="fc-body"><h3>מעונות יום</h3><p class="fc-age">מגיל 3 חודשים ועד 3</p>
-          <ul class="stages" id="stMaon"><li><b>תינוקייה</b><span>מגיל 3 חודשים</span></li><li><b>פעוטון</b><span>כשנה ורבע עד שנתיים</span></li><li><b>בוגרים</b><span>שנתיים עד 3</span></li></ul>
-          <div class="fc-cta"><a class="btn btn-ink btn-sm" href="#register" data-pick="מעון יום">להרשמה למעון</a><a class="xl" href="#guide/subsidy">איך מבקשים סבסוד</a></div></div></article>
-      <article class="fcard rv" style="--d:.08s"><figure class="ph"><img src="img/corner.jpg" alt="פינת משחק מעוצבת עם מטבחון" loading="lazy" width="1200" height="960" style="object-position:50% 75%"></figure>
-        <div class="fc-body"><h3>גני ילדות</h3><p class="fc-age">גילאי 3 עד 6</p>
+      <article class="fcard rv"><div class="fc-body"><div class="fc-top"><h3>מעונות יום</h3><span class="fc-age">3 חודשים – 3 שנים</span></div>
+          <ul class="stages" id="stMaon"><li><b>תינוקייה</b><span>מגיל 3 חודשים</span></li><li><b>פעוטון</b><span>שנה ורבע – שנתיים</span></li><li><b>בוגרים</b><span>שנתיים – 3</span></li></ul>
+          <figure class="ph fc-ph"><img src="img/sleep.jpg" alt="חדר שינה במעון היום" loading="lazy" width="1200" height="1264"></figure>
+          <div class="fc-cta"><a class="go" href="https://maonmalchut.com" rel="noopener">להרשמה למעון <span class="arr">←</span></a><a class="go" href="#guide/subsidy">איך מקבלים סבסוד <span class="arr">←</span></a></div></div></article>
+      <article class="fcard rv" style="--d:.12s"><div class="fc-body"><div class="fc-top"><h3>גני ילדות</h3><span class="fc-age">גילאי 3 – 6</span></div>
           <ul class="stages" id="stGan"></ul>
-          <div class="fc-cta"><a class="btn btn-ink btn-sm" href="#register" data-pick="גן">להרשמה לגן</a><a class="xl" href="#guide/ages">גילאים ושכבות</a></div></div></article>
+          <figure class="ph fc-ph"><img src="img/table.jpg" alt="פינת יצירה עם שולחן עגול" loading="lazy" width="667" height="1400" style="object-position:50% 85%"></figure>
+          <div class="fc-cta"><a class="go" href="#register" data-pick="גן">להרשמה לגן <span class="arr">←</span></a><a class="go" href="#guide/ages">איזה גן מתאים לגיל <span class="arr">←</span></a></div></div></article>
     </div>
     <p class="soon-note" id="soonNote">צהרונים – ההרשמה תיפתח בהמשך.</p>
   </div></section>
 
-  <section class="sec gal-sec"><div class="wrap">
-    <div class="sec-h rv"><h2>הצצה פנימה</h2><p>חדרים מוארים, מסודרים ומותאמים לגיל.</p></div>
-    <div class="gal rv">
-      <figure class="ph gl1"><img src="img/room.jpg" alt="חדר המעון: פינת משחק ועריסות" loading="lazy" width="1400" height="1381"></figure>
-      <figure class="ph gl2"><img src="img/table.jpg" alt="פינת יצירה עם שולחן עגול וכיסאות קטנים" loading="lazy" width="667" height="1400" style="object-position:50% 88%"></figure>
-      <figure class="ph gl3"><img src="img/rainbow.jpg" alt="קיר מעוצב עם קשת ובובה" loading="lazy" width="584" height="389"></figure>
+  <section class="sec gal-sec" id="peek"><div class="wrap">
+    <div class="sec-h rv"><h2 class="split">הצצה פנימה</h2><p>חדרים מוארים, מסודרים ומותאמים לגיל.</p></div>
+    <div class="gal">
+      <figure class="ph gl1 unveil"><img src="img/room.jpg" alt="חדר המעון: פינת משחק ועריסות" loading="lazy" width="1400" height="1381"></figure>
+      <figure class="ph gl2 unveil" style="--d:.12s"><img src="img/table.jpg" alt="פינת יצירה עם שולחן עגול וכיסאות קטנים" loading="lazy" width="667" height="1400" style="object-position:50% 88%"></figure>
+      <figure class="ph gl3 unveil" style="--d:.24s"><img src="img/rainbow.jpg" alt="קיר מעוצב עם קשת ובובה" loading="lazy" width="584" height="389"></figure>
     </div>
   </div></section>
 
-  <section class="sec" id="values"><div class="wrap">
-    <div class="sec-h rv"><h2>מה חשוב לנו</h2></div>
-    <div class="vals rv" id="vals"></div>
-  </div></section>
-
   <section class="sec" id="process"><div class="wrap">
-    <div class="sec-h rv"><h2>איך נרשמים</h2><p>ארבעה שלבים. בכל שלב מקבלים עדכון במייל.</p></div>
-    <ol class="steps4 rv">
-      <li><span>1</span><h3>ממלאים בקשה</h3><p>טופס קצר באתר. בלי מסמכים.</p></li>
+    <div class="sec-h rv"><h2 class="split">ארבעה צעדים, ואתם בפנים</h2><p>בכל שלב מגיע עדכון למייל, כך שתמיד יודעים איפה הבקשה עומדת.</p></div>
+    <div class="steps-wrap" id="stepsW"><span class="steps-line" aria-hidden="true"><i></i></span>
+    <ol class="steps4">
+      <li><span>1</span><h3>ממלאים בקשה</h3><p>טופס קצר באתר, בלי לצרף מסמכים.</p></li>
       <li><span>2</span><h3>משלימים פרטים</h3><p>טופס השלמה וצילום ת.ז. עם ספח.</p></li>
-      <li><span>3</span><h3>שיבוץ</h3><p>לפי עיר, אזור וגיל.</p></li>
-      <li><span>4</span><h3>אישור</h3><p>מכתב אישור במייל עם פרטי הגן.</p></li>
-    </ol>
+      <li><span>3</span><h3>שיבוץ</h3><p>אנחנו משבצים לפי עיר, אזור וגיל.</p></li>
+      <li><span>4</span><h3>אישור</h3><p>מכתב אישור במייל, עם כל פרטי הגן.</p></li>
+    </ol></div>
   </div></section>
 
   <section class="sec" id="locs" hidden><div class="wrap">
@@ -643,8 +820,8 @@ footer{background:var(--ink);margin-top:90px}
     <div class="locs rv" id="locList"></div>
   </div></section>
 
-  <section class="sec" id="info"><div class="wrap">
-    <div class="sec-h rv"><h2>מידע להורים</h2><p>מדריכים קצרים, עם קישורים לאתרים הרשמיים.</p></div>
+  <section class="sec band band-night" id="info"><div class="wrap">
+    <div class="sec-h rv"><h2 class="split">כל מה שהורים שואלים</h2><p>מדריכים קצרים וברורים, עם קישורים ישירים לאתרים הרשמיים.</p></div>
     <label class="hub-search glass rv"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="vh">חיפוש במרכז המידע</span><input type="search" id="icQ" placeholder="חיפוש במדריכים – למשל: דרגה, ספח, מועד רישום" autocomplete="off"></label>
     <div class="hits" id="hits" hidden></div>
     <div class="hub rv" id="hub"></div>
@@ -655,7 +832,7 @@ footer{background:var(--ink);margin-top:90px}
     <div class="faq rv" id="faqList"></div>
   </div></section>
 
-  <section class="sec" id="register"><div class="wrap">
+  <section class="sec band band-blush" id="register"><div class="wrap">
     <div class="sec-h rv"><h2 id="regTitle">נרשמים לשנת הלימודים</h2><p id="regSub">כחמש דקות. הטופס נשמר במכשיר, אפשר להמשיך אחר כך.</p></div>
     <div class="reg-shell">
       <div class="reg-card glass">
@@ -677,9 +854,10 @@ footer{background:var(--ink);margin-top:90px}
     </div>
   </div></section>
 
-  <section class="wrap"><div class="final rv">
-    <div class="final-copy"><h2>מקום מחכה לבת שלכם</h2><p id="finalTxt">ההרשמה לשנה הבאה פתוחה.</p><a class="btn btn-lg" href="#register">להרשמה</a></div>
-    <figure class="ph final-ph"><img src="img/rainbow.jpg" alt="" loading="lazy" width="1200" height="960"></figure>
+  <section class="sec band band-cream" id="finale"><div class="wrap fin">
+    <figure class="ph garch fin-ph unveil"><img src="img/sleep.jpg" alt="חדר השינה במעון" loading="lazy" width="1200" height="1264"></figure>
+    <div class="fin-copy rv"><h2 class="split">מקום מחכה<br>לבת שלכם</h2><p id="finalTxt">ההרשמה לשנה הבאה פתוחה.</p><p class="fin-sub">חמש דקות, מהטלפון או מהמחשב. הטופס נשמר בדרך – אפשר לעצור ולהמשיך מתי שנוח.</p>
+      <div class="fin-cta"><a class="btn btn-rose btn-lg" href="#register">להרשמה</a><a class="go" href="https://maonmalchut.com" rel="noopener">מחפשים מעון? <span class="arr">←</span></a></div></div>
   </div></section>
 </main>
 
@@ -710,7 +888,7 @@ const rpc=(fn,...args)=>new Promise((res,rej)=>{if(!API)return rej(new Error("ה
 
 /* ---------- configuration (set by the office) ---------- */
 const now=new Date();
-let INFO={year_start:now.getMonth()>=8?now.getFullYear()+1:now.getFullYear(),year_label:"",types:["גן","מעון יום"],soon:["צהרון"],areas:[],cities:{},open:true,faq:[],form:{},texts:{}};
+let INFO={year_start:now.getMonth()>=8?now.getFullYear()+1:now.getFullYear(),year_label:"",types:["גן"],soon:["צהרון"],areas:[],cities:{},open:true,faq:[],form:{},texts:{}};
 const DEF_L={type:"סוג המסגרת",city:"עיר מגורים",area:"אזור / שכונה",first_name:"שם פרטי",last_name:"שם משפחה",id_number:"מספר זהות של הילדה",birth_date:"תאריך לידה",parent1_first_name:"שם פרטי – הורה",parent1_last_name:"שם משפחה",parent1_phone:"טלפון נייד",email:"מייל לעדכונים",parent2_first_name:"שם פרטי",parent2_last_name:"שם משפחה",parent2_phone:"טלפון",street:"רחוב",house_number:"מספר בית",notes:"משהו שחשוב שנדע?"};
 const DEF_H={id_number:"9 ספרות, כולל ספרת ביקורת",email:"לכאן יישלחו האישורים והעדכונים"};
 const CORE=["type","city","first_name","last_name","id_number","birth_date","parent1_first_name","parent1_phone","email"];
@@ -763,9 +941,9 @@ function paintStages(){const Y=INFO.year_start;$("#stGan").innerHTML=[["טרום
   $("#soonNote").hidden=!(INFO.soon||[]).includes("צהרון");
   $$("[data-pick]").forEach(a=>a.hidden=!INFO.types.includes(a.dataset.pick))}
 /* ---------- values ---------- */
-const VAL_DEF=[["חינוך תורני","תפילה, ברכות ומידות טובות – בשפה של ילדות."],["יחס אישי","כל ילדה בקצב שלה."],["קשר עם ההורים","עדכונים שוטפים וצוות זמין לשאלות."],["סביבה בטוחה","מבנים מותאמים לגיל ונהלים ברורים."]];
+const VAL_DEF=[["על טהרת הקודש","תפילה, ברכות ומידות טובות הן חלק מסדר היום, בהדרכה תורנית."],["חום של בית","צוות שמכיר כל ילדה בשמה, ומדבר עם ההורים בכל יום."],["מקצועיות בכל גיל","תכנית שמותאמת לכל שכבת גיל, וליווי מקצועי צמוד לצוות."],["סביבה בטוחה","מבנים מותאמים לגיל ונהלים ברורים."]];
 function paintVals(){const t=(INFO.texts||{}).values,L=t?t.split(/\n+/).map(l=>l.split("|").map(x=>x.trim())).filter(x=>x[0]).slice(0,6):VAL_DEF;
-  $("#vals").innerHTML=L.map(([h,p],i)=>`<div class="val"><span class="vn">0${i+1}</span><h3>${esc(h)}</h3><p>${esc(p||"")}</p></div>`).join("")}
+  $("#vals").innerHTML=L.map(([h,p],i)=>`<div class="val rv" style="--d:${(i*.1).toFixed(2)}s"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M5 26V10l6.5 6L17 6l5.5 10L29 10v16H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><div><h3>${esc(h)}</h3><p>${esc(p||"")}</p></div></div>`).join("");try{watch()}catch(e){}}
 
 /* ---------- where we are ---------- */
 function paintLocs(){const L=INFO.locs||{},C=Object.keys(L).sort((a,b)=>(L[b].gan+L[b].maon+L[b].other)-(L[a].gan+L[a].maon+L[a].other)||a.localeCompare(b,"he"));
@@ -797,7 +975,7 @@ const TC={first:["var(--mint-s)","var(--mint-d)"],register:["var(--blush)","var(
 const G=[
  {id:"register",t:"איך נרשמים אצלנו",s:"מילוי הטופס באתר, צעד אחר צעד",min:2,
   sum:()=>`ההרשמה לגני מלכות נעשית כאן באתר, בטופס קצר של ארבעה שלבים. לא צריך לצרף מסמכים בשלב הזה, והטופס נשמר אוטומטית במכשיר שלכם.`,
-  steps:()=>[["בוחרים מסגרת, עיר ואזור",`ב${IN("#register","טופס ההרשמה")} בוחרים גן ילדות או מעון יום, ואחר כך את העיר מהרשימה. אם בעיר יש כמה אזורים, נפתחת רשימה נוספת לבחירת האזור.`],
+  steps:()=>[["בוחרים מסגרת, עיר ואזור",`ב${IN("#register","טופס ההרשמה")} בוחרים גן ילדות, ואחר כך את העיר מהרשימה. להרשמה למעון יום יש אתר נפרד – <a href="https://maonmalchut.com" target="_blank" rel="noopener">מעון מלכות</a>. אם בעיר יש כמה אזורים, נפתחת רשימה נוספת לבחירת האזור.`],
    ["ממלאים את פרטי הילדה",`שם, מספר זהות ותאריך לידה – כפי שמופיעים בתעודת הזהות. הטופס מחשב לבד את שכבת הגיל לשנת ${esc(yl())}, ואם המסגרת שבחרתם לא מתאימה לגיל, הוא מציע להחליף בלחיצה.`,`<b>טיפ:</b> אם מספר הזהות מסומן באדום, כנראה שחסרה או התחלפה ספרה. כדאי להעתיק אותו מהספח.`],
    ["ממלאים את פרטי ההורים","טלפון נייד ומייל. לכתובת המייל יישלחו האישור, הקישור למעקב וטופס ההשלמה, ולכן חשוב לוודא שהיא נכונה."],
    ["בודקים ושולחים","במסך האחרון מוצג סיכום של כל הפרטים, עם אפשרות לערוך כל חלק. אחרי האישור והשליחה מקבלים מספר בקשה ומייל עם קישור אישי."]],
@@ -910,6 +1088,7 @@ function ageChip(){const el=$("#ageChip");if(!el)return;const d=F.data;buildDob(
   const a=ageGroup(d.birth_date),fr=frameOf(a);
   if(a==="מעל גיל גן"){el.className="agechip on bad";el.textContent=`לפי תאריך הלידה הילדה עולה לכיתה א׳ בשנת ${yl()}`;return}
   if(a==="צעירה מדי"){el.className="agechip on bad";el.textContent="הקבלה למעון היא מגיל 3 חודשים בתחילת שנת הלימודים";return}
+  if(fr==="מעון יום"){el.className="agechip on warn";el.innerHTML=`לפי הגיל (${esc(a)}) הילדה מתאימה למעון יום. ההרשמה למעונות נעשית באתר מעון מלכות.<a class="btn btn-ink btn-sm" href="https://maonmalchut.com" target="_blank" rel="noopener">להרשמה למעון</a>`;return}
   if(fr!==d.type){el.className="agechip on warn";el.innerHTML=`לפי הגיל (${esc(a)}) הילדה מתאימה ל${esc(frameName(fr))}<button type="button" class="btn btn-ink btn-sm" data-swap="${esc(fr)}">להחליף ל${esc(frameName(fr))}</button>`;return}
   el.className="agechip on";el.innerHTML=`✓ ${esc(a)} · ${esc(frameName(fr))} · שנת הלימודים ${esc(yl())}`}
 function paintProg(){const pm=$("#progm");if(pm)pm.textContent=`שלב ${F.step+1} מתוך 4 · ${STEPS[F.step].t}`;$("#prog").innerHTML=STEPS.map((s,i)=>`<li class="${i<F.step?"done":i===F.step?"cur":""}">${i<F.step?`<button type="button" data-jump="${i}" aria-label="חזרה לשלב ${s.t}">`:""}<b></b><span>${i+1}. ${s.t}</span>${i<F.step?"</button>":""}</li>`).join("")}
@@ -919,7 +1098,7 @@ function paint(){const s=F.step,d=F.data;paintProg();
   if(F.restored&&s<3)h+=`<div class="restore">המשכנו מאיפה שעצרתם<button type="button" class="lnk" data-reset>להתחיל מחדש</button></div>`;
   if(F.err)h+=`<div class="alert" role="alert">${esc(F.err)}</div>`;
   if(s===0){const types=[...INFO.types,...INFO.soon.filter(x=>!INFO.types.includes(x))],sub={"גן":"בנות בגילאי 3–6","מעון יום":"מגיל 3 חודשים עד 3 שנים","צהרון":"ההרשמה תיפתח בקרוב"};
-    h+=`<div class="fld" data-f="type"><span class="l" id="l_type">${esc(LBL("type"))}</span><div class="cards" role="radiogroup" aria-labelledby="l_type">${types.map(t=>{const soon=!INFO.types.includes(t);return `<label><input type="radio" name="type" value="${esc(t)}"${d.type===t?" checked":""}${soon?" disabled":""}><span class="opt"><span class="chk"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span><b>${esc(frameName(t))}</b><small>${esc(soon?"ההרשמה תיפתח בקרוב":sub[t]||"")}</small></span></label>`}).join("")}</div><span class="msg" id="m_type" role="alert"></span></div>
+    h+=`<div class="fld" data-f="type"><span class="l" id="l_type">${esc(LBL("type"))}</span><div class="cards" role="radiogroup" aria-labelledby="l_type">${types.map(t=>{const soon=!INFO.types.includes(t);return `<label><input type="radio" name="type" value="${esc(t)}"${d.type===t?" checked":""}${soon?" disabled":""}><span class="opt"><span class="chk"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span><b>${esc(frameName(t))}</b><small>${esc(soon?"ההרשמה תיפתח בקרוב":sub[t]||"")}</small></span></label>`}).join("")}</div><a class="maon-link" href="https://maonmalchut.com" target="_blank" rel="noopener"><span><b>מחפשים מעון יום?</b><small>לגילאי 3 חודשים עד 3 – ההרשמה למעונות נעשית באתר מעון מלכות</small></span><span class="arr" aria-hidden="true">←</span></a><span class="msg" id="m_type" role="alert"></span></div>
     <div id="placeBox">${placeFields()}</div>`}
   if(s===1){h+=`<div class="g2">${fld("first_name",{ac:"off",ok:1})}${fld("last_name",{ac:"family-name",ok:1})}${fld("id_number",{mode:"numeric",max:9,dir:"ltr",ok:1,ac:"off"})}</div><div style="margin-top:16px">${dobSel()}</div>`}
   if(s===2){const p2=["parent2_first_name","parent2_last_name","parent2_phone"].filter(k=>!HID(k)),ad=["street","house_number","notes"].filter(k=>!HID(k));
@@ -948,7 +1127,7 @@ function errsOf(step){const d=F.data,e={},need=k=>REQ(k)&&!HID(k);
   if(step===1){if(!d.first_name)e.first_name="נא למלא שם פרטי";if(!d.last_name)e.last_name="נא למלא שם משפחה";
     const idd=String(d.id_number||"").replace(/\D/g,"");if(!idd)e.id_number="נא למלא מספר זהות";else if(!tzOk(idd))e.id_number="מספר הזהות אינו תקין – בדקו את הספרות";
     if(!d.dob_d||!d.dob_m||!d.dob_y)e.birth_date="נא לבחור יום, חודש ושנה";else if(d.birth_date==="bad")e.birth_date="התאריך אינו תקין";
-    else{const a=ageGroup(d.birth_date);if(a==="מעל גיל גן")e.birth_date="לפי תאריך הלידה הילדה מעל גיל הגן לשנה זו";else if(a==="צעירה מדי")e.birth_date="הילדה צעירה מדי לשנה זו";else if(frameOf(a)!==d.type)e.birth_date="המסגרת שבחרתם לא מתאימה לגיל – אפשר להחליף בלחיצה למטה"}}
+    else{const a=ageGroup(d.birth_date);if(a==="מעל גיל גן")e.birth_date="לפי תאריך הלידה הילדה מעל גיל הגן לשנה זו";else if(a==="צעירה מדי")e.birth_date="הילדה צעירה מדי לשנה זו";else if(frameOf(a)==="מעון יום")e.birth_date="לפי הגיל הילדה מתאימה למעון יום – ההרשמה למעונות נעשית באתר מעון מלכות";else if(frameOf(a)!==d.type)e.birth_date="המסגרת שבחרתם לא מתאימה לגיל – אפשר להחליף בלחיצה למטה"}}
   if(step===2){if(!d.parent1_first_name)e.parent1_first_name="נא למלא שם";if(need("parent1_last_name")&&!d.parent1_last_name)e.parent1_last_name="נא למלא שם משפחה";if(!phoneOk(d.parent1_phone))e.parent1_phone=d.parent1_phone?"מספר הטלפון אינו תקין":"נא למלא טלפון נייד";
     if(!mailOk(d.email))e.email=d.email?"כתובת המייל אינה תקינה":"נא למלא מייל";if(d.parent2_phone&&!phoneOk(d.parent2_phone))e.parent2_phone="מספר הטלפון אינו תקין";
     ["parent2_first_name","parent2_last_name","parent2_phone","street","house_number","notes"].forEach(k=>{if(need(k)&&!d[k]&&!e[k])e[k]="נא למלא"})}
@@ -1064,7 +1243,7 @@ applyInfo();paint();watch();route();
 addEventListener("hashchange",route);
 addEventListener("pagehide",()=>{if(!F.busy&&formLive()&&$("#regForm .nav2")){collect();save()}});
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"&&!F.busy&&formLive()){collect();save()}});
-rpc("regInfo").then(i=>{INFO=Object.assign(INFO,i);INFO.areas=INFO.areas||[];INFO.cities=INFO.cities||{};INFO.form=INFO.form||{};INFO.texts=INFO.texts||{};
+rpc("regInfo").then(i=>{INFO=Object.assign(INFO,i);INFO.types=(INFO.types||[]).filter(t=>t!=="מעון יום");if(!INFO.types.length)INFO.types=["גן"];INFO.soon=(INFO.soon||[]).filter(t=>t!=="מעון יום");INFO.areas=INFO.areas||[];INFO.cities=INFO.cities||{};INFO.form=INFO.form||{};INFO.texts=INFO.texts||{};
   if(i.intro)$("#intro").textContent=i.intro;
 
   const ct=[i.phone&&`<a href="tel:${esc(i.phone)}"><small>טלפון</small><span dir="ltr">${esc(i.phone)}</span></a>`,i.email&&`<a href="mailto:${esc(i.email)}"><small>מייל</small><span dir="ltr">${esc(i.email)}</span></a>`].filter(Boolean);
@@ -1073,5 +1252,29 @@ rpc("regInfo").then(i=>{INFO=Object.assign(INFO,i);INFO.areas=INFO.areas||[];INF
   if(!F.busy&&formLive()){collect();paint()}}).catch(e=>{F.err=e.message;paint()});
 })();
 </script>
+<script>
+/* arch transitions, parallax, gold thread, journey rail – one rAF loop, nothing runs when motion is reduced */
+(()=>{const RM=matchMedia("(prefers-reduced-motion: reduce)").matches,$=q=>document.querySelector(q),$$=q=>[...document.querySelectorAll(q)];
+  // split headings into words (keeps <br>)
+  $$(".split").forEach(h=>{let i=0;h.innerHTML=h.innerHTML.split(/(<br\s*\/?>)/i).map(part=>/^<br/i.test(part)?part:part.split(/\s+/).filter(Boolean).map(w=>`<span class="w"><span style="--i:${i++}">${w}</span></span>`).join(" ")).join("")});
+  const io="IntersectionObserver" in window?new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}}),{threshold:.2}):null;
+  const uvo="IntersectionObserver" in window?new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.querySelectorAll(":scope>.unveil").forEach(u=>u.classList.add("in"));uvo.unobserve(x.target)}}),{threshold:.15}):null;
+  [...new Set($$(".unveil").map(el=>el.parentElement))].forEach(par=>uvo&&!RM?uvo.observe(par):par.querySelectorAll(".unveil").forEach(u=>u.classList.add("in")));
+  const bands=$$(".band"),par=$$("[data-par]"),hero=$("#hero"),stepsW=$("#stepsW"),steps=$$("#process .steps4 li"),J=$("#journey"),JL=J?[...J.querySelectorAll("a[data-j]")]:[];
+  const clamp=v=>v<0?0:v>1?1:v;let tick=false;
+  function frame(){tick=false;if($("#landing").hidden)return;const H=innerHeight;
+    if(!RM){bands.forEach(b=>{const t=b.getBoundingClientRect().top;b.style.setProperty("--p",clamp(1-(t-H*.12)/(H*.68)).toFixed(3))});
+      const hr=hero.getBoundingClientRect();if(hr.bottom>0)par.forEach(el=>{el.style.transform=`translateY(${(-hr.top*parseFloat(el.dataset.par)).toFixed(1)}px)`})}
+    if(stepsW){const r=stepsW.getBoundingClientRect(),sp=RM?1:clamp((H*.78-r.top)/(r.height+H*.25));stepsW.style.setProperty("--sp",sp.toFixed(3));steps.forEach((li,i)=>li.classList.toggle("on",RM||sp>=i/steps.length+.02))}
+    if(J&&JL.length){const secs=JL.map(a=>document.getElementById(a.dataset.j)).filter(Boolean);let cur=-1;secs.forEach((s,i)=>{if(!s.hidden&&s.getBoundingClientRect().top<H*.45)cur=i});
+      const first=secs[0].getBoundingClientRect().top,last=secs[secs.length-1].getBoundingClientRect().top,jp=clamp((H*.45-first)/Math.max(1,last-first));
+      J.style.setProperty("--jp",jp.toFixed(3));J.classList.toggle("show",hero.getBoundingClientRect().bottom<H*.5);
+      JL.forEach((a,i)=>{a.classList.toggle("cur",i===cur);a.classList.toggle("past",i<cur);if(i===cur)a.setAttribute("aria-current","true");else a.removeAttribute("aria-current")});
+      const s=cur>=0?secs[cur]:null;J.classList.toggle("dark",!!s&&s.classList.contains("band-night")&&s.getBoundingClientRect().bottom>H*.55)}}
+  const req=()=>{if(!tick){tick=true;requestAnimationFrame(frame)}};
+  addEventListener("scroll",req,{passive:true});addEventListener("resize",req);addEventListener("hashchange",()=>setTimeout(req,60));frame();setTimeout(frame,400);
+})();
+</script>
+
 </body>
 </html>
