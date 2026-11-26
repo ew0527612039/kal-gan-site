@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /$
 Allow: /register/
+Allow: /product/
 Disallow: /
 
 Sitemap: https://kal-gan.online/sitemap.xml
